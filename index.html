@@ -1,1 +1,149 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07111f"><title>JARVIS</title><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css"></head><body><main><header><div><small>UP's GROUP / T_Express</small><h1>JARVIS</h1><p>総合経営ダッシュボード</p></div><i>AI</i></header><section class="hero"><b>TODAY'S PRIORITY</b><h2>今日の優先事項</h2><p>欠車・出勤状況・売上・対応事項をここに集約</p></section><section class="grid"><article>売上<strong>¥ —</strong><small>今月累計</small></article><article>稼働<strong>— 台</strong><small>本日の稼働</small></article><article>欠車<strong>— 台</strong><small>要対応</small></article><article>ドライバー<strong>— 名</strong><small>稼働状況</small></article></section><h3>OPERATIONS</h3><nav><button>🚚　配送・シフト管理　›</button><button>⚠️　欠車対応　›</button><button>📊　売上・実績　›</button><button>✓　日報・出勤照合　›</button><button>◎　求人・営業　›</button></nav><h3>LOCATIONS</h3><div class="chips"><span>三島</span><span>秋山製麺</span><span>静岡</span><span>神奈川</span><span>滋賀</span><span>愛知</span></div><footer>JARVIS v1 • MANAGEMENT SYSTEM</footer></main><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#030914">
+<title>JARVIS</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand-mini">J</div>
+    <button class="nav active">⌂<span>ホーム</span></button>
+    <button class="nav">🚚<span>配送</span></button>
+    <button class="nav">📊<span>売上</span></button>
+    <button class="nav">👥<span>人員</span></button>
+    <button class="nav">⚠️<span>欠車</span></button>
+    <button class="nav">⚙️<span>設定</span></button>
+  </aside>
+
+  <main>
+    <header>
+      <div>
+        <small>UP's GROUP / T_Express</small>
+        <h1>JARVIS</h1>
+        <p>総合経営ダッシュボード</p>
+      </div>
+      <div class="head-right">
+        <div class="live">● LIVE</div>
+        <div class="orb">AI</div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <span class="eyebrow">TODAY'S PRIORITY</span>
+        <h2>今日の優先事項</h2>
+        <p>欠車・出勤状況・売上・対応事項をここに集約</p>
+      </div>
+      <div class="task-list">
+        <div>✓ 欠車対応を確認</div>
+        <div>✓ 売上進捗を確認</div>
+        <div>✓ ドライバー報告を確認</div>
+      </div>
+    </section>
+
+    <section class="kpis">
+      <article class="kpi green">
+        <div class="kpi-top"><span>売上</span><em>本日</em></div>
+        <strong>¥ —</strong>
+        <small>データ連携待ち</small>
+        <div class="bar"><i style="width:0%"></i></div>
+      </article>
+      <article class="kpi yellow">
+        <div class="kpi-top"><span>稼働</span><em>本日</em></div>
+        <strong>— 台</strong>
+        <small>配送管理連携待ち</small>
+        <div class="bar"><i style="width:0%"></i></div>
+      </article>
+      <article class="kpi red">
+        <div class="kpi-top"><span>欠車</span><em>本日</em></div>
+        <strong>— 台</strong>
+        <small>要対応件数</small>
+        <div class="bar"><i style="width:0%"></i></div>
+      </article>
+      <article class="kpi blue">
+        <div class="kpi-top"><span>ドライバー</span><em>本日</em></div>
+        <strong>— 名</strong>
+        <small>出勤照合待ち</small>
+        <div class="bar"><i style="width:0%"></i></div>
+      </article>
+    </section>
+
+    <section class="twocol">
+      <article class="panel">
+        <div class="panel-title"><h3>売上推移</h3><span>過去7日</span></div>
+        <div class="chart">
+          <div class="gridline g1"></div><div class="gridline g2"></div><div class="gridline g3"></div>
+          <svg viewBox="0 0 500 180" preserveAspectRatio="none" aria-hidden="true">
+            <polyline points="0,150 80,120 160,135 240,95 320,100 400,70 500,80" fill="none" stroke="currentColor" stroke-width="5"/>
+          </svg>
+        </div>
+        <div class="chart-note">※デザイン表示。実データ連携後に自動更新</div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-title"><h3>稼働率</h3><span>今月</span></div>
+        <div class="donut-wrap">
+          <div class="donut"><span>—%</span></div>
+          <div class="legend">
+            <b>目標稼働率</b><strong>—%</strong>
+            <b>現在</b><strong>—%</strong>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="twocol">
+      <article class="panel alert-panel">
+        <div class="panel-title"><h3>最新アラート</h3><span class="badge">0</span></div>
+        <div class="empty">
+          <b>現在アラートは未連携です</b>
+          <p>欠車・未報告・不足台数をここに表示します。</p>
+        </div>
+        <button class="ghost">すべてのアラートを見る ›</button>
+      </article>
+
+      <article class="panel">
+        <div class="panel-title"><h3>本日の配送スケジュール</h3><span>拠点別</span></div>
+        <div class="routes">
+          <div><b>Amazon / EC配送</b><span>— / — 台</span></div>
+          <div><b>三島 お酒配送</b><span>— / — 台</span></div>
+          <div><b>秋山製麺</b><span>— / — 台</span></div>
+          <div><b>その他拠点</b><span>— / — 台</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="quick">
+      <h3>クイックアクション</h3>
+      <div>
+        <button onclick="openPanel('欠車報告')">⚠️ 欠車報告</button>
+        <button onclick="openPanel('シフト調整')">📅 シフト調整</button>
+        <button onclick="openPanel('売上レポート')">📈 売上レポート</button>
+        <button onclick="openPanel('ドライバー管理')">📞 ドライバー管理</button>
+        <button onclick="openPanel('AI')">◉ AIに質問</button>
+      </div>
+    </section>
+
+    <section id="detail" class="detail">
+      <b>JARVIS ONLINE</b>
+      <p>V2デザイン反映済み。次の工程で配送管理表・シフト・売上データを接続します。</p>
+    </section>
+
+    <footer>JARVIS v2 • MANAGEMENT SYSTEM</footer>
+  </main>
+</div>
+<script>
+function openPanel(name){
+  const el=document.getElementById('detail');
+  el.innerHTML='<b>'+name+'</b><p>この機能は次のデータ連携工程で実装します。</p>';
+  el.scrollIntoView({behavior:'smooth'});
+}
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }
+</script>
+</body>
+</html>
