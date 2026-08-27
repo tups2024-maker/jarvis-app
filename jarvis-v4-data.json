@@ -1,84 +1,104 @@
 {
-  "version": "4.0",
+  "version": "4.1",
   "month": "2026-08",
   "data_date": "2026-08-28",
+  "sales_tax_rate": 0.1,
+  "sales_price_basis": "税別",
+  "driver_pay_basis": "税込",
   "projects": [
     {
       "name": "静岡",
       "required": 2,
       "active": 2,
       "absence": 0,
-      "unit_price": 18700
+      "unit_price": 18700,
+      "driver_pay": 18000
     },
     {
       "name": "三島Amazon",
       "required": 7,
       "active": 6,
       "absence": 0,
-      "unit_price": 18200
+      "unit_price": 18200,
+      "driver_pay": 17000
     },
     {
       "name": "三島お酒",
-      "required": 0,
+      "required": 1,
       "active": 1,
       "absence": 0,
-      "unit_price": 20000
+      "unit_price": 20000,
+      "driver_pay": 17500
     },
     {
       "name": "秋山製麺",
-      "required": 0,
+      "required": 1,
       "active": 1,
       "absence": 0,
-      "unit_price": 10000
+      "unit_price": 10000,
+      "driver_pay": 9000
     },
     {
       "name": "三島便",
       "required": 0,
       "active": 0,
       "absence": 0,
-      "unit_price": 7900
+      "unit_price": 7900,
+      "driver_pay": 8500
     },
     {
       "name": "一宮",
       "required": 2,
       "active": 1,
       "absence": 0,
-      "unit_price": 19300
+      "unit_price": 19300,
+      "driver_pay": 18720
     },
     {
       "name": "中村区",
       "required": 4,
       "active": 0,
       "absence": 0,
-      "unit_price": 19580
+      "unit_price": 19580,
+      "driver_pay": 17920
     },
     {
       "name": "野洲",
       "required": 1,
       "active": 1,
       "absence": 0,
-      "unit_price": 20160
+      "unit_price": 20160,
+      "driver_pay": 17500
     },
     {
-      "name": "富士・駿河",
+      "name": "富士",
       "required": 1,
       "active": 0,
       "absence": 0,
-      "unit_price": 20880
+      "unit_price": 20880,
+      "driver_pay": 18710
+    },
+    {
+      "name": "駿河",
+      "required": 0,
+      "active": 0,
+      "absence": 0,
+      "unit_price": 20160,
+      "driver_pay": 19000
     }
   ],
   "month_actuals": {
-    "三島Amazon": 154,
-    "秋山製麺": 18,
-    "三島お酒": 0,
-    "三島便": 0,
     "静岡": 0,
+    "三島Amazon": 154,
+    "三島お酒": 0,
+    "秋山製麺": 18,
+    "三島便": 0,
     "一宮": 0,
     "中村区": 0,
     "野洲": 0,
-    "富士・駿河": 0
+    "富士": 0,
+    "駿河": 0
   },
-  "rate_version": "2026-08-28-all-rates-v2",
-  "shift_version": "2026-08-28-corrected-v1",
-  "tax_basis": "税別"
+  "rate_version": "2026-08-28-sales-and-grossprofit-v1",
+  "shift_version": "2026-08-28-corrected-v2"
 }
