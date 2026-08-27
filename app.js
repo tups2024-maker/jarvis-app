@@ -1,1 +1,5 @@
-if('serviceWorker'in navigator){navigator.serviceWorker.register('sw.js')}
+const meta={dashboard:['JARVIS','総合経営ダッシュボード'],delivery:['配送・シフト','拠点別の運行・配置管理'],absence:['欠車対応','欠車・不足台数・代走候補'],sales:['売上・利益','日次・月次の経営数値'],drivers:['ドライバー','出勤・所属・確認事項'],locations:['拠点別実績','拠点ごとの稼働・売上'],reports:['日報・報告','予定と実績の自動照合'],ai:['AI分析','JARVISによる経営・運行判断'],settings:['設定','データ連携・通知・システム']};
+const menu=document.getElementById('menu'),overlay=document.getElementById('overlay');
+function closeMenu(){menu.classList.remove('open');overlay.classList.remove('show')}
+function go(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('aside button[data-page]').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active');document.querySelector(`[data-page="${p}"]`).classList.add('active');document.getElementById('title').textContent=meta[p][0];document.getElementById('sub').textContent=meta[p][1];closeMenu();window.scrollTo(0,0)}
+document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>go(b.dataset.page));document.getElementById('hamb').onclick=()=>{menu.classList.add('open');overlay.classList.add('show')};overlay.onclick=closeMenu;if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
