@@ -1,8 +1,8 @@
 {
-  "name": "JARVIS V3 - T-Express FUTURE",
-  "short_name": "JARVIS V3",
+  "name": "JARVIS V4 - T-Express FUTURE",
+  "short_name": "JARVIS V4",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#020711",
-  "theme_color": "#030914"
+  "theme_color": "#020711"
 }

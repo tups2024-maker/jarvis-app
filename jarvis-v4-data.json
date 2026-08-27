@@ -1,0 +1,72 @@
+{
+  "version": "4.0",
+  "month": "2026-08",
+  "projects": [
+    {
+      "name": "静岡",
+      "required": 2,
+      "active": 2,
+      "absence": 0,
+      "unit_price": null
+    },
+    {
+      "name": "三島Amazon",
+      "required": 7,
+      "active": 7,
+      "absence": 0,
+      "unit_price": null
+    },
+    {
+      "name": "三島お酒",
+      "required": 0,
+      "active": 0,
+      "absence": 0,
+      "unit_price": null
+    },
+    {
+      "name": "秋山製麺",
+      "required": 0,
+      "active": 0,
+      "absence": 0,
+      "unit_price": null
+    },
+    {
+      "name": "三島便",
+      "required": 0,
+      "active": 0,
+      "absence": 0,
+      "unit_price": null
+    },
+    {
+      "name": "一宮",
+      "required": 2,
+      "active": 0,
+      "absence": 1,
+      "unit_price": null
+    },
+    {
+      "name": "中村区",
+      "required": 4,
+      "active": 0,
+      "absence": 0,
+      "unit_price": null
+    },
+    {
+      "name": "野洲",
+      "required": 1,
+      "active": 1,
+      "absence": 0,
+      "unit_price": null
+    },
+    {
+      "name": "富士・駿河",
+      "required": 1,
+      "active": 2,
+      "absence": 0,
+      "unit_price": null
+    }
+  ],
+  "month_actuals": {
+    "秋山製麺": 18
+  }
+}

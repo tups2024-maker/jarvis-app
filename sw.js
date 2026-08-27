@@ -1,8 +1,1 @@
-const CACHE='jarvis-v3-fix-20260827';
-self.addEventListener('install',e=>{self.skipWaiting()});
-self.addEventListener('activate',e=>{
- e.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k)))).then(()=>self.clients.claim()))
-});
-self.addEventListener('fetch',e=>{
- e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)))
-});
+const CACHE='jarvis-v4-20260828';self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.map(x=>caches.delete(x)))).then(()=>self.clients.claim())));self.addEventListener('fetch',e=>e.respondWith(fetch(e.request,{cache:'no-store'}).catch(()=>caches.match(e.request))));
