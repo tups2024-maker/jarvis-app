@@ -1,11 +1,167 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#030914"><title>JARVIS V3</title><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css"></head><body><div class="app"><aside id="menu"><div class="brand">JARVIS <small>v3.0</small></div><button data-page="dashboard" class="active">⌂ ダッシュボード</button><button data-page="delivery">🚚 配送・シフト</button><button data-page="absence">⚠️ 欠車対応</button><button data-page="sales">📊 売上・利益</button><button data-page="drivers">👥 ドライバー</button><button data-page="locations">📍 拠点別実績</button><button data-page="reports">✓ 日報・報告</button><button data-page="ai">◉ AI分析</button><button data-page="settings">⚙️ 設定</button><div class="online">● SYSTEM ONLINE</div></aside><main><header><button id="hamb">☰</button><div><small>T-Express FUTURE / UP's GROUP</small><h1 id="title">JARVIS</h1><p id="sub">総合経営ダッシュボード</p></div><div class="orb">AI</div></header>
-<section id="dashboard" class="page active"><div class="hero card"><div><span>TODAY'S PRIORITY</span><h2>今日の優先事項</h2><p>欠車・出勤・売上・対応事項をここに集約</p></div><div class="tasks"><div>✓ 欠車・不足台数を確認</div><div>✓ 売上進捗を確認</div><div>✓ 日報・出勤差異を確認</div></div></div><div class="kpis"><div class="card"><b>売上</b><strong>¥ —</strong><small>今月累計</small></div><div class="card"><b>稼働</b><strong>— 台</strong><small>本日の稼働</small></div><div class="card warn"><b>欠車</b><strong>— 台</strong><small>要対応</small></div><div class="card"><b>ドライバー</b><strong>— 名</strong><small>稼働状況</small></div></div><div class="cols"><div class="card"><h3>本日の運行状況</h3><div class="rows"><div><b>Amazon / EC配送</b><span>— / — 台</span></div><div><b>三島 お酒配送</b><span>— / — 台</span></div><div><b>秋山製麺</b><span>— / — 台</span></div><div><b>その他拠点</b><span>— / — 台</span></div></div></div><div class="card"><h3>JARVIS判断</h3><p>現在はデータ連携待ちです。連携後は欠車・売上・日報の優先順位を自動表示します。</p></div></div></section>
-<section id="delivery" class="page"><div class="card"><h3>配送・シフト管理</h3><div class="table"><div><b>拠点</b><b>必要</b><b>稼働</b><b>差異</b></div><div><span>三島</span><span>—</span><span>—</span><span>—</span></div><div><span>静岡</span><span>—</span><span>—</span><span>—</span></div><div><span>神奈川</span><span>—</span><span>—</span><span>—</span></div><div><span>滋賀</span><span>—</span><span>—</span><span>—</span></div><div><span>愛知</span><span>—</span><span>—</span><span>—</span></div></div></div></section>
-<section id="absence" class="page"><div class="cols"><div class="card"><h3>欠車アラート</h3><strong class="big">— 件</strong><p>現在の未対応欠車</p></div><div class="card"><h3>代走候補</h3><p>シフト・距離・稼働状況から候補を表示予定</p></div></div></section>
-<section id="sales" class="page"><div class="kpis"><div class="card"><b>今月売上</b><strong>¥ —</strong></div><div class="card"><b>利益</b><strong>¥ —</strong></div><div class="card"><b>1日平均</b><strong>¥ —</strong></div><div class="card warn"><b>欠車損失</b><strong>¥ —</strong></div></div><div class="card"><h3>拠点別売上</h3><p>配送管理表との連携後、自動集計します。</p></div></section>
-<section id="drivers" class="page"><div class="card"><h3>ドライバー管理</h3><p>ドライバー台帳連携後、一覧・出勤・確認事項を表示します。</p></div></section>
-<section id="locations" class="page"><div class="locs"><div class="card">三島<strong>— 台</strong></div><div class="card">静岡<strong>— 台</strong></div><div class="card">神奈川<strong>— 台</strong></div><div class="card">滋賀<strong>— 台</strong></div><div class="card">愛知<strong>— 台</strong></div><div class="card">秋山製麺<strong>— 台</strong></div></div></section>
-<section id="reports" class="page"><div class="card"><h3>日報・出勤照合</h3><div class="kpis"><div><b>未提出</b><strong>—</strong></div><div><b>実績差異</b><strong>—</strong></div><div><b>確認済</b><strong>—</strong></div></div></div></section>
-<section id="ai" class="page"><div class="card ai"><div class="core">J</div><h2>JARVIS AI ANALYSIS</h2><p>運行・売上・採用・営業を横断して、今日の優先順位を提示します。</p><div class="command">どうしますか？ ご用命を。</div></div></section>
-<section id="settings" class="page"><div class="card"><h3>設定</h3><div class="rows"><div><b>データソース</b><span>未接続</span></div><div><b>通知</b><span>準備中</span></div><div><b>JARVIS Version</b><span>3.0</span></div></div></div></section>
-<footer>JARVIS V3 • T-EXPRESS FUTURE</footer></main></div><div id="overlay"></div><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#030914">
+<title>JARVIS V3</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sideMenu" class="sidebar">
+    <div class="sidebar-head">
+      <div class="brand-orb">J</div>
+      <div><b>JARVIS</b><small>v3.0</small></div>
+      <button id="closeMenu" class="icon-btn mobile-only">×</button>
+    </div>
+    <nav>
+      <button class="nav-item active" data-page="dashboard">⌂ <span>ダッシュボード</span></button>
+      <button class="nav-item" data-page="delivery">🚚 <span>配送・シフト</span></button>
+      <button class="nav-item" data-page="absence">⚠️ <span>欠車対応</span></button>
+      <button class="nav-item" data-page="sales">📊 <span>売上・利益</span></button>
+      <button class="nav-item" data-page="drivers">👥 <span>ドライバー</span></button>
+      <button class="nav-item" data-page="locations">📍 <span>拠点別実績</span></button>
+      <button class="nav-item" data-page="reports">✓ <span>日報・報告</span></button>
+      <button class="nav-item" data-page="ai">◉ <span>AI分析</span></button>
+      <button class="nav-item" data-page="settings">⚙️ <span>設定</span></button>
+    </nav>
+    <div class="sidebar-foot"><span class="status-dot"></span> SYSTEM ONLINE</div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <button id="openMenu" class="icon-btn mobile-only">☰</button>
+      <div class="title-wrap">
+        <small>T-Express FUTURE / UP's GROUP</small>
+        <h1 id="pageTitle">JARVIS</h1>
+        <p id="pageSub">総合経営ダッシュボード</p>
+      </div>
+      <div class="top-actions"><div class="live">● LIVE</div><div class="ai-orb">AI</div></div>
+    </header>
+
+    <section id="page-dashboard" class="page active">
+      <section class="hero glass">
+        <div>
+          <span class="eyebrow">TODAY'S PRIORITY</span>
+          <h2>今日の優先事項</h2>
+          <p>欠車・出勤・売上・対応事項をここに集約</p>
+        </div>
+        <div class="priority-list">
+          <div>✓ 欠車・不足台数を確認</div>
+          <div>✓ 売上進捗を確認</div>
+          <div>✓ 日報・出勤差異を確認</div>
+        </div>
+      </section>
+
+      <section class="kpi-grid">
+        <article class="kpi glass cyan"><span>売上</span><strong id="kpiSales">¥ —</strong><small>今月累計</small></article>
+        <article class="kpi glass green"><span>稼働</span><strong id="kpiActive">— 台</strong><small>本日の稼働</small></article>
+        <article class="kpi glass red"><span>欠車</span><strong id="kpiAbsence">— 台</strong><small>要対応</small></article>
+        <article class="kpi glass blue"><span>ドライバー</span><strong id="kpiDrivers">— 名</strong><small>稼働状況</small></article>
+      </section>
+
+      <section class="two-col">
+        <article class="glass panel">
+          <div class="section-head"><h3>本日の運行状況</h3><span>REALTIME</span></div>
+          <div class="route-list">
+            <div><b>Amazon / EC配送</b><span>— / — 台</span></div>
+            <div><b>愛知エリア</b><span>— / — 台</span></div>
+            <div><b>野洲</b><span>— / — 台</span></div>
+            <div><b>富士・駿河</b><span>— / — 台</span></div>
+          </div>
+        </article>
+
+        <article class="glass panel">
+          <div class="section-head"><h3>JARVIS判断</h3><span>AI</span></div>
+          <div class="ai-summary">
+            <div class="pulse"></div>
+            <p>データを読み込み中です。</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="quick glass">
+        <div class="section-head"><h3>クイックアクション</h3><span>COMMAND</span></div>
+        <div class="quick-grid">
+          <button data-jump="absence">⚠️ 欠車対応</button>
+          <button data-jump="delivery">📅 シフト確認</button>
+          <button data-jump="sales">📈 売上を見る</button>
+          <button data-jump="drivers">👥 ドライバー</button>
+          <button data-jump="ai">◉ AI分析</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="page-delivery" class="page">
+      <article class="glass panel wide">
+        <div class="section-head"><h3>配送・シフト管理</h3><span>OPERATIONS</span></div>
+        <div class="table-like">
+          <div class="thead"><span>拠点</span><span>必要</span><span>稼働</span><span>差異</span></div>
+          <div><span>静岡</span><span>—</span><span>—</span><span>—</span></div>
+          <div><span>三島</span><span>—</span><span>—</span><span>—</span></div>
+          <div><span>一宮</span><span>—</span><span>—</span><span>—</span></div>
+          <div><span>中村区</span><span>—</span><span>—</span><span>—</span></div>
+          <div><span>野洲</span><span>—</span><span>—</span><span>—</span></div>
+          <div><span>富士・駿河</span><span>—</span><span>—</span><span>—</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section id="page-absence" class="page">
+      <div class="two-col">
+        <article class="glass panel">
+          <div class="section-head"><h3>欠車アラート</h3><span class="danger">URGENT</span></div>
+          <div class="big-number">— 件</div><p class="muted">現在の未対応欠車</p>
+        </article>
+        <article class="glass panel">
+          <div class="section-head"><h3>代走候補</h3><span>AUTO</span></div>
+          <p class="empty">シフト・距離・稼働状況から候補を表示予定</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="page-sales" class="page">
+      <div class="kpi-grid">
+        <article class="kpi glass cyan"><span>今月売上</span><strong>¥ —</strong><small>全拠点</small></article>
+        <article class="kpi glass green"><span>利益</span><strong>¥ —</strong><small>概算</small></article>
+        <article class="kpi glass blue"><span>1日平均</span><strong>¥ —</strong><small>売上</small></article>
+        <article class="kpi glass red"><span>欠車損失</span><strong>¥ —</strong><small>月累計</small></article>
+      </div>
+    </section>
+
+    <section id="page-drivers" class="page">
+      <article class="glass panel"><div class="section-head"><h3>ドライバー管理</h3><span>DRIVERS</span></div><div class="empty">ドライバー台帳連携後に表示します。</div></article>
+    </section>
+
+    <section id="page-locations" class="page">
+      <div class="location-grid">
+        <article class="glass location"><b>静岡</b><span>— 台</span><small>稼働</small></article>
+        <article class="glass location"><b>三島</b><span>— 台</span><small>稼働</small></article>
+        <article class="glass location"><b>一宮</b><span>— 台</span><small>稼働</small></article>
+        <article class="glass location"><b>中村区</b><span>— 台</span><small>稼働</small></article>
+        <article class="glass location"><b>野洲</b><span>— 台</span><small>稼働</small></article>
+        <article class="glass location"><b>富士・駿河</b><span>— 台</span><small>稼働</small></article>
+      </div>
+    </section>
+
+    <section id="page-reports" class="page">
+      <article class="glass panel"><div class="section-head"><h3>日報・出勤照合</h3><span>CHECK</span></div><div class="empty">予定と実績の照合機能を次に追加します。</div></article>
+    </section>
+
+    <section id="page-ai" class="page">
+      <article class="glass ai-console"><div class="ai-core">J</div><h2>JARVIS AI ANALYSIS</h2><p>運行・売上・採用・営業を横断して優先順位を提示します。</p><div class="command-input">どうしますか？ ご用命を。</div></article>
+    </section>
+
+    <section id="page-settings" class="page">
+      <article class="glass panel"><div class="section-head"><h3>設定</h3><span>SYSTEM</span></div><div class="setting-row"><b>データソース</b><span>8月シフト連携中</span></div><div class="setting-row"><b>JARVIS Version</b><span>3.0</span></div></article>
+    </section>
+
+    <footer>JARVIS V3 • T-EXPRESS FUTURE</footer>
+  </main>
+</div>
+<div id="overlay" class="overlay"></div>
+<script src="app.js"></script>
+</body>
+</html>
