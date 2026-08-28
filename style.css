@@ -109,3 +109,6 @@
 
 #page-googlehub .action-btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
 #page-googlehub .setting-row{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+
+/* V5.2 top quick access */
+.quick-hub{display:flex;align-items:center;gap:8px}.quick-hub-btn{width:48px;height:48px;border-radius:50%;border:1px solid #2384a5;background:rgba(4,19,31,.9);color:#d9fbff;display:grid;place-items:center;text-decoration:none;font:700 12px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;box-shadow:0 0 18px #22d9ff20;cursor:pointer}.quick-hub-btn.ai{width:60px;height:60px;border-color:var(--cyan);font-size:17px;box-shadow:0 0 24px #22d9ff4d,inset 0 0 20px #22d9ff1f}.quick-hub-btn span{display:block}.quick-hub-btn:hover,.quick-hub-btn:active{border-color:var(--cyan);box-shadow:0 0 28px #22d9ff55}.quick-hub-btn:not(.ai) span{font-size:20px}.quick-hub-btn[href] span{font-size:9px;letter-spacing:.4px}@media(max-width:520px){.topbar{align-items:flex-start}.quick-hub{gap:5px}.quick-hub-btn{width:38px;height:38px}.quick-hub-btn.ai{width:46px;height:46px;font-size:13px}.quick-hub-btn:not(.ai) span{font-size:17px}.quick-hub-btn[href] span{font-size:8px}.title-wrap h1{font-size:27px;letter-spacing:4px}}

@@ -1,5 +1,3 @@
-JARVIS V5.1 Secure Gmail / Calendar
-- No API secret stored in GitHub Pages/localStorage
-- Gmail / Calendar hub UI
-- Voice transcript auto-sends into JARVIS chat
-- Google data read/write requires a secure authenticated bridge; static GitHub Pages alone cannot access ChatGPT connectors.
+JARVIS V5.2 クイックアクセス版
+右上に AI / Gmail / Google Calendar / LINE のクイックアクセスを追加。
+Gmail・Calendarの秘密鍵はフロントエンドに保存しません。LINEは現段階ではLINEへの入口で、自動連携は公式LINE連携時に実装します。
