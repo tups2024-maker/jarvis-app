@@ -80,8 +80,8 @@
     },
     {
       "name": "駿河",
-      "required": 0,
-      "active": 0,
+      "required": 1,
+      "active": 1,
       "absence": 0,
       "unit_price": 20160,
       "driver_pay": 19000
@@ -100,12 +100,13 @@
     "駿河": 20
   },
   "rate_version": "2026-08-28-sales-and-grossprofit-v1",
-  "shift_version": "2026-08-28-corrected-v3-nakamura-required-1",
+  "shift_version": "2026-08-28-v4-suruga-workday-1of1",
   "actuals_version": "2026-08-28-all-projects-v1",
   "actuals_basis": "2026-08-01_to_2026-08-28",
   "notes": [
     "三島Amazon・三島便は配送管理表の実績を8/28まで集計",
     "秋山製麺は配送管理表の実績を8/28まで集計",
     "三島お酒・静岡・一宮・中村区・野洲・富士・駿河は8月シフト表を8/28まで集計"
-  ]
+  ],
+  "suruga_rule": "稼働日は1/1、休みは0/0"
 }
