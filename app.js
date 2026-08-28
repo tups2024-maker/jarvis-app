@@ -177,3 +177,54 @@ async function load(){const s=localStorage.getItem(STORAGE_KEY)||localStorage.ge
  q('aiChatSend')?.addEventListener('click',()=>ask(input.value));input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ask(input.value)}});document.querySelectorAll('[data-aicmd]').forEach(b=>b.addEventListener('click',()=>ask(b.dataset.aicmd)));
  const SR2=window.SpeechRecognition||window.webkitSpeechRecognition; if(SR2){const rec=new SR2();rec.lang='ja-JP';rec.interimResults=false;rec.onstart=()=>{q('aiVoiceBtn')?.classList.add('listening');q('aiVoiceInline')?.classList.add('listening');if(q('aiVoiceStatus'))q('aiVoiceStatus').textContent='JARVIS LISTENING...'};rec.onend=()=>{q('aiVoiceBtn')?.classList.remove('listening');q('aiVoiceInline')?.classList.remove('listening');if(q('aiVoiceStatus'))q('aiVoiceStatus').textContent='音声入力 READY'};rec.onresult=e=>ask(e.results[0][0].transcript);rec.onerror=()=>row('jarvis','音声認識を開始できませんでした。マイクの許可を確認してください。');const start=()=>{try{rec.start()}catch{}};q('aiVoiceBtn')?.addEventListener('click',start);q('aiVoiceInline')?.addEventListener('click',start)}
 })();
+
+/* V4.8.8 REPORT / CONTACT / ABSENCE SUPPORT CORE */
+(()=>{
+ const REPORT_KEY='jarvis-v488-report-log';
+ const canon=s=>String(s||'').replace(/[\s　]/g,'');
+ const reportLog=()=>{try{return JSON.parse(localStorage.getItem(REPORT_KEY)||'[]')}catch{return[]}};
+ const saveReport=(type,text)=>{const a=reportLog();a.unshift({time:new Date().toISOString(),type,text});localStorage.setItem(REPORT_KEY,JSON.stringify(a.slice(0,100)));renderReportLog()};
+ function renderReportLog(){const el=document.getElementById('jarvisReportLog');if(!el)return;const a=reportLog().slice(0,5);el.innerHTML=a.length?'<b>RECENT REPORTS / 連絡記録</b>'+a.map(x=>`<div><span>${esc(x.type)}</span><small>${new Date(x.time).toLocaleString('ja-JP')}</small><p>${esc(x.text)}</p></div>`).join(''):''}
+ function targetDate(text){const m=String(text).match(/(\d{1,2})[\/月](\d{1,2})日?/);return m?`2026-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`:today()}
+ function targetArea(text){return Object.keys(AREA_PROJECTS).find(a=>String(text).includes(a))||''}
+ function candidates(area,date){
+   const by={}; ATT.filter(x=>x.date===date).forEach(x=>{const k=canon(x.driver);(by[k]??=[]).push(x)});
+   const activeNames=new Set(DRIVERS.map(d=>canon(d.name)));
+   const list=[];
+   for(const [k,recs] of Object.entries(by)){
+     if(!activeNames.has(k))continue;
+     const working=recs.some(r=>r.status==='出勤'||r.status==='研修');
+     const off=recs.some(r=>r.status==='休み');
+     if(working||!off)continue;
+     const d=DRIVERS.find(x=>canon(x.name)===k); if(!d)continue;
+     const areas=Array.isArray(d.areas)?d.areas:[d.area].filter(Boolean);
+     const same=areas.includes(area);
+     list.push({name:d.name,areas,same,reason:same?`${area}経験あり・当日休み`:`${areas.join(' / ')}・当日休み`});
+   }
+   return list.sort((a,b)=>Number(b.same)-Number(a.same)||a.name.localeCompare(b.name,'ja'));
+ }
+ const oldExecute=execute;
+ execute=function(raw){
+   const text=(raw||'').trim(); if(!text)return;
+   const t=text.replace(/\s/g,''), area=targetArea(text), date=targetDate(text);
+   if(/欠車/.test(t)&&/(誰|対応|行け|候補|代走)/.test(t)){
+     document.getElementById('voiceText').value='';addChat('user',text);
+     const c=candidates(area,date); let r='';
+     if(!area) r='欠車が出たエリア名も教えてください。例：「三島で欠車。誰が対応できる？」';
+     else if(!c.length) r=`${date.slice(5).replace('-','/')} ${area}は、シフト上「休み」で確認できる対応候補が見つかりません。別拠点の状況確認が必要です。`;
+     else r=`${area}の欠車対応候補です。${c.slice(0,5).map((x,i)=>`${i+1}番 ${x.name}（${x.reason}）`).join('。')}。実際に対応可能かは本人確認してください。`;
+     saveReport('欠車相談',text);addChat('jarvis',r);speak(r);return;
+   }
+   if(/報告|連絡|共有|記録/.test(t)&&!/(開|見)/.test(t)){
+     document.getElementById('voiceText').value='';addChat('user',text);
+     if(/したい$|したいです$/.test(t)){const r='そのまま内容を送ってください。例：「三島 島田さん 本日休み」「静岡 配送完了」「荷主から時間変更の連絡」';addChat('jarvis',r);speak(r);return}
+     const type=/事故|トラブル/.test(t)?'トラブル':/欠車|休み|欠勤|遅刻/.test(t)?'稼働連絡':/配送|完了/.test(t)?'配送報告':'連絡';
+     saveReport(type,text);const r=`${type}として記録しました。管理表を変更する内容の場合は「シフトも変更して」と続けて指示してください。`;addChat('jarvis',r);speak(r);return;
+   }
+   return oldExecute(raw);
+ };
+ renderReportLog();
+ document.querySelector('.command-core-v487')?.addEventListener('click',()=>go('ai'));
+ document.querySelector('.command-core-v487')?.setAttribute('role','button');
+ document.querySelector('.command-core-v487')?.setAttribute('aria-label','JARVISチャットを開く');
+})();
