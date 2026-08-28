@@ -1,4 +1,4 @@
-const meta={dashboard:['JARVIS V4.9.2','T-EXPRESS FUTURE COMMAND CENTER'],sales:['売上・利益','案件別売上・粗利・欠車損失'],ai:['JARVIS AI','JARVISと業務データについて会話'],texpress:['T_Express','軽貨物事業 × AI事業 オフィシャルサイト'],shiftboard:['シフト / 配送','シフト・出勤状況・活動報告・案件情報を統合管理'],workbook:['配送管理表','JARVIS内で確認・編集・保存・再ダウンロード'],settings:['設定','データ連携・システム状態']};
+const meta={dashboard:['JARVIS V4.9.3','T-EXPRESS FUTURE COMMAND CENTER'],sales:['売上・利益','案件別売上・粗利・欠車損失'],ai:['JARVIS AI','JARVISと業務データについて会話'],texpress:['T_Express','軽貨物事業 × AI事業 オフィシャルサイト'],shiftboard:['シフト / 配送','シフト・出勤状況・活動報告・案件情報を統合管理'],workbook:['配送管理表','JARVIS内で確認・編集・保存・再ダウンロード'],settings:['設定','データ連携・システム状態']};
 const AREA_PROJECTS={静岡:['静岡'],三島:['三島Amazon','三島お酒','秋山製麺','三島便'],一宮:['一宮'],中村区:['中村区'],野洲:['野洲'],富士:['富士'],駿河:['駿河']};
 const DRIVERS=[{"name":"高橋 利旭","area":"静岡","areas":["静岡","三島"]},{"name":"津田 たけし","area":"静岡","areas":["静岡","三島"]},{"name":"中島 由江","area":"静岡","areas":["静岡"]},{"name":"中村","area":"静岡","areas":["静岡"]},{"name":"宇野 文夫","area":"静岡","areas":["静岡"]},{"name":"ヤシマ 聖美","area":"三島","areas":["三島"]},{"name":"髙橋 和也","area":"三島","areas":["三島"]},{"name":"生駒 龍彦","area":"三島","areas":["三島"]},{"name":"日置 将人","area":"三島","areas":["三島"]},{"name":"久松 慧大","area":"三島","areas":["三島"]},{"name":"島田 真一","area":"三島","areas":["三島","一宮"]},{"name":"雨宮 渉","area":"三島","areas":["三島"]},{"name":"持麾 満","area":"三島","areas":["三島"]},{"name":"林 真人","area":"三島","areas":["三島"]},{"name":"福羅 達也","area":"三島","areas":["三島"]},{"name":"福羅 沙織","area":"三島","areas":["三島"]},{"name":"大沼","area":"三島","areas":["三島"]},{"name":"堀井 龍馬","area":"三島","areas":["三島"]},{"name":"増本","area":"一宮","areas":["一宮"]},{"name":"髙橋 悠","area":"一宮","areas":["一宮"]},{"name":"藤原","area":"一宮","areas":["一宮"]},{"name":"京極 雅彦","area":"中村区","areas":["中村区"]},{"name":"川西 亮太","area":"野洲","areas":["野洲"]},{"name":"山本 浩介","area":"野洲","areas":["野洲"]},{"name":"畑中 佑太","area":"富士","areas":["富士"]},{"name":"桑原 貴継","area":"駿河","areas":["駿河"]}];
 
@@ -169,18 +169,18 @@ async function load(){
   populateForm();
   seedAugustShift();
   syncTodayFromAttendance();
-  DATA.version='4.9.2';
-  DATA.shift_version='2026-08-28-v492-direct-edit-shift3-integrated';
-  DATA.actuals_version='2026-08-28-v492-sales-shift-delivery-edit-integrated';
+  DATA.version='4.9.3';
+  DATA.shift_version='2026-08-28-v493-stable-direct-edit';
+  DATA.actuals_version='2026-08-28-v493-stable-sales-shift-delivery-edit';
   localStorage.setItem(STORAGE_KEY,JSON.stringify(DATA));
   initShiftControls();
   render();
   renderDrivers();
   renderShiftMatrix();
-  await initWorkbook();
+  try{ await initWorkbook(); }catch(e){ console.warn('Workbook init skipped:',e); const ws=document.getElementById('workbookStatus'); if(ws)ws.textContent='配送管理表は画面起動後に利用できます'; }
 }
 load().catch(e=>{console.error(e);const el=document.getElementById('pageSub');if(el)el.textContent='DATA LINK ERROR: '+e.message});
-if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
+if('serviceWorker'in navigator){navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())).catch(()=>{});} if('caches'in window){caches.keys().then(ks=>Promise.all(ks.map(k=>caches.delete(k)))).catch(()=>{});}
 
 
 // V4.8.0 AI page bridge
