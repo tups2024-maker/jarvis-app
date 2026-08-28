@@ -1,5 +1,5 @@
 {
-  "version": "4.3",
+  "version": "4.5",
   "month": "2026-08",
   "data_date": "2026-08-28",
   "sales_tax_rate": 0.1,
@@ -100,13 +100,16 @@
     "駿河": 20
   },
   "rate_version": "2026-08-28-sales-and-grossprofit-v1",
-  "shift_version": "2026-08-28-corrected-v3-nakamura-required-1",
+  "shift_version": "2026-08-28-v45-driver-activity-report",
   "actuals_version": "2026-08-28-all-projects-v1",
   "actuals_basis": "2026-08-01_to_2026-08-28",
   "notes": [
     "三島Amazon・三島便は配送管理表の実績を8/28まで集計",
     "秋山製麺は配送管理表の実績を8/28まで集計",
-    "三島お酒・静岡・一宮・中村区・野洲・富士・駿河は8月シフト表を8/28まで集計"
+    "三島お酒・静岡・一宮・中村区・野洲・富士・駿河は8月シフト表を8/28まで集計",
+    "V4.5: 活動報告手入力を稼働確認の基準として追加",
+    "ドライバー別月間稼働日数は8/27までの既存実績＋JARVIS活動報告で表示"
   ],
-  "ui_version": "2026-08-28-edit-save-export-v1"
+  "ui_version": "2026-08-28-edit-save-export-v1",
+  "driver_baseline": "2026-08-01_to_2026-08-27"
 }
