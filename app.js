@@ -1,4 +1,4 @@
-const meta={dashboard:['JARVIS V4.9.5','T-EXPRESS FUTURE COMMAND CENTER'],sales:['売上・利益','案件別売上・粗利・欠車損失'],ai:['JARVIS AI','JARVISと業務データについて会話'],texpress:['T_Express','軽貨物事業 × AI事業 オフィシャルサイト'],shiftboard:['シフト / 配送','シフト・出勤状況・活動報告・案件情報を統合管理'],workbook:['配送管理表','JARVIS内で確認・編集・保存・再ダウンロード'],settings:['設定','データ連携・システム状態']};
+const meta={dashboard:['JARVIS V4.9.6','T-EXPRESS FUTURE COMMAND CENTER'],sales:['売上・利益','案件別売上・粗利・欠車損失'],ai:['JARVIS AI','JARVISと業務データについて会話'],texpress:['T_Express','軽貨物事業 × AI事業 オフィシャルサイト'],shiftboard:['シフト / 配送','シフト・出勤状況・活動報告・案件情報を統合管理'],workbook:['配送管理表','JARVIS内で確認・編集・保存・再ダウンロード'],settings:['設定','データ連携・システム状態']};
 const AREA_PROJECTS={静岡:['静岡'],三島:['三島Amazon','三島お酒','秋山製麺','三島便'],一宮:['一宮'],中村区:['中村区'],野洲:['野洲'],富士:['富士'],駿河:['駿河']};
 const DRIVERS=[{"name":"高橋 利旭","area":"静岡","areas":["静岡","三島"]},{"name":"津田 たけし","area":"静岡","areas":["静岡","三島"]},{"name":"中島 由江","area":"静岡","areas":["静岡"]},{"name":"中村","area":"静岡","areas":["静岡"]},{"name":"宇野 文夫","area":"静岡","areas":["静岡"]},{"name":"ヤシマ 聖美","area":"三島","areas":["三島"]},{"name":"髙橋 和也","area":"三島","areas":["三島"]},{"name":"生駒 龍彦","area":"三島","areas":["三島"]},{"name":"日置 将人","area":"三島","areas":["三島"]},{"name":"久松 慧大","area":"三島","areas":["三島"]},{"name":"島田 真一","area":"三島","areas":["三島","一宮"]},{"name":"雨宮 渉","area":"三島","areas":["三島"]},{"name":"持麾 満","area":"三島","areas":["三島"]},{"name":"林 真人","area":"三島","areas":["三島"]},{"name":"福羅 達也","area":"三島","areas":["三島"]},{"name":"福羅 沙織","area":"三島","areas":["三島"]},{"name":"大沼","area":"三島","areas":["三島"]},{"name":"堀井 龍馬","area":"三島","areas":["三島"]},{"name":"増本","area":"一宮","areas":["一宮"]},{"name":"髙橋 悠","area":"一宮","areas":["一宮"]},{"name":"藤原","area":"一宮","areas":["一宮"]},{"name":"京極 雅彦","area":"中村区","areas":["中村区"]},{"name":"川西 亮太","area":"野洲","areas":["野洲"]},{"name":"山本 浩介","area":"野洲","areas":["野洲"]},{"name":"畑中 佑太","area":"富士","areas":["富士"]},{"name":"桑原 貴継","area":"駿河","areas":["駿河"]}];
 
@@ -112,32 +112,47 @@ function initShiftControls(){
 }
 
 // ===== V4.6 XLSX WORKSPACE / IndexedDB =====
-let WB=null,WB_EDIT=false,WB_NAME='JARVIS_配送管理表.xlsx',WB_SELECTED_COL=null;
+let WB=null,WB_EDIT=false,WB_NAME='JARVIS_配送管理表.xlsx',WB_SELECTED_COL=null,WB_SELECTED_ROW=null,WB_SELECTED_CELL=null,WB_EDIT_TARGET=null;
 let SHIFT_EDIT=false;
 function idb(){return new Promise((resolve,reject)=>{const r=indexedDB.open('jarvis-v47-db',1);r.onupgradeneeded=()=>r.result.createObjectStore('files');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
 async function saveWorkbookBytes(bytes,name){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').put({bytes:Array.from(new Uint8Array(bytes)),name,ts:Date.now()},'deliveryWorkbookV478');tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
 async function loadWorkbookBytes(){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction('files','readonly');const q=tx.objectStore('files').get('deliveryWorkbookV478');q.onsuccess=()=>res(q.result||null);q.onerror=()=>rej(q.error)})}
 function workbookAOA(){if(!WB)return [];const s=$('sheetSelect').value;return XLSX.utils.sheet_to_json(WB.Sheets[s],{header:1,defval:''})}
+function openWorkbookCellEditor(r,c){
+ if(!WB||!WB_EDIT)return;
+ const name=$('sheetSelect').value||WB.SheetNames[0],a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});
+ while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');
+ WB_EDIT_TARGET={name,r,c};WB_SELECTED_ROW=r;WB_SELECTED_COL=c;WB_SELECTED_CELL=`${r}:${c}`;
+ const title=r===2?'項目名を編集':'セルを編集';
+ $('cellEditTitle').textContent=title;$('cellEditPos').textContent=`行 ${r+1} / 列 ${c+1}`;$('cellEditInput').value=String(a[r][c]??'');
+ $('cellEditModal').classList.add('open');$('cellEditModal').setAttribute('aria-hidden','false');
+ setTimeout(()=>{$('cellEditInput').focus();$('cellEditInput').select()},80);
+ renderWorkbook();
+}
+function closeWorkbookCellEditor(){
+ $('cellEditModal')?.classList.remove('open');$('cellEditModal')?.setAttribute('aria-hidden','true');WB_EDIT_TARGET=null;
+}
+function applyWorkbookCellEdit(value){
+ if(!WB||!WB_EDIT_TARGET)return;
+ const {name,r,c}=WB_EDIT_TARGET,a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});
+ while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');a[r][c]=value;
+ WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);closeWorkbookCellEditor();renderWorkbook();
+ $('workbookStatus').textContent=`✓ 行${r+1}・列${c+1}を変更しました。「JARVISに保存」で確定してください。`;
+}
 function renderWorkbook(){
  if(!$('workbookTable'))return;
  if(!WB){$('workbookTable').innerHTML='<tbody><tr><td>Excelファイルを読み込んでください。</td></tr></tbody>';return}
  const name=$('sheetSelect').value||WB.SheetNames[0],aoa=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});
- const maxCols=Math.max(1,...aoa.map(r=>r.length));
- let h='<tbody>';
- aoa.slice(0,300).forEach((row,r)=>{h+='<tr>';for(let c=0;c<maxCols;c++){const v=row[c]??'',sel=WB_SELECTED_COL===c?' selected-col':'';h+=`<td class="${r===2?'workbook-header-cell ':''}${sel}" data-r="${r}" data-c="${c}" ${WB_EDIT?'contenteditable="true"':''}>${esc(v)}</td>`}h+='</tr>'});
- h+='</tbody>';$('workbookTable').innerHTML=h;
- document.querySelectorAll('#workbookTable td').forEach(td=>td.addEventListener('click',e=>{
-   e.preventDefault();
-   const r=+td.dataset.r,c=+td.dataset.c;WB_SELECTED_COL=c;
-   if(WB_EDIT){
-     const a=workbookAOA();while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');
-     const current=String(a[r][c]??'');
-     const label=r===2?'項目名':'セル';
-     const v=prompt(`${label}を編集`,current);
-     if(v!==null){a[r][c]=v;WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);$('workbookStatus').textContent=`✓ ${label}を変更しました。「JARVISに保存」で確定してください。`;}
-   }
-   renderWorkbook();
- }));
+ const maxCols=Math.max(1,...aoa.map(r=>r.length));let h='<tbody>';
+ aoa.slice(0,500).forEach((row,r)=>{h+=`<tr class="${WB_SELECTED_ROW===r?'selected-row':''}">`;for(let c=0;c<maxCols;c++){
+   const v=row[c]??'',selCol=WB_SELECTED_COL===c?' selected-col':'',selCell=WB_SELECTED_CELL===`${r}:${c}`?' selected-cell':'';
+   h+=`<td class="${r===2?'workbook-header-cell ':''}${selCol}${selCell}" data-r="${r}" data-c="${c}" tabindex="0">${esc(v)}</td>`
+ }h+='</tr>'});h+='</tbody>';$('workbookTable').innerHTML=h;
+ document.querySelectorAll('#workbookTable td').forEach(td=>{
+   const activate=e=>{e.preventDefault();const r=+td.dataset.r,c=+td.dataset.c;WB_SELECTED_ROW=r;WB_SELECTED_COL=c;WB_SELECTED_CELL=`${r}:${c}`;if(WB_EDIT)openWorkbookCellEditor(r,c);else renderWorkbook()};
+   td.addEventListener('click',activate);
+   td.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){activate(e)}});
+ });
 }
 function workbookSheetData(){if(!WB)return null;const name=$('sheetSelect').value||WB.SheetNames[0];return {name,a:XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''})}}
 function setWorkbookAOA(name,a){WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);renderWorkbook()}
@@ -164,14 +179,20 @@ async function initWorkbook(){
   WB_NAME='2026年8月_配送管理表_既存形式_JARVIS反映.xlsx';setupSheetSelect();$('workbookStatus').textContent='✓ ✓ 旧配送管理表と同じ9列。セル編集→JARVISに保存で手入力を保持します';renderWorkbook()
  }}catch(e){console.warn(e)}}
  $('xlsxInput').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f||!window.XLSX)return;const buf=await f.arrayBuffer();WB=XLSX.read(buf,{type:'array'});WB_NAME=f.name;setupSheetSelect();await saveWorkbookBytes(buf,f.name);$('workbookStatus').textContent=`✓ ${f.name} をJARVISに保存しました`;renderWorkbook()});
- $('sheetSelect').addEventListener('change',()=>{WB_SELECTED_COL=null;renderWorkbook()});
- $('workbookEditBtn').addEventListener('click',()=>{WB_EDIT=!WB_EDIT;$('workbookEditBtn').textContent=WB_EDIT?'✓ セル・項目名編集 OFF':'✎ セル・項目名編集 ON';renderWorkbook();$('workbookStatus').textContent=WB_EDIT?'編集モード：iPhoneではセルをタップすると入力ボックスが開きます。項目名（DR・業務名など）も変更できます。':'編集モードを終了しました。';});
+ $('sheetSelect').addEventListener('change',()=>{WB_SELECTED_COL=null;WB_SELECTED_ROW=null;WB_SELECTED_CELL=null;renderWorkbook()});
+ $('workbookEditBtn').addEventListener('click',()=>{WB_EDIT=!WB_EDIT;$('workbookEditBtn').textContent=WB_EDIT?'✓ 全セル編集 OFF':'✎ 全セル編集 ON';if(!WB_EDIT)closeWorkbookCellEditor();renderWorkbook();$('workbookStatus').textContent=WB_EDIT?'編集モードON：DR名・業務名・金額・備考など、どのセルでもタップして変更できます。':'編集モードを終了しました。';});
 
  $('workbookAddColBtn')?.addEventListener('click',()=>{if(!WB)return;const x=workbookSheetData();if(!x)return;const max=Math.max(0,...x.a.map(r=>r.length));const pos=WB_SELECTED_COL==null?max:WB_SELECTED_COL+1;x.a.forEach((r,i)=>{while(r.length<pos)r.push('');r.splice(pos,0,i===2?'新しい項目':'')});WB_SELECTED_COL=pos;setWorkbookAOA(x.name,x.a);$('workbookStatus').textContent='＋ 列を追加しました。3行目の項目名を直接入力して保存してください。';});
  $('workbookDeleteColBtn')?.addEventListener('click',()=>{if(!WB||WB_SELECTED_COL==null){$('workbookStatus').textContent='削除したい列を先にタップしてください。';return}const x=workbookSheetData();x.a.forEach(r=>{if(r.length>WB_SELECTED_COL)r.splice(WB_SELECTED_COL,1)});WB_SELECTED_COL=Math.max(0,WB_SELECTED_COL-1);setWorkbookAOA(x.name,x.a);$('workbookStatus').textContent='－ 選択した列を削除しました。保存すると確定します。';});
  $('workbookMoveColLeftBtn')?.addEventListener('click',()=>{if(!WB||WB_SELECTED_COL==null||WB_SELECTED_COL<=0){$('workbookStatus').textContent='左へ移動する列を選択してください。';return}const x=workbookSheetData(),c=WB_SELECTED_COL;x.a.forEach(r=>{while(r.length<=c)r.push('');[r[c-1],r[c]]=[r[c],r[c-1]]});WB_SELECTED_COL=c-1;setWorkbookAOA(x.name,x.a);$('workbookStatus').textContent='← 列を左へ移動しました。';});
  $('workbookMoveColRightBtn')?.addEventListener('click',()=>{if(!WB||WB_SELECTED_COL==null){$('workbookStatus').textContent='右へ移動する列を選択してください。';return}const x=workbookSheetData(),c=WB_SELECTED_COL;x.a.forEach(r=>{while(r.length<=c+1)r.push('');[r[c],r[c+1]]=[r[c+1],r[c]]});WB_SELECTED_COL=c+1;setWorkbookAOA(x.name,x.a);$('workbookStatus').textContent='列を右へ移動しました →';});
  $('workbookAddRowBtn')?.addEventListener('click',()=>{if(!WB)return;const name=$('sheetSelect').value||WB.SheetNames[0],a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});a.push(['','','',0,'',0,'',1,'']);WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);WB_EDIT=true;$('workbookEditBtn').textContent='✓ セル編集 OFF';renderWorkbook();$('workbookStatus').textContent='＋ 新しい入力行を追加しました。入力後「JARVISに保存」を押してください。'});
+ $('workbookDeleteRowBtn')?.addEventListener('click',()=>{if(!WB||WB_SELECTED_ROW==null){$('workbookStatus').textContent='削除したい行のセルを先にタップしてください。';return}if(WB_SELECTED_ROW<=2){$('workbookStatus').textContent='上部の情報・項目行は誤削除防止のため行削除できません。セル内容は編集できます。';return}const x=workbookSheetData(),r=WB_SELECTED_ROW;x.a.splice(r,1);WB_SELECTED_ROW=Math.min(r,x.a.length-1);WB_SELECTED_CELL=null;setWorkbookAOA(x.name,x.a);$('workbookStatus').textContent='－ 選択した行を削除しました。保存すると確定します。';});
+ $('cellEditSave')?.addEventListener('click',()=>applyWorkbookCellEdit($('cellEditInput').value));
+ $('cellEditClear')?.addEventListener('click',()=>applyWorkbookCellEdit(''));
+ $('cellEditCancel')?.addEventListener('click',closeWorkbookCellEditor);
+ $('cellEditClose')?.addEventListener('click',closeWorkbookCellEditor);
+ $('cellEditModal')?.addEventListener('click',e=>{if(e.target===$('cellEditModal'))closeWorkbookCellEditor()});
  $('workbookSaveBtn').addEventListener('click',async()=>{if(!WB)return;$('workbookStatus').textContent='保存するExcelがありません';const buf=XLSX.write(WB,{bookType:'xlsx',type:'array'});await saveWorkbookBytes(buf,WB_NAME);$('workbookStatus').textContent=`✓ 編集内容をJARVISに保存：${new Date().toLocaleTimeString('ja-JP')}`});
  $('workbookDownloadBtn').addEventListener('click',()=>{if(!WB)return;$('workbookStatus').textContent='ダウンロードするExcelがありません';XLSX.writeFile(WB,WB_NAME.replace(/\.xlsx?$/i,'')+'_JARVIS編集版.xlsx');$('workbookStatus').textContent='⬇ 編集可能なExcelをダウンロードしました'});
 }
