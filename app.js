@@ -1,4 +1,4 @@
-const meta={dashboard:['JARVIS V4.5','音声・チャット・活動報告・経営数値を統合'],delivery:['配送・シフト','エリア別の出勤者・案件・活動報告を管理'],drivers:['ドライバー稼働','各ドライバーの今月稼働日数を確認'],absence:['欠車対応','欠車・不足案件の確認'],sales:['売上・利益','案件別売上・粗利・欠車損失'],locations:['案件別実績','案件単位の稼働状況'],ai:['AI分析','JARVISによる経営判断'],settings:['設定','データ連携・システム状態']};
+const meta={dashboard:['JARVIS V4.5','音声・チャット・活動報告・経営数値を統合'],delivery:['配送・シフト','エリア別の出勤者・案件・活動報告を管理'],drivers:['ドライバー稼働','各ドライバーの今月稼働日数を確認'],absence:['欠車対応','欠車・不足案件の確認'],sales:['売上・利益','案件別売上・粗利・欠車損失'],locations:['案件別実績','案件単位の稼働状況'],ai:['AI分析','JARVISによる経営判断'],shiftboard:['シフト表','活動報告を日付×ドライバーで確認・編集'],workbook:['配送管理表','ExcelをJARVIS内で確認・編集・保存・再ダウンロード'],settings:['設定','データ連携・システム状態']};
 const AREA_PROJECTS={静岡:['静岡'],三島:['三島Amazon','三島お酒','秋山製麺','三島便'],一宮:['一宮'],中村区:['中村区'],野洲:['野洲'],富士:['富士'],駿河:['駿河']};
 const DRIVERS=[
 {name:'高橋 利旭',area:'静岡',base:10},{name:'津田',area:'静岡',base:5},{name:'中島 由江',area:'静岡',base:18},{name:'芹澤 由承',area:'静岡',base:0},{name:'遠藤 栞音',area:'静岡',base:0},{name:'中村',area:'静岡',base:8},{name:'宇野 文夫',area:'静岡',base:16},{name:'安曇 知晃',area:'静岡',base:0},
@@ -6,9 +6,9 @@ const DRIVERS=[
 {name:'小田',area:'一宮',base:0},{name:'増本',area:'一宮',base:14},{name:'髙橋 悠',area:'一宮',base:11},{name:'藤原',area:'一宮',base:18},{name:'島田',area:'一宮',base:1},{name:'京極 雅彦',area:'中村区',base:8},
 {name:'川西 亮太',area:'野洲',base:20},{name:'山本 浩介',area:'野洲',base:8},{name:'須堯 真澄',area:'野洲',base:0},{name:'畑中 佑太',area:'富士',base:19},{name:'桑原 貴継',area:'駿河',base:20}
 ];
-const STORAGE_KEY='jarvis-v45-live-data',ATT_KEY='jarvis-v45-attendance';let DATA=null,editing=false,ATT=[];
+const STORAGE_KEY='jarvis-v46-live-data',ATT_KEY='jarvis-v46-attendance';let DATA=null,editing=false,ATT=[];
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])),yen=n=>'¥'+Math.round(Number(n)||0).toLocaleString('ja-JP');
-function go(page){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));$('page-'+page)?.classList.add('active');document.querySelector(`[data-page="${page}"]`)?.classList.add('active');$('pageTitle').textContent=meta[page][0];$('pageSub').textContent=meta[page][1];closeMenu();if(page==='drivers')renderDrivers();if(page==='delivery')renderAreaDrivers()}
+function go(page){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));$('page-'+page)?.classList.add('active');document.querySelector(`[data-page="${page}"]`)?.classList.add('active');$('pageTitle').textContent=meta[page][0];$('pageSub').textContent=meta[page][1];closeMenu();if(page==='drivers')renderDrivers();if(page==='delivery')renderAreaDrivers();if(page==='shiftboard')renderShiftMatrix();if(page==='workbook')renderWorkbook()}
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));const menu=$('sideMenu'),overlay=$('overlay');function openMenu(){menu?.classList.add('open');overlay?.classList.add('show')}function closeMenu(){menu?.classList.remove('open');overlay?.classList.remove('show')}$('openMenu')?.addEventListener('click',openMenu);$('closeMenu')?.addEventListener('click',closeMenu);overlay?.addEventListener('click',closeMenu);
 function today(){return DATA?.data_date||new Date().toISOString().slice(0,10)}
 function attendanceFor(date=today()){return ATT.filter(a=>a.date===date)}
@@ -30,6 +30,82 @@ const status=t=>{if($('saveStatus'))$('saveStatus').textContent=t};$('editBtn')?
 $('downloadBtn')?.addEventListener('click',()=>{const rows=[['日付','エリア','ドライバー','案件','状態','勤務内容'],...ATT.map(a=>[a.date,a.area,a.driver,a.project,a.status,a.work]),[],['案件','必要台数','稼働台数','欠車','月実績','売上単価(税別)','DR支払(税込)']];DATA.projects.forEach(p=>rows.push([p.name,p.required,p.active,p.absence,DATA.month_actuals[p.name]||0,p.unit_price,p.driver_pay]));const csv='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=`JARVIS_配送管理_活動報告_${today()}.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);status('⬇ 活動報告＋配送管理をダウンロードしました')});
 function addChat(role,text){const div=document.createElement('div');div.className='msg '+role;div.innerHTML=`<b>${role==='jarvis'?'JARVIS':'YOU'}</b><p>${esc(text)}</p>`;$('chatLog').appendChild(div);$('chatLog').scrollTop=$('chatLog').scrollHeight}
 function findProject(text){const n=text.replace(/\s/g,'').toLowerCase();return DATA.projects.find(p=>n.includes(p.name.replace(/\s/g,'').toLowerCase()))}function numberFrom(text){const m=text.match(/(\d+(?:\.\d+)?)/);return m?Number(m[1]):null}function speak(text){try{if('speechSynthesis'in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';speechSynthesis.speak(u)}}catch{}}
-function execute(raw){const text=(raw||'').trim();if(!text)return;$('voiceText').value='';addChat('user',text);const t=text.replace(/\s/g,''),p=findProject(text),n=numberFrom(text);let r='';if(/配送|シフト/.test(t)&&/開|見|管理/.test(t)){go('delivery');r='配送・シフト管理を開きました。'}else if(/ドライバー|稼働日数|何日/.test(t)&&/開|見/.test(t)){go('drivers');r='ドライバー稼働画面を開きました。'}else if(/売上|利益|粗利/.test(t)&&/開|画面/.test(t)){go('sales');r='売上・利益画面を開きました。'}else if(/不足/.test(t)){const xs=DATA.projects.filter(x=>+x.active<+x.required);r=xs.length?`不足は${xs.length}案件。${xs.map(x=>`${x.name} ${+x.required-+x.active}台`).join('、')}です。`:'不足案件はありません。'}else if(/売上/.test(t)){const s=DATA.projects.reduce((z,x)=>z+(DATA.month_actuals[x.name]||0)*(+x.unit_price||0),0);r=`8月累計売上は${Math.round(s).toLocaleString()}円です。`}else if(/粗利|利益/.test(t)){const tax=1+(DATA.sales_tax_rate||0),g=DATA.projects.reduce((z,x)=>{const a=DATA.month_actuals[x.name]||0;return z+a*(+x.unit_price||0)*tax-a*(+x.driver_pay||0)},0);r=`8月粗利は${Math.round(g).toLocaleString()}円です。`}else if(/誰.*出勤|出勤.*誰/.test(t)){const area=Object.keys(AREA_PROJECTS).find(a=>t.includes(a));if(area){const xs=areaToday(area);r=xs.length?`${area}の活動報告上の出勤は、${xs.map(x=>x.driver+(x.project?'（'+x.project+'）':'')).join('、')}です。`:`${area}は今日の活動報告がまだ未入力です。` }else r='エリア名も一緒に言ってください。例：静岡は今日誰が出勤？'}else if(/何日|稼働日数/.test(t)){const d=DRIVERS.find(x=>t.includes(x.name.replace(/\s/g,''))||t.includes(x.name.split(' ')[0]));r=d?`${d.name}の今月稼働は現在${driverMonthDays(d)}日です。`:'ドライバー名を一緒に入力してください。'}else if(p&&n!=null&&/(稼働|台にして|台へ)/.test(t)){p.active=Math.max(0,n);render();r=`${p.name}の稼働を${n}台に変更しました。`}else if(/活動報告/.test(t)&&/開|入力/.test(t)){go('delivery');setTimeout(()=>$('attDriver')?.focus(),100);r='活動報告入力を開きました。'}else if(/保存/.test(t)){localStorage.setItem(STORAGE_KEY,JSON.stringify(DATA));localStorage.setItem(ATT_KEY,JSON.stringify(ATT));r='保存しました。'}else{r='このV4.5ではJARVIS内の業務データ・画面操作には回答できます。一般的な質問にも何でも答える機能は、秘密鍵をブラウザに置かない安全なAIバックエンド接続を追加すると完成します。'}addChat('jarvis',r);speak(r)}
+function execute(raw){const text=(raw||'').trim();if(!text)return;$('voiceText').value='';addChat('user',text);const t=text.replace(/\s/g,''),p=findProject(text),n=numberFrom(text);let r='';if(/配送|シフト/.test(t)&&/開|見|管理/.test(t)){go('delivery');r='配送・シフト管理を開きました。'}else if(/ドライバー|稼働日数|何日/.test(t)&&/開|見/.test(t)){go('drivers');r='ドライバー稼働画面を開きました。'}else if(/売上|利益|粗利/.test(t)&&/開|画面/.test(t)){go('sales');r='売上・利益画面を開きました。'}else if(/不足/.test(t)){const xs=DATA.projects.filter(x=>+x.active<+x.required);r=xs.length?`不足は${xs.length}案件。${xs.map(x=>`${x.name} ${+x.required-+x.active}台`).join('、')}です。`:'不足案件はありません。'}else if(/売上/.test(t)){const s=DATA.projects.reduce((z,x)=>z+(DATA.month_actuals[x.name]||0)*(+x.unit_price||0),0);r=`8月累計売上は${Math.round(s).toLocaleString()}円です。`}else if(/粗利|利益/.test(t)){const tax=1+(DATA.sales_tax_rate||0),g=DATA.projects.reduce((z,x)=>{const a=DATA.month_actuals[x.name]||0;return z+a*(+x.unit_price||0)*tax-a*(+x.driver_pay||0)},0);r=`8月粗利は${Math.round(g).toLocaleString()}円です。`}else if(/誰.*出勤|出勤.*誰/.test(t)){const area=Object.keys(AREA_PROJECTS).find(a=>t.includes(a));if(area){const xs=areaToday(area);r=xs.length?`${area}の活動報告上の出勤は、${xs.map(x=>x.driver+(x.project?'（'+x.project+'）':'')).join('、')}です。`:`${area}は今日の活動報告がまだ未入力です。` }else r='エリア名も一緒に言ってください。例：静岡は今日誰が出勤？'}else if(/何日|稼働日数/.test(t)){const d=DRIVERS.find(x=>t.includes(x.name.replace(/\s/g,''))||t.includes(x.name.split(' ')[0]));r=d?`${d.name}の今月稼働は現在${driverMonthDays(d)}日です。`:'ドライバー名を一緒に入力してください。'}else if(p&&n!=null&&/(稼働|台にして|台へ)/.test(t)){p.active=Math.max(0,n);render();r=`${p.name}の稼働を${n}台に変更しました。`}else if(/今日.*活動報告|活動報告.*今日|今日の活動報告/.test(t)){const xs=attendanceFor();r=xs.length?`今日の活動報告は${xs.length}件です。${Object.keys(AREA_PROJECTS).map(a=>{const z=xs.filter(x=>x.area===a&&x.status==='出勤');return z.length?`${a}：${z.map(x=>x.driver).join('、')}`:''}).filter(Boolean).join('。')}`:'今日の活動報告はまだ登録されていません。';}else if(/シフト表/.test(t)){go('shiftboard');r='シフト表を開きました。'}else if(/配送管理表|Excel/.test(t)&&/開|見|確認/.test(t)){go('workbook');r='配送管理表Excelを開きました。'}else if(/活動報告/.test(t)&&/開|入力/.test(t)){go('delivery');setTimeout(()=>$('attDriver')?.focus(),100);r='活動報告入力を開きました。'}else if(/保存/.test(t)){localStorage.setItem(STORAGE_KEY,JSON.stringify(DATA));localStorage.setItem(ATT_KEY,JSON.stringify(ATT));r='保存しました。'}else{r='このV4.6ではJARVIS内の業務データ・画面操作には回答できます。一般的な質問にも何でも答える機能は、秘密鍵をブラウザに置かない安全なAIバックエンド接続を追加すると完成します。'}addChat('jarvis',r);speak(r)}
 $('voiceSend')?.addEventListener('click',()=>execute($('voiceText').value));$('voiceText')?.addEventListener('keydown',e=>{if(e.key==='Enter')execute($('voiceText').value)});document.querySelectorAll('[data-voicecmd]').forEach(b=>b.addEventListener('click',()=>execute(b.dataset.voicecmd)));const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(SR){const rec=new SR();rec.lang='ja-JP';rec.interimResults=false;rec.onstart=()=>{$('voiceBtn').classList.add('listening');$('voiceStatus').textContent='JARVIS LISTENING...'};rec.onend=()=>{$('voiceBtn').classList.remove('listening');$('voiceStatus').textContent='マイクを押して話せます。'};rec.onresult=e=>execute(e.results[0][0].transcript);rec.onerror=()=>addChat('jarvis','音声認識を開始できませんでした。マイク許可を確認してください。');$('voiceBtn')?.addEventListener('click',()=>{try{rec.start()}catch{}})}else $('voiceBtn')?.addEventListener('click',()=>addChat('jarvis','このブラウザは音声認識非対応です。テキスト入力は使えます。'));
-async function load(){const s=localStorage.getItem(STORAGE_KEY),a=localStorage.getItem(ATT_KEY);if(s)DATA=JSON.parse(s);else{const r=await fetch('./jarvis-v4-data.json?ts='+Date.now(),{cache:'no-store'});DATA=await r.json()}ATT=a?JSON.parse(a):[];populateForm();render();renderDrivers()}load().catch(console.error);if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
+
+// ===== V4.6 SHIFT MATRIX =====
+function daysInMonth(ym){const [y,m]=ym.split('-').map(Number);return new Date(y,m,0).getDate()}
+function shiftAreaDrivers(area){return DRIVERS.filter(d=>area==='all'||d.area===area)}
+function getShiftRec(date,d){return ATT.find(a=>a.date===date&&a.area===d.area&&a.driver===d.name)}
+function cycleShift(date,d){
+  const states=['出勤','休み','欠車',''];
+  let rec=getShiftRec(date,d),cur=rec?.status||'',next=states[(states.indexOf(cur)+1)%states.length];
+  if(!next){ATT=ATT.filter(a=>!(a.date===date&&a.area===d.area&&a.driver===d.name));}
+  else{
+    const project=rec?.project||AREA_PROJECTS[d.area]?.[0]||'';
+    const nr={date,area:d.area,driver:d.name,project,status:next,work:rec?.work||''};
+    const idx=ATT.findIndex(a=>a.date===date&&a.area===d.area&&a.driver===d.name&&a.project===project);
+    if(idx>=0)ATT[idx]=nr; else ATT.push(nr);
+  }
+  localStorage.setItem(ATT_KEY,JSON.stringify(ATT));renderShiftMatrix();renderDrivers();renderAreaDrivers();
+}
+function renderShiftMatrix(){
+  if(!$('shiftMatrix'))return;
+  const ym=$('shiftMonth')?.value||'2026-08',area=$('shiftArea')?.value||'all',n=daysInMonth(ym),drivers=shiftAreaDrivers(area);
+  let html='<div class="shift-row shift-head"><div class="sticky-name">ドライバー</div>';
+  for(let day=1;day<=n;day++)html+=`<div>${day}</div>`;
+  html+='</div>';
+  drivers.forEach(d=>{
+    html+=`<div class="shift-row"><div class="sticky-name"><b>${esc(d.name)}</b><small>${d.area}</small></div>`;
+    for(let day=1;day<=n;day++){
+      const date=`${ym}-${String(day).padStart(2,'0')}`,r=getShiftRec(date,d),s=r?.status||'';
+      const cls=s==='出勤'?'shift-on':s==='休み'?'shift-off':s==='欠車'?'shift-bad':'';
+      html+=`<button type="button" class="shift-cell ${cls}" data-date="${date}" data-driver="${esc(d.name)}" data-area="${d.area}">${s==='出勤'?'○':s==='休み'?'休':s==='欠車'?'×':'・'}</button>`;
+    }
+    html+='</div>';
+  });
+  $('shiftMatrix').innerHTML=html;
+  document.querySelectorAll('.shift-cell').forEach(b=>b.addEventListener('click',()=>{const d=DRIVERS.find(x=>x.name===b.dataset.driver&&x.area===b.dataset.area);if(d)cycleShift(b.dataset.date,d)}));
+}
+function initShiftControls(){
+ if(!$('shiftArea'))return;
+ $('shiftArea').innerHTML='<option value="all">全エリア</option>'+Object.keys(AREA_PROJECTS).map(a=>`<option>${a}</option>`).join('');
+ $('shiftArea').addEventListener('change',renderShiftMatrix);$('shiftMonth').addEventListener('change',renderShiftMatrix);
+ $('shiftSaveBtn').addEventListener('click',()=>{localStorage.setItem(ATT_KEY,JSON.stringify(ATT));$('attendanceStatus')&&($('attendanceStatus').textContent='✓ シフトを保存しました');render()});
+ $('shiftExportBtn').addEventListener('click',()=>{
+   const ym=$('shiftMonth').value,area=$('shiftArea').value,ds=shiftAreaDrivers(area),n=daysInMonth(ym);
+   const rows=[['ドライバー','エリア',...Array.from({length:n},(_,i)=>i+1)]];
+   ds.forEach(d=>rows.push([d.name,d.area,...Array.from({length:n},(_,i)=>{const date=`${ym}-${String(i+1).padStart(2,'0')}`,r=getShiftRec(date,d);return r?.status||''})]));
+   const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\r\n');
+   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=`JARVIS_シフト_${ym}.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+ });
+}
+
+// ===== V4.6 XLSX WORKSPACE / IndexedDB =====
+let WB=null,WB_EDIT=false,WB_NAME='JARVIS_配送管理表.xlsx';
+function idb(){return new Promise((resolve,reject)=>{const r=indexedDB.open('jarvis-v46-db',1);r.onupgradeneeded=()=>r.result.createObjectStore('files');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
+async function saveWorkbookBytes(bytes,name){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').put({bytes:Array.from(new Uint8Array(bytes)),name,ts:Date.now()},'deliveryWorkbook');tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
+async function loadWorkbookBytes(){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction('files','readonly');const q=tx.objectStore('files').get('deliveryWorkbook');q.onsuccess=()=>res(q.result||null);q.onerror=()=>rej(q.error)})}
+function workbookAOA(){if(!WB)return [];const s=$('sheetSelect').value;return XLSX.utils.sheet_to_json(WB.Sheets[s],{header:1,defval:''})}
+function renderWorkbook(){
+ if(!$('workbookTable'))return;
+ if(!WB){$('workbookTable').innerHTML='<tbody><tr><td>Excelファイルを読み込んでください。</td></tr></tbody>';return}
+ const name=$('sheetSelect').value||WB.SheetNames[0],aoa=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});
+ let h='<tbody>';
+ aoa.slice(0,300).forEach((row,r)=>{h+='<tr>';for(let c=0;c<Math.max(row.length,1);c++){const v=row[c]??'';h+=`<td ${WB_EDIT?`contenteditable="true" data-r="${r}" data-c="${c}"`:''}>${esc(v)}</td>`}h+='</tr>'});
+ h+='</tbody>';$('workbookTable').innerHTML=h;
+ if(WB_EDIT)document.querySelectorAll('#workbookTable td[contenteditable]').forEach(td=>td.addEventListener('blur',()=>{const a=workbookAOA();while(a.length<=+td.dataset.r)a.push([]);a[+td.dataset.r][+td.dataset.c]=td.textContent;WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a)}));
+}
+async function initWorkbook(){
+ if(!$('xlsxInput'))return;
+ const saved=await loadWorkbookBytes().catch(()=>null);
+ if(saved&&window.XLSX){const u8=new Uint8Array(saved.bytes);WB=XLSX.read(u8,{type:'array'});WB_NAME=saved.name||WB_NAME;setupSheetSelect();$('workbookStatus').textContent=`✓ 保存済み配送管理表を読込：${WB_NAME}`;renderWorkbook()}
+ $('xlsxInput').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f||!window.XLSX)return;const buf=await f.arrayBuffer();WB=XLSX.read(buf,{type:'array'});WB_NAME=f.name;setupSheetSelect();await saveWorkbookBytes(buf,f.name);$('workbookStatus').textContent=`✓ ${f.name} をJARVISに保存しました`;renderWorkbook()});
+ $('sheetSelect').addEventListener('change',renderWorkbook);
+ $('workbookEditBtn').addEventListener('click',()=>{WB_EDIT=!WB_EDIT;$('workbookEditBtn').textContent=WB_EDIT?'✓ セル編集 OFF':'✎ セル編集 ON';renderWorkbook()});
+ $('workbookSaveBtn').addEventListener('click',async()=>{if(!WB)return;$('workbookStatus').textContent='保存するExcelがありません';const buf=XLSX.write(WB,{bookType:'xlsx',type:'array'});await saveWorkbookBytes(buf,WB_NAME);$('workbookStatus').textContent=`✓ 編集内容をJARVISに保存：${new Date().toLocaleTimeString('ja-JP')}`});
+ $('workbookDownloadBtn').addEventListener('click',()=>{if(!WB)return;$('workbookStatus').textContent='ダウンロードするExcelがありません';XLSX.writeFile(WB,WB_NAME.replace(/\.xlsx?$/i,'')+'_JARVIS編集版.xlsx');$('workbookStatus').textContent='⬇ 編集可能なExcelをダウンロードしました'});
+}
+function setupSheetSelect(){if(!WB)return;$('sheetSelect').innerHTML=WB.SheetNames.map(n=>`<option>${esc(n)}</option>`).join('');}
+
+async function load(){const s=localStorage.getItem(STORAGE_KEY),a=localStorage.getItem(ATT_KEY);if(s)DATA=JSON.parse(s);else{const r=await fetch('./jarvis-v4-data.json?ts='+Date.now(),{cache:'no-store'});DATA=await r.json()}ATT=a?JSON.parse(a):[];populateForm();initShiftControls();render();renderDrivers();renderShiftMatrix();await initWorkbook()}load().catch(console.error);if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
