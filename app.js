@@ -30,6 +30,20 @@ async function load(){
  const shead='<div class="thead"><span>案件</span><span>実績</span><span>売上(税別)</span><span>粗利(税込基準)</span><span>粗利率</span></div>';
  document.getElementById('salesTable').innerHTML=shead+d.projects.map(p=>{const n=d.month_actuals[p.name]||0,si=n*(p.unit_price||0)*tax,g=si-n*(p.driver_pay||0),m=si?g/si*100:0;return `<div><span>${p.name}</span><span>${n}</span><span>${yen(n*(p.unit_price||0))}</span><span>${yen(g)}</span><span>${m.toFixed(1)}%</span></div>`}).join('');
  document.getElementById('projectCards').innerHTML=d.projects.map(p=>{const gi=(p.unit_price||0)*tax-(p.driver_pay||0);return `<article class="glass location"><b>${p.name}</b><span>${p.active} / ${p.required} 台</span><small>売上 ${yen(p.unit_price||0)} / 粗利 ${yen(gi)}/台</small></article>`}).join('');
- document.getElementById('aiSummary').textContent=`本日は稼働 ${active} 台、欠車 ${abs} 件。8月の確認済実績ベース粗利は ${yen(monthGross)}、粗利率 ${grossMargin.toFixed(1)}%。`;
+
+ const profitability=d.projects.map(p=>{
+   const n=d.month_actuals[p.name]||0;
+   const salesEx=n*(p.unit_price||0);
+   const salesInc=salesEx*tax;
+   const driver=n*(p.driver_pay||0);
+   const gross=salesInc-driver;
+   const margin=salesInc?gross/salesInc*100:0;
+   const grossPerRun=(p.unit_price||0)*tax-(p.driver_pay||0);
+   return {name:p.name,n,salesEx,gross,margin,grossPerRun};
+ }).sort((a,b)=>b.gross-a.gross);
+ const rhead='<div class="thead"><span>順位 / 案件</span><span>実績</span><span>売上</span><span>粗利</span><span>粗利率</span></div>';
+ document.getElementById('profitRanking').innerHTML=rhead+profitability.map((x,i)=>`<div><span>${i+1}位 ${x.name}</span><span>${x.n}</span><span>${yen(x.salesEx)}</span><span>${yen(x.gross)}</span><span>${x.margin.toFixed(1)}%</span></div>`).join('');
+
+ document.getElementById('aiSummary').textContent=`本日は稼働 ${active} 台、欠車 ${abs} 件。8月粗利は ${yen(monthGross)}、粗利率 ${grossMargin.toFixed(1)}%。粗利額トップは ${profitability[0]?.name||'—'}（${yen(profitability[0]?.gross||0)}）。`;
 }
 load().catch(console.error);if('serviceWorker'in navigator){navigator.serviceWorker.register('sw.js');}
