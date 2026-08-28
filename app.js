@@ -1,4 +1,4 @@
-const meta={dashboard:['JARVIS V4.7.8','音声・チャット・活動報告・経営数値を統合'],delivery:['配送・シフト','エリア別の出勤者・案件・活動報告を管理'],drivers:['ドライバー稼働','各ドライバーの今月稼働日数を確認'],absence:['欠車対応','欠車・不足案件の確認'],sales:['売上・利益','案件別売上・粗利・欠車損失'],locations:['案件別実績','案件単位の稼働状況'],ai:['AI分析','JARVISによる経営判断'],shiftboard:['シフト表','活動報告を日付×ドライバーで確認・編集'],workbook:['配送管理表','ExcelをJARVIS内で確認・編集・保存・再ダウンロード'],settings:['設定','データ連携・システム状態']};
+const meta={dashboard:['JARVIS V4.8.0','経営数値・シフト・配送管理を統合'],delivery:['配送・シフト','エリア別の出勤者・案件・活動報告を管理'],sales:['売上・利益','案件別売上・粗利・欠車損失'],locations:['案件別実績','案件単位の稼働状況'],ai:['JARVIS AI','JARVISと業務データについて会話'],texpress:['T_Express','軽貨物事業 × AI事業 オフィシャルサイト'],shiftboard:['シフト表','活動報告を日付×ドライバーで確認・編集'],workbook:['配送管理表','JARVIS内で確認・編集・保存・再ダウンロード'],settings:['設定','データ連携・システム状態']};
 const AREA_PROJECTS={静岡:['静岡'],三島:['三島Amazon','三島お酒','秋山製麺','三島便'],一宮:['一宮'],中村区:['中村区'],野洲:['野洲'],富士:['富士'],駿河:['駿河']};
 const DRIVERS=[{"name":"高橋 利旭","area":"静岡","areas":["静岡","三島"]},{"name":"津田 たけし","area":"静岡","areas":["静岡","三島"]},{"name":"中島 由江","area":"静岡","areas":["静岡"]},{"name":"中村","area":"静岡","areas":["静岡"]},{"name":"宇野 文夫","area":"静岡","areas":["静岡"]},{"name":"ヤシマ 聖美","area":"三島","areas":["三島"]},{"name":"髙橋 和也","area":"三島","areas":["三島"]},{"name":"生駒 龍彦","area":"三島","areas":["三島"]},{"name":"日置 将人","area":"三島","areas":["三島"]},{"name":"久松 慧大","area":"三島","areas":["三島"]},{"name":"島田 真一","area":"三島","areas":["三島","一宮"]},{"name":"雨宮 渉","area":"三島","areas":["三島"]},{"name":"持麾 満","area":"三島","areas":["三島"]},{"name":"林 真人","area":"三島","areas":["三島"]},{"name":"福羅 達也","area":"三島","areas":["三島"]},{"name":"福羅 沙織","area":"三島","areas":["三島"]},{"name":"大沼","area":"三島","areas":["三島"]},{"name":"堀井 龍馬","area":"三島","areas":["三島"]},{"name":"増本","area":"一宮","areas":["一宮"]},{"name":"髙橋 悠","area":"一宮","areas":["一宮"]},{"name":"藤原","area":"一宮","areas":["一宮"]},{"name":"京極 雅彦","area":"中村区","areas":["中村区"]},{"name":"川西 亮太","area":"野洲","areas":["野洲"]},{"name":"山本 浩介","area":"野洲","areas":["野洲"]},{"name":"畑中 佑太","area":"富士","areas":["富士"]},{"name":"桑原 貴継","area":"駿河","areas":["駿河"]}];
 
@@ -144,3 +144,22 @@ async function initWorkbook(){
 function setupSheetSelect(){if(!WB)return;$('sheetSelect').innerHTML=WB.SheetNames.map(n=>`<option>${esc(n)}</option>`).join('');}
 
 async function load(){const s=localStorage.getItem(STORAGE_KEY)||localStorage.getItem('jarvis-v471-live-data')||localStorage.getItem('jarvis-v47-live-data')||localStorage.getItem('jarvis-v46-live-data')||localStorage.getItem('jarvis-v45-live-data'),a=localStorage.getItem(ATT_KEY);if(s)DATA=JSON.parse(s);else{const r=await fetch('./jarvis-v4-data.json?ts='+Date.now(),{cache:'no-store'});DATA=await r.json()}ATT=cleanAttendance(a?JSON.parse(a):legacyAttendance());localStorage.setItem(ATT_KEY,JSON.stringify(ATT));populateForm();seedAugustShift();initShiftControls();render();renderDrivers();renderShiftMatrix();await initWorkbook()}load().catch(console.error);if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
+
+
+// V4.8.0 AI page bridge
+(function(){
+  const q=id=>document.getElementById(id);
+  function aiSay(text,who='user'){
+    const log=q('aiChatLog'); if(!log)return;
+    const d=document.createElement('div'); d.className='msg '+(who==='jarvis'?'jarvis':'user');
+    d.innerHTML=who==='jarvis'?'<b>JARVIS</b><p></p>':'<p></p>'; d.querySelector('p').textContent=text; log.appendChild(d); log.scrollTop=log.scrollHeight;
+  }
+  function sendAI(){
+    const inp=q('aiChatText'); const text=inp?.value.trim(); if(!text)return; aiSay(text); inp.value='';
+    const main=q('voiceText'),btn=q('voiceSend');
+    if(main&&btn){main.value=text;btn.click();setTimeout(()=>{const msgs=document.querySelectorAll('#chatLog .msg.jarvis p');aiSay(msgs.length?msgs[msgs.length-1].textContent:'業務データを確認しました。','jarvis')},80)}
+    else aiSay('現在のJARVIS内データで確認できる範囲から回答します。','jarvis');
+  }
+  q('aiChatSend')?.addEventListener('click',sendAI); q('aiChatText')?.addEventListener('keydown',e=>{if(e.key==='Enter')sendAI()});
+  q('aiVoiceBtn')?.addEventListener('click',()=>q('voiceBtn')?.click());
+})();
