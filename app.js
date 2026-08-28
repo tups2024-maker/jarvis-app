@@ -1,49 +1,48 @@
-const meta={dashboard:['JARVIS V4.1','実績・売上・粗利・欠車を統合した経営ダッシュボード'],delivery:['配送・シフト','案件別の運行・配置管理'],absence:['欠車対応','欠車・不足案件の確認'],sales:['売上・利益','案件別売上・粗利・欠車損失'],locations:['案件別実績','案件単位の稼働状況'],ai:['AI分析','JARVISによる経営判断'],settings:['設定','単価・データ連携・システム']};
+const meta={dashboard:['JARVIS V4.4','実績・売上・粗利・欠車を統合した経営ダッシュボード'],delivery:['配送・シフト','画面内で編集・保存・配送管理表ダウンロード'],absence:['欠車対応','欠車・不足案件の確認'],sales:['売上・利益','案件別売上・粗利・欠車損失'],locations:['案件別実績','案件単位の稼働状況'],ai:['AI分析','JARVISによる経営判断'],settings:['設定','単価・データ連携・システム']};
+let DATA=null,editing=false;const STORAGE_KEY='jarvis-v44-live-data';
 function go(page){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+page)?.classList.add('active');document.querySelector(`[data-page="${page}"]`)?.classList.add('active');document.getElementById('pageTitle').textContent=meta[page][0];document.getElementById('pageSub').textContent=meta[page][1];closeMenu()}
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
-const menu=document.getElementById('sideMenu'),overlay=document.getElementById('overlay');
-function openMenu(){menu?.classList.add('open');overlay?.classList.add('show')} function closeMenu(){menu?.classList.remove('open');overlay?.classList.remove('show')}
+const menu=document.getElementById('sideMenu'),overlay=document.getElementById('overlay');function openMenu(){menu?.classList.add('open');overlay?.classList.add('show')}function closeMenu(){menu?.classList.remove('open');overlay?.classList.remove('show')}
 document.getElementById('openMenu')?.addEventListener('click',openMenu);document.getElementById('closeMenu')?.addEventListener('click',closeMenu);overlay?.addEventListener('click',closeMenu);
-const yen=n=>'¥'+Math.round(n).toLocaleString('ja-JP');
-async function load(){
- const r=await fetch('./jarvis-v4-data.json?ts='+Date.now(),{cache:'no-store'}); const d=await r.json(); const tax=1+(d.sales_tax_rate||0);
- const active=d.projects.reduce((s,p)=>s+p.active,0),abs=d.projects.reduce((s,p)=>s+p.absence,0);
- const missing=d.projects.filter(p=>!p.unit_price||p.driver_pay==null);
- const monthSalesEx=d.projects.reduce((s,p)=>s+((d.month_actuals[p.name]||0)*(p.unit_price||0)),0);
- const monthSalesInc=monthSalesEx*tax;
- const monthDriver=d.projects.reduce((s,p)=>s+((d.month_actuals[p.name]||0)*(p.driver_pay||0)),0);
- const monthGross=monthSalesInc-monthDriver;
- const grossMargin=monthSalesInc?monthGross/monthSalesInc*100:0;
- const todaySalesEx=d.projects.reduce((s,p)=>s+(p.active*(p.unit_price||0)),0);
- const loss=d.projects.reduce((s,p)=>s+(p.absence*(p.unit_price||0)),0);
- document.getElementById('kpiActive').textContent=active+' 台';document.getElementById('kpiAbsence').textContent=abs+' 台';
- document.getElementById('kpiSales').textContent=yen(monthSalesEx);document.getElementById('kpiLoss').textContent=yen(loss);
- document.getElementById('kpiGross').textContent=yen(monthGross);
- document.getElementById('salesMonth').textContent=yen(monthSalesEx);document.getElementById('salesToday').textContent=yen(todaySalesEx);
- document.getElementById('salesLoss').textContent=yen(loss);document.getElementById('salesGross').textContent=yen(monthGross);document.getElementById('grossMargin').textContent=grossMargin.toFixed(1)+'%';
- document.getElementById('rateCoverage').textContent=Math.round((d.projects.length-missing.length)/d.projects.length*100)+'%';document.getElementById('absenceCount').textContent=abs+' 件';
- document.getElementById('projectStatus').innerHTML=d.projects.map(p=>`<div class="project-card ${p.active<p.required?'warn':'ok'}"><b>${p.name}</b><span>${p.active} / ${p.required} 台</span><small>${p.active<p.required?'不足 '+(p.required-p.active)+' 台':'充足'}</small></div>`).join('');
- document.getElementById('missingRates').innerHTML=missing.map(p=>`<div>${p.name}：単価未設定</div>`).join('')||'<div>すべて設定済み</div>';
- document.getElementById('shortageList').innerHTML=d.projects.filter(p=>p.active<p.required).map(p=>`<div>${p.name}：不足 ${p.required-p.active} 台</div>`).join('')||'<div>不足なし</div>';
- const head='<div class="thead"><span>案件</span><span>必要</span><span>稼働</span><span>差異</span><span>売上単価</span></div>';
- document.getElementById('deliveryTable').innerHTML=head+d.projects.map(p=>`<div><span>${p.name}</span><span>${p.required}</span><span>${p.active}</span><span>${p.active-p.required}</span><span>${p.unit_price?yen(p.unit_price):'未設定'}</span></div>`).join('');
- const shead='<div class="thead"><span>案件</span><span>実績</span><span>売上(税別)</span><span>粗利(税込基準)</span><span>粗利率</span></div>';
- document.getElementById('salesTable').innerHTML=shead+d.projects.map(p=>{const n=d.month_actuals[p.name]||0,si=n*(p.unit_price||0)*tax,g=si-n*(p.driver_pay||0),m=si?g/si*100:0;return `<div><span>${p.name}</span><span>${n}</span><span>${yen(n*(p.unit_price||0))}</span><span>${yen(g)}</span><span>${m.toFixed(1)}%</span></div>`}).join('');
- document.getElementById('projectCards').innerHTML=d.projects.map(p=>{const gi=(p.unit_price||0)*tax-(p.driver_pay||0);return `<article class="glass location"><b>${p.name}</b><span>${p.active} / ${p.required} 台</span><small>売上 ${yen(p.unit_price||0)} / 粗利 ${yen(gi)}/台</small></article>`}).join('');
+const yen=n=>'¥'+Math.round(Number(n)||0).toLocaleString('ja-JP');const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function renderDelivery(){const h='<div class="thead"><span>案件</span><span>必要</span><span>稼働</span><span>欠車</span><span>月実績</span></div>';document.getElementById('deliveryTable').innerHTML=h+DATA.projects.map((p,i)=>{const f=(k,v)=>editing?`<input class="cell-input" type="number" min="0" data-i="${i}" data-k="${k}" value="${v}">`:`<span>${v}</span>`;return `<div><span>${esc(p.name)}</span>${f('required',p.required)}${f('active',p.active)}${f('absence',p.absence)}${editing?`<input class="cell-input" type="number" min="0" data-i="${i}" data-k="actual" value="${DATA.month_actuals[p.name]||0}">`:`<span>${DATA.month_actuals[p.name]||0}</span>`}</div>`}).join('');document.querySelectorAll('.cell-input').forEach(x=>x.addEventListener('change',()=>{const i=+x.dataset.i,k=x.dataset.k,v=Math.max(0,+x.value||0),p=DATA.projects[i];if(k==='actual')DATA.month_actuals[p.name]=v;else p[k]=v;render()}));}
+function render(){const d=DATA,tax=1+(d.sales_tax_rate||0),active=d.projects.reduce((s,p)=>s+(+p.active||0),0),abs=d.projects.reduce((s,p)=>s+(+p.absence||0),0),missing=d.projects.filter(p=>!p.unit_price||p.driver_pay==null),monthSalesEx=d.projects.reduce((s,p)=>s+((d.month_actuals[p.name]||0)*(+p.unit_price||0)),0),monthSalesInc=monthSalesEx*tax,monthDriver=d.projects.reduce((s,p)=>s+((d.month_actuals[p.name]||0)*(+p.driver_pay||0)),0),monthGross=monthSalesInc-monthDriver,grossMargin=monthSalesInc?monthGross/monthSalesInc*100:0,todaySalesEx=d.projects.reduce((s,p)=>s+((+p.active||0)*(+p.unit_price||0)),0),loss=d.projects.reduce((s,p)=>s+((+p.absence||0)*(+p.unit_price||0)),0);
+[['kpiActive',active+' 台'],['kpiAbsence',abs+' 台'],['kpiSales',yen(monthSalesEx)],['kpiLoss',yen(loss)],['kpiGross',yen(monthGross)],['salesMonth',yen(monthSalesEx)],['salesToday',yen(todaySalesEx)],['salesLoss',yen(loss)],['salesGross',yen(monthGross)],['grossMargin',grossMargin.toFixed(1)+'%'],['rateCoverage',Math.round((d.projects.length-missing.length)/d.projects.length*100)+'%'],['absenceCount',abs+' 件']].forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.textContent=v});
+document.getElementById('projectStatus').innerHTML=d.projects.map(p=>`<div class="project-card ${+p.active<+p.required?'warn':'ok'}"><b>${esc(p.name)}</b><span>${p.active} / ${p.required} 台</span><small>${+p.active<+p.required?'不足 '+(+p.required-+p.active)+' 台':'充足'}</small></div>`).join('');document.getElementById('missingRates').innerHTML=missing.map(p=>`<div>${esc(p.name)}：単価未設定</div>`).join('')||'<div>すべて設定済み</div>';document.getElementById('shortageList').innerHTML=d.projects.filter(p=>+p.active<+p.required).map(p=>`<div>${esc(p.name)}：不足 ${+p.required-+p.active} 台</div>`).join('')||'<div>不足なし</div>';renderDelivery();
+const shead='<div class="thead"><span>案件</span><span>実績</span><span>売上(税別)</span><span>粗利(税込基準)</span><span>粗利率</span></div>';document.getElementById('salesTable').innerHTML=shead+d.projects.map(p=>{const n=d.month_actuals[p.name]||0,si=n*(+p.unit_price||0)*tax,g=si-n*(+p.driver_pay||0),m=si?g/si*100:0;return `<div><span>${esc(p.name)}</span><span>${n}</span><span>${yen(n*(+p.unit_price||0))}</span><span>${yen(g)}</span><span>${m.toFixed(1)}%</span></div>`}).join('');document.getElementById('projectCards').innerHTML=d.projects.map(p=>{const gi=(+p.unit_price||0)*tax-(+p.driver_pay||0);return `<article class="glass location"><b>${esc(p.name)}</b><span>${p.active} / ${p.required} 台</span><small>売上 ${yen(p.unit_price||0)} / 粗利 ${yen(gi)}/台</small></article>`}).join('');const profitability=d.projects.map(p=>{const n=d.month_actuals[p.name]||0,salesEx=n*(+p.unit_price||0),salesInc=salesEx*tax,gross=salesInc-n*(+p.driver_pay||0),margin=salesInc?gross/salesInc*100:0;return{name:p.name,n,salesEx,gross,margin}}).sort((a,b)=>b.gross-a.gross);const pr=document.getElementById('profitRanking');if(pr){const h='<div class="thead"><span>順位 / 案件</span><span>実績</span><span>売上</span><span>粗利</span><span>粗利率</span></div>';pr.innerHTML=h+profitability.map((x,i)=>`<div><span>${i+1}位 ${esc(x.name)}</span><span>${x.n}</span><span>${yen(x.salesEx)}</span><span>${yen(x.gross)}</span><span>${x.margin.toFixed(1)}%</span></div>`).join('')}document.getElementById('aiSummary').textContent=`本日は稼働 ${active} 台、欠車 ${abs} 件。8月粗利は ${yen(monthGross)}、粗利率 ${grossMargin.toFixed(1)}%。粗利額トップは ${profitability[0]?.name||'—'}（${yen(profitability[0]?.gross||0)}）。`;}
+const status=t=>{const e=document.getElementById('saveStatus');if(e)e.textContent=t};
+document.getElementById('editBtn')?.addEventListener('click',()=>{editing=!editing;document.getElementById('editBtn').textContent=editing?'✓ 編集終了':'✎ 編集する';renderDelivery();status(editing?'編集中：数値を変更して「保存」':'編集終了')});document.getElementById('saveBtn')?.addEventListener('click',()=>{localStorage.setItem(STORAGE_KEY,JSON.stringify(DATA));status('✓ 保存しました（この端末） '+new Date().toLocaleTimeString('ja-JP'));render()});document.getElementById('reloadBtn')?.addEventListener('click',()=>{const s=localStorage.getItem(STORAGE_KEY);if(s){DATA=JSON.parse(s);status('↻ 保存データを再読込しました');render()}else status('保存データはまだありません')});document.getElementById('downloadBtn')?.addEventListener('click',()=>{const rows=[['日付','案件','必要台数','稼働台数','欠車','月実績','売上単価(税別)','DR支払(税込)','売上(税別)','粗利(税込基準)']],tax=1+(DATA.sales_tax_rate||0);DATA.projects.forEach(p=>{const n=DATA.month_actuals[p.name]||0;rows.push([DATA.data_date||'',p.name,p.required,p.active,p.absence,n,p.unit_price,p.driver_pay,n*p.unit_price,n*p.unit_price*tax-n*p.driver_pay])});const csv='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=`JARVIS_配送管理表_${DATA.data_date||'export'}.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);status('⬇ 配送管理表をダウンロードしました')});
+async function load(){const local=localStorage.getItem(STORAGE_KEY);if(local){DATA=JSON.parse(local);status('保存済みデータを読み込みました')}else{const r=await fetch('./jarvis-v4-data.json?ts='+Date.now(),{cache:'no-store'});DATA=await r.json()}render()}load().catch(e=>{console.error(e);status('データ読込エラー')});if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
 
- const profitability=d.projects.map(p=>{
-   const n=d.month_actuals[p.name]||0;
-   const salesEx=n*(p.unit_price||0);
-   const salesInc=salesEx*tax;
-   const driver=n*(p.driver_pay||0);
-   const gross=salesInc-driver;
-   const margin=salesInc?gross/salesInc*100:0;
-   const grossPerRun=(p.unit_price||0)*tax-(p.driver_pay||0);
-   return {name:p.name,n,salesEx,gross,margin,grossPerRun};
- }).sort((a,b)=>b.gross-a.gross);
- const rhead='<div class="thead"><span>順位 / 案件</span><span>実績</span><span>売上</span><span>粗利</span><span>粗利率</span></div>';
- document.getElementById('profitRanking').innerHTML=rhead+profitability.map((x,i)=>`<div><span>${i+1}位 ${x.name}</span><span>${x.n}</span><span>${yen(x.salesEx)}</span><span>${yen(x.gross)}</span><span>${x.margin.toFixed(1)}%</span></div>`).join('');
 
- document.getElementById('aiSummary').textContent=`本日は稼働 ${active} 台、欠車 ${abs} 件。8月粗利は ${yen(monthGross)}、粗利率 ${grossMargin.toFixed(1)}%。粗利額トップは ${profitability[0]?.name||'—'}（${yen(profitability[0]?.gross||0)}）。`;
+// JARVIS Voice Command (PC / smartphone)
+const voiceBtn=document.getElementById('voiceBtn'), voiceText=document.getElementById('voiceText'), voiceSend=document.getElementById('voiceSend'), voiceReply=document.getElementById('voiceReply'), voiceStatus=document.getElementById('voiceStatus');
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+let recognition=null;
+function speak(text){try{if('speechSynthesis' in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='ja-JP';u.rate=1.02;speechSynthesis.speak(u)}}catch(e){}}
+function reply(text,withVoice=true){if(voiceReply)voiceReply.textContent=text;if(withVoice)speak(text)}
+function findProject(text){if(!DATA)return null;const normalized=text.replace(/\s/g,'').toLowerCase();return DATA.projects.find(p=>normalized.includes(String(p.name).replace(/\s/g,'').toLowerCase()))||null}
+function numberFrom(text){const m=text.match(/(\d+(?:\.\d+)?)/);return m?Number(m[1]):null}
+function executeVoice(raw){const text=(raw||'').trim();if(!text)return; if(voiceText)voiceText.value=text;
+ const t=text.replace(/\s/g,''); const p=findProject(text); const n=numberFrom(text);
+ if(/配送|シフト/.test(t)&&/開|見|管理/.test(t)){go('delivery');return reply('配送・シフト管理を開きました。')}
+ if(/売上|利益|粗利/.test(t)&&/開|見|画面/.test(t)){go('sales');return reply('売上・利益画面を開きました。')}
+ if(/欠車/.test(t)&&/開|見|画面/.test(t)){go('absence');return reply('欠車対応画面を開きました。')}
+ if(/案件|実績/.test(t)&&/開|見|画面/.test(t)){go('locations');return reply('案件別実績を開きました。')}
+ if(/ダッシュ|トップ|ホーム/.test(t)&&/開|戻/.test(t)){go('dashboard');return reply('トップ画面に戻りました。')}
+ if(/保存/.test(t)){localStorage.setItem(STORAGE_KEY,JSON.stringify(DATA));status('✓ 音声操作で保存しました '+new Date().toLocaleTimeString('ja-JP'));render();return reply('保存しました。')}
+ if(/再読込|読み込|リロード/.test(t)){const s=localStorage.getItem(STORAGE_KEY);if(s){DATA=JSON.parse(s);render();return reply('保存データを再読み込みしました。')}return reply('保存データはまだありません。')}
+ if(/ダウンロード|DL|出力/.test(t)&&/スプレッド|配送管理|CSV/.test(t)){document.getElementById('downloadBtn')?.click();return reply('配送管理表をダウンロードします。')}
+ if(p&&n!=null&&/(稼働|台にして|台へ|稼働台数)/.test(t)){p.active=Math.max(0,n);render();return reply(`${p.name}の稼働を${n}台に変更しました。保存するとこの端末に残ります。`)}
+ if(p&&n!=null&&/(必要|必要台数)/.test(t)){p.required=Math.max(0,n);render();return reply(`${p.name}の必要台数を${n}台に変更しました。`)}
+ if(p&&n!=null&&/(欠車)/.test(t)&&/(台|件|にして)/.test(t)){p.absence=Math.max(0,n);render();return reply(`${p.name}の欠車を${n}台に変更しました。`)}
+ if(p&&n!=null&&/(実績)/.test(t)){DATA.month_actuals[p.name]=Math.max(0,n);render();return reply(`${p.name}の月実績を${n}に変更しました。`)}
+ if(/不足/.test(t)){const xs=DATA.projects.filter(x=>+x.active<+x.required);return reply(xs.length?`不足は${xs.length}案件です。`+xs.map(x=>`${x.name} ${+x.required-+x.active}台`).join('、'):'現在、不足案件はありません。')}
+ if(/欠車/.test(t)){const total=DATA.projects.reduce((s,x)=>s+(+x.absence||0),0);return reply(`現在の欠車は${total}台です。`)}
+ if(/売上/.test(t)){const sales=DATA.projects.reduce((s,x)=>s+((DATA.month_actuals[x.name]||0)*(+x.unit_price||0)),0);return reply(`8月累計売上は${Math.round(sales).toLocaleString('ja-JP')}円です。`)}
+ if(/粗利|利益/.test(t)){const tax=1+(DATA.sales_tax_rate||0);const gross=DATA.projects.reduce((s,x)=>{const a=DATA.month_actuals[x.name]||0;return s+a*(+x.unit_price||0)*tax-a*(+x.driver_pay||0)},0);return reply(`8月粗利は${Math.round(gross).toLocaleString('ja-JP')}円です。`)}
+ if(/今日|稼働/.test(t)){const active=DATA.projects.reduce((s,x)=>s+(+x.active||0),0);return reply(`本日の稼働は合計${active}台です。`)}
+ reply('その指示はまだ登録されていません。配送管理を開いて、今日の不足は、売上は、案件名と台数を変更、保存して、などが使えます。');
 }
-load().catch(console.error);if('serviceWorker'in navigator){navigator.serviceWorker.register('sw.js');}
+if(SpeechRecognition){recognition=new SpeechRecognition();recognition.lang='ja-JP';recognition.interimResults=false;recognition.continuous=false;recognition.onstart=()=>{voiceBtn?.classList.add('listening');if(voiceStatus)voiceStatus.textContent='聞いています…';};recognition.onend=()=>{voiceBtn?.classList.remove('listening');if(voiceStatus)voiceStatus.textContent='マイクを押して話してください。PC・スマホ対応。';};recognition.onerror=e=>{voiceBtn?.classList.remove('listening');reply('音声認識を開始できませんでした。マイク許可を確認するか、下の入力欄を使ってください。',false);};recognition.onresult=e=>{const text=e.results?.[0]?.[0]?.transcript||'';executeVoice(text)};voiceBtn?.addEventListener('click',()=>{try{recognition.start()}catch(e){}})}else{if(voiceStatus)voiceStatus.textContent='このブラウザでは音声認識が使えません。下の入力欄は利用できます。';voiceBtn?.addEventListener('click',()=>reply('音声認識非対応のブラウザです。文字入力でJARVISを操作できます。',false));}
+voiceSend?.addEventListener('click',()=>executeVoice(voiceText?.value));voiceText?.addEventListener('keydown',e=>{if(e.key==='Enter')executeVoice(voiceText.value)});document.querySelectorAll('[data-voicecmd]').forEach(b=>b.addEventListener('click',()=>executeVoice(b.dataset.voicecmd)));

@@ -1,5 +1,5 @@
 {
-  "version": "4.1",
+  "version": "4.3",
   "month": "2026-08",
   "data_date": "2026-08-28",
   "sales_tax_rate": 0.1,
@@ -100,7 +100,7 @@
     "駿河": 20
   },
   "rate_version": "2026-08-28-sales-and-grossprofit-v1",
-  "shift_version": "2026-08-28-v4-suruga-workday-1of1",
+  "shift_version": "2026-08-28-corrected-v3-nakamura-required-1",
   "actuals_version": "2026-08-28-all-projects-v1",
   "actuals_basis": "2026-08-01_to_2026-08-28",
   "notes": [
@@ -108,5 +108,5 @@
     "秋山製麺は配送管理表の実績を8/28まで集計",
     "三島お酒・静岡・一宮・中村区・野洲・富士・駿河は8月シフト表を8/28まで集計"
   ],
-  "suruga_rule": "稼働日は1/1、休みは0/0"
+  "ui_version": "2026-08-28-edit-save-export-v1"
 }
