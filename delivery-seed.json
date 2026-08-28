@@ -4095,6 +4095,16 @@
       "sales_unit": 18700,
       "driver_pay": 18000,
       "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "研修費",
+      "mark": "研修",
+      "sales_unit": 0,
+      "driver_pay": "",
+      "actual": 1
     }
   ]
 }
