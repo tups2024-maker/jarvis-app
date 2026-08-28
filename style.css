@@ -89,3 +89,10 @@
 
 /* V4.9.9 wake voice */
 .wake-toggle{white-space:nowrap}.wake-toggle.listening{box-shadow:0 0 18px rgba(0,220,255,.55)}#wakeStatus{display:block;color:#8edfff;margin-top:4px}
+
+/* V4.9.19 spreadsheet-style direct editing */
+.workbook-table .wb-cell-input{width:100%;min-width:110px;box-sizing:border-box;border:1px solid transparent;background:transparent;color:inherit;font:inherit;padding:10px 8px;border-radius:4px;outline:none;-webkit-appearance:none;}
+.workbook-table .wb-cell-input:focus{border-color:#38d9ff;background:rgba(56,217,255,.10);box-shadow:inset 0 0 0 1px rgba(56,217,255,.22);}
+.workbook-table td{padding:0!important;min-width:110px;}
+.workbook-table tr:nth-child(3) .wb-cell-input{font-weight:800;}
+@media(max-width:700px){.workbook-table .wb-cell-input{min-width:125px;font-size:16px;padding:12px 9px}.workbook-table td{min-width:125px}.workbook-scroll{-webkit-overflow-scrolling:touch}}
