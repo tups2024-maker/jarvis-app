@@ -1,4 +1,4 @@
-const meta={dashboard:['JARVIS V4.9.6','T-EXPRESS FUTURE COMMAND CENTER'],sales:['売上・利益','案件別売上・粗利・欠車損失'],ai:['JARVIS AI','JARVISと業務データについて会話'],texpress:['T_Express','軽貨物事業 × AI事業 オフィシャルサイト'],shiftboard:['シフト / 配送','シフト・出勤状況・活動報告・案件情報を統合管理'],workbook:['配送管理表','JARVIS内で確認・編集・保存・再ダウンロード'],settings:['設定','データ連携・システム状態']};
+const meta={dashboard:['JARVIS V4.9.8','T-EXPRESS FUTURE COMMAND CENTER'],sales:['売上・利益','案件別売上・粗利・欠車損失'],ai:['JARVIS AI','JARVISと業務データについて会話'],texpress:['T_Express','軽貨物事業 × AI事業 オフィシャルサイト'],shiftboard:['シフト / 配送','シフト・出勤状況・活動報告・案件情報を統合管理'],workbook:['配送管理表','JARVIS内で確認・編集・保存・再ダウンロード'],settings:['設定','データ連携・システム状態']};
 const AREA_PROJECTS={静岡:['静岡'],三島:['三島Amazon','三島お酒','秋山製麺','三島便'],一宮:['一宮'],中村区:['中村区'],野洲:['野洲'],富士:['富士'],駿河:['駿河']};
 const DRIVERS=[{"name":"高橋 利旭","area":"静岡","areas":["静岡","三島"]},{"name":"津田 たけし","area":"静岡","areas":["静岡","三島"]},{"name":"中島 由江","area":"静岡","areas":["静岡"]},{"name":"中村","area":"静岡","areas":["静岡"]},{"name":"宇野 文夫","area":"静岡","areas":["静岡"]},{"name":"ヤシマ 聖美","area":"三島","areas":["三島"]},{"name":"髙橋 和也","area":"三島","areas":["三島"]},{"name":"生駒 龍彦","area":"三島","areas":["三島"]},{"name":"日置 将人","area":"三島","areas":["三島"]},{"name":"久松 慧大","area":"三島","areas":["三島"]},{"name":"島田 真一","area":"三島","areas":["三島","一宮"]},{"name":"雨宮 渉","area":"三島","areas":["三島"]},{"name":"持麾 満","area":"三島","areas":["三島"]},{"name":"林 真人","area":"三島","areas":["三島"]},{"name":"福羅 達也","area":"三島","areas":["三島"]},{"name":"福羅 沙織","area":"三島","areas":["三島"]},{"name":"大沼","area":"三島","areas":["三島"]},{"name":"堀井 龍馬","area":"三島","areas":["三島"]},{"name":"増本","area":"一宮","areas":["一宮"]},{"name":"髙橋 悠","area":"一宮","areas":["一宮"]},{"name":"藤原","area":"一宮","areas":["一宮"]},{"name":"京極 雅彦","area":"中村区","areas":["中村区"]},{"name":"川西 亮太","area":"野洲","areas":["野洲"]},{"name":"山本 浩介","area":"野洲","areas":["野洲"]},{"name":"畑中 佑太","area":"富士","areas":["富士"]},{"name":"桑原 貴継","area":"駿河","areas":["駿河"]}];
 
@@ -117,6 +117,29 @@ let SHIFT_EDIT=false;
 function idb(){return new Promise((resolve,reject)=>{const r=indexedDB.open('jarvis-v47-db',1);r.onupgradeneeded=()=>r.result.createObjectStore('files');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
 async function saveWorkbookBytes(bytes,name){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').put({bytes:Array.from(new Uint8Array(bytes)),name,ts:Date.now()},'deliveryWorkbookV478');tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
 async function loadWorkbookBytes(){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction('files','readonly');const q=tx.objectStore('files').get('deliveryWorkbookV478');q.onsuccess=()=>res(q.result||null);q.onerror=()=>rej(q.error)})}
+const SHIFT_DRIVER_ORDER={
+ '静岡':['高橋 利旭','津田 たけし','中島 由江','中村','宇野 文夫'],
+ '三島':['ヤシマ 聖美','髙橋 和也','高橋 利旭','生駒 龍彦','日置 将人','久松 慧大','島田 真一','雨宮 渉','持麾 満','林 真人','福羅 達也','福羅 沙織','大沼','津田 たけし','堀井 龍馬'],
+ '一宮':['増本','髙橋 悠','藤原','島田 真一'],
+ '中村区':['京極 雅彦'],
+ '野洲':['川西 亮太','山本 浩介'],
+ '富士':['畑中 佑太'],
+ '駿河':['桑原 貴継']
+};
+function projectShiftArea(project){if(project==='静岡')return '静岡';if(['三島Amazon','三島お酒','秋山製麺','三島便'].includes(project))return '三島';return project}
+function normalizeDriverForOrder(v){const x=normName(String(v||''));if(x==='津田')return normName('津田 たけし');return x}
+function reorderAOAByShift(a,project){
+ if(!Array.isArray(a)||a.length<=4)return a;
+ const order=SHIFT_DRIVER_ORDER[projectShiftArea(project)]||[];if(!order.length)return a;
+ const rank=new Map(order.map((n,i)=>[normalizeDriverForOrder(n),i]));
+ const head=a.slice(0,3), body=a.slice(3).map((row,i)=>({row,i}));
+ body.sort((x,y)=>{const rx=rank.has(normalizeDriverForOrder(x.row?.[1]))?rank.get(normalizeDriverForOrder(x.row?.[1])):9999;const ry=rank.has(normalizeDriverForOrder(y.row?.[1]))?rank.get(normalizeDriverForOrder(y.row?.[1])):9999;return rx-ry||x.i-y.i});
+ return head.concat(body.map(x=>x.row));
+}
+function reorderWorkbookByShiftOrder(){
+ if(!WB||!window.XLSX)return;
+ WB.SheetNames.forEach(name=>{const a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});const project=String(a?.[0]?.[1]||name||'').trim();const sorted=reorderAOAByShift(a,project);WB.Sheets[name]=XLSX.utils.aoa_to_sheet(sorted)});
+}
 function workbookAOA(){if(!WB)return [];const s=$('sheetSelect').value;return XLSX.utils.sheet_to_json(WB.Sheets[s],{header:1,defval:''})}
 function openWorkbookCellEditor(r,c){
  if(!WB||!WB_EDIT)return;
@@ -146,20 +169,35 @@ function renderWorkbook(){
  const maxCols=Math.max(1,...aoa.map(r=>r.length));let h='<tbody>';
  aoa.slice(0,500).forEach((row,r)=>{h+=`<tr class="${WB_SELECTED_ROW===r?'selected-row':''}">`;for(let c=0;c<maxCols;c++){
    const v=row[c]??'',selCol=WB_SELECTED_COL===c?' selected-col':'',selCell=WB_SELECTED_CELL===`${r}:${c}`?' selected-cell':'';
-   h+=`<td class="${r===2?'workbook-header-cell ':''}${selCol}${selCell}" data-r="${r}" data-c="${c}" tabindex="0">${esc(v)}</td>`
+   if(WB_EDIT){
+     h+=`<td class="${r===2?'workbook-header-cell ':''}${selCol}${selCell}" data-r="${r}" data-c="${c}"><input class="wb-cell-input" data-r="${r}" data-c="${c}" value="${esc(v)}" aria-label="行${r+1} 列${c+1}"></td>`;
+   }else{
+     h+=`<td class="${r===2?'workbook-header-cell ':''}${selCol}${selCell}" data-r="${r}" data-c="${c}" tabindex="0">${esc(v)}</td>`;
+   }
  }h+='</tr>'});h+='</tbody>';$('workbookTable').innerHTML=h;
- document.querySelectorAll('#workbookTable td').forEach(td=>{
-   const activate=e=>{e.preventDefault();const r=+td.dataset.r,c=+td.dataset.c;WB_SELECTED_ROW=r;WB_SELECTED_COL=c;WB_SELECTED_CELL=`${r}:${c}`;if(WB_EDIT)openWorkbookCellEditor(r,c);else renderWorkbook()};
-   td.addEventListener('click',activate);
-   td.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){activate(e)}});
- });
+ if(WB_EDIT){
+   document.querySelectorAll('#workbookTable .wb-cell-input').forEach(inp=>{
+     const select=()=>{WB_SELECTED_ROW=+inp.dataset.r;WB_SELECTED_COL=+inp.dataset.c;WB_SELECTED_CELL=`${inp.dataset.r}:${inp.dataset.c}`};
+     inp.addEventListener('focus',select);inp.addEventListener('click',select);
+     inp.addEventListener('change',()=>{
+       select();const a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''}),r=+inp.dataset.r,c=+inp.dataset.c;
+       while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');a[r][c]=inp.value;WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);
+       $('workbookStatus').textContent=`✓ 行${r+1}・列${c+1}を変更。「JARVISに保存」で確定します。`;
+     });
+   });
+ }else{
+   document.querySelectorAll('#workbookTable td').forEach(td=>{
+     const activate=e=>{const r=+td.dataset.r,c=+td.dataset.c;WB_SELECTED_ROW=r;WB_SELECTED_COL=c;WB_SELECTED_CELL=`${r}:${c}`;renderWorkbook()};
+     td.addEventListener('click',activate);td.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate(e)}});
+   });
+ }
 }
 function workbookSheetData(){if(!WB)return null;const name=$('sheetSelect').value||WB.SheetNames[0];return {name,a:XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''})}}
 function setWorkbookAOA(name,a){WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);renderWorkbook()}
 async function initWorkbook(){
  if(!$('xlsxInput'))return;
  const saved=await loadWorkbookBytes().catch(()=>null);
- if(saved&&window.XLSX){const u8=new Uint8Array(saved.bytes);WB=XLSX.read(u8,{type:'array'});WB_NAME=saved.name||WB_NAME;setupSheetSelect();$('workbookStatus').textContent=`✓ 保存済み配送管理表を読込：${WB_NAME}`;renderWorkbook()}else if(window.XLSX){try{const r=await fetch('./delivery-seed.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){
+ if(saved&&window.XLSX){const u8=new Uint8Array(saved.bytes);WB=XLSX.read(u8,{type:'array'});WB_NAME=saved.name||WB_NAME;reorderWorkbookByShiftOrder();setupSheetSelect();$('workbookStatus').textContent=`✓ 保存済み配送管理表を読込：${WB_NAME} ／ DR順はシフト表の配列順`;renderWorkbook()}else if(window.XLSX){try{const r=await fetch('./delivery-seed.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){
   const ds=await r.json();WB=XLSX.utils.book_new();
   const order=['静岡','三島Amazon','三島お酒','秋山製麺','三島便','一宮','中村区','野洲','富士','駿河'];
   const names={'静岡':'2026年8月 静岡','三島Amazon':'2026年8月 三島','三島お酒':'2026年8月 三島お酒','秋山製麺':'2026年8月 秋山製麺所','三島便':'2026年8月 三島便','一宮':'2026年8月 一宮','中村区':'2026年8月 中村区','野洲':'2026年8月 野洲','富士':'2026年8月 富士','駿河':'2026年8月 駿河'};
@@ -167,7 +205,7 @@ async function initWorkbook(){
   const client={'静岡':'ギオンデリバリー','三島Amazon':'ギオンデリバリー','三島お酒':'お酒配送','秋山製麺':'(有)秋山製麺所','三島便':'三島便','一宮':'ギオンデリバリー','中村区':'ギオンデリバリー','野洲':'遠州トラック','富士':'遠州トラック','駿河':'遠州トラック'};
   const short=n=>String(n||'').trim().split(/[ 　]/)[0];
   order.forEach(project=>{
-    const rate=ds.rates[project]||[0,0], rows=ds.rows.filter(x=>x.project===project).sort((a,b)=>a.date.localeCompare(b.date)||a.driver.localeCompare(b.driver,'ja'));
+    const rate=ds.rates[project]||[0,0], shiftOrder=SHIFT_DRIVER_ORDER[projectShiftArea(project)]||[], shiftRank=new Map(shiftOrder.map((n,i)=>[normalizeDriverForOrder(n),i])), rows=ds.rows.filter(x=>x.project===project).sort((a,b)=>{const ra=shiftRank.has(normalizeDriverForOrder(a.driver))?shiftRank.get(normalizeDriverForOrder(a.driver)):9999,rb=shiftRank.has(normalizeDriverForOrder(b.driver))?shiftRank.get(normalizeDriverForOrder(b.driver)):9999;return ra-rb||a.date.localeCompare(b.date)});
     const a=[];a[0]=['案件名：',project,'','','','請求先：',client[project],'','','','令和8年8月分','','','','','','DR','所属','業務名','単価','実績','合計','調整','支払'];
     a[1]=[];
     a[2]=['走行日','DR','業務名','天引き金額','DR金額','フォロー金額','備考','実績','記入者'];
@@ -180,7 +218,7 @@ async function initWorkbook(){
  }}catch(e){console.warn(e)}}
  $('xlsxInput').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f||!window.XLSX)return;const buf=await f.arrayBuffer();WB=XLSX.read(buf,{type:'array'});WB_NAME=f.name;setupSheetSelect();await saveWorkbookBytes(buf,f.name);$('workbookStatus').textContent=`✓ ${f.name} をJARVISに保存しました`;renderWorkbook()});
  $('sheetSelect').addEventListener('change',()=>{WB_SELECTED_COL=null;WB_SELECTED_ROW=null;WB_SELECTED_CELL=null;renderWorkbook()});
- $('workbookEditBtn').addEventListener('click',()=>{WB_EDIT=!WB_EDIT;$('workbookEditBtn').textContent=WB_EDIT?'✓ 全セル編集 OFF':'✎ 全セル編集 ON';if(!WB_EDIT)closeWorkbookCellEditor();renderWorkbook();$('workbookStatus').textContent=WB_EDIT?'編集モードON：DR名・業務名・金額・備考など、どのセルでもタップして変更できます。':'編集モードを終了しました。';});
+ $('workbookEditBtn').addEventListener('click',()=>{WB_EDIT=!WB_EDIT;$('workbookEditBtn').textContent=WB_EDIT?'✓ 入力編集 OFF':'✎ 入力編集 ON';if(!WB_EDIT)closeWorkbookCellEditor();renderWorkbook();$('workbookStatus').textContent=WB_EDIT?'編集モードON：表の各セルに入力欄が表示されます。タップしてその場で書き換えてください。':'編集モードを終了しました。';});
 
  $('workbookAddColBtn')?.addEventListener('click',()=>{if(!WB)return;const x=workbookSheetData();if(!x)return;const max=Math.max(0,...x.a.map(r=>r.length));const pos=WB_SELECTED_COL==null?max:WB_SELECTED_COL+1;x.a.forEach((r,i)=>{while(r.length<pos)r.push('');r.splice(pos,0,i===2?'新しい項目':'')});WB_SELECTED_COL=pos;setWorkbookAOA(x.name,x.a);$('workbookStatus').textContent='＋ 列を追加しました。3行目の項目名を直接入力して保存してください。';});
  $('workbookDeleteColBtn')?.addEventListener('click',()=>{if(!WB||WB_SELECTED_COL==null){$('workbookStatus').textContent='削除したい列を先にタップしてください。';return}const x=workbookSheetData();x.a.forEach(r=>{if(r.length>WB_SELECTED_COL)r.splice(WB_SELECTED_COL,1)});WB_SELECTED_COL=Math.max(0,WB_SELECTED_COL-1);setWorkbookAOA(x.name,x.a);$('workbookStatus').textContent='－ 選択した列を削除しました。保存すると確定します。';});

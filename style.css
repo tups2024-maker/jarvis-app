@@ -80,3 +80,9 @@
 #cellEditInput:focus{border-color:#67eaff;box-shadow:0 0 0 2px rgba(69,226,255,.12)}
 .cell-edit-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:12px}
 @media(min-width:701px){.cell-edit-modal{align-items:center}.cell-edit-card{margin-bottom:0}}
+
+/* V4.9.7: iPhone/PC共通。編集ON時はセル内に本物のinputを表示する */
+.workbook-table td:has(.wb-cell-input){padding:2px;min-width:120px;background:#082338}
+.wb-cell-input{display:block;box-sizing:border-box;width:100%;min-width:112px;height:38px;border:1px solid #24546c;border-radius:6px;background:#071a28;color:#eafcff;padding:7px 8px;font:inherit;font-size:16px;-webkit-user-select:text;user-select:text;touch-action:manipulation}
+.wb-cell-input:focus{outline:2px solid #52e6ff;background:#0a2d48}
+.workbook-header-cell .wb-cell-input{font-weight:800;background:#0b3046}
