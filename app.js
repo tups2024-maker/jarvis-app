@@ -1,4 +1,4 @@
-const meta={dashboard:['JARVIS V4.9.21','T-EXPRESS FUTURE COMMAND CENTER'],sales:['売上・利益','案件別売上・粗利・欠車損失'],ai:['JARVIS AI','JARVISと業務データについて会話'],texpress:['T_Express','軽貨物事業 × AI事業 オフィシャルサイト'],shiftboard:['シフト / 配送','シフト・出勤状況・活動報告・案件情報を統合管理'],workbook:['配送管理表','JARVIS内で確認・編集・保存・再ダウンロード'],salescrm:['営業・案件獲得','営業先・進捗・次回アクション・見込み売上を管理'],settings:['設定','データ連携・システム状態']};
+const meta={dashboard:['JARVIS V4.9.22','T-EXPRESS FUTURE COMMAND CENTER'],sales:['売上・利益','案件別売上・粗利・欠車損失'],ai:['JARVIS AI','JARVISと業務データについて会話'],texpress:['T_Express','軽貨物事業 × AI事業 オフィシャルサイト'],shiftboard:['シフト / 配送','シフト・出勤状況・活動報告・案件情報を統合管理'],workbook:['配送管理表','JARVIS内で確認・編集・保存・再ダウンロード'],salescrm:['営業・案件獲得','毎日の候補リスト・メール営業・進捗を管理'],monetize:['AI収益化','note・SNS・求人コンテンツ作成ツール'],settings:['設定','データ連携・システム状態']};
 const AREA_PROJECTS={静岡:['静岡'],三島:['三島Amazon','三島お酒','秋山製麺','三島便'],一宮:['一宮'],中村区:['中村区'],野洲:['野洲'],富士:['富士'],駿河:['駿河']};
 const DRIVERS=[{"name":"高橋 利旭","area":"静岡","areas":["静岡","三島"]},{"name":"津田 たけし","area":"静岡","areas":["静岡","三島"]},{"name":"中島 由江","area":"静岡","areas":["静岡"]},{"name":"中村","area":"静岡","areas":["静岡"]},{"name":"宇野 文夫","area":"静岡","areas":["静岡"]},{"name":"ヤシマ 聖美","area":"三島","areas":["三島"]},{"name":"髙橋 和也","area":"三島","areas":["三島"]},{"name":"生駒 龍彦","area":"三島","areas":["三島"]},{"name":"日置 将人","area":"三島","areas":["三島"]},{"name":"久松 慧大","area":"三島","areas":["三島"]},{"name":"島田 真一","area":"三島","areas":["三島","一宮"]},{"name":"雨宮 渉","area":"三島","areas":["三島"]},{"name":"持麾 満","area":"三島","areas":["三島"]},{"name":"林 真人","area":"三島","areas":["三島"]},{"name":"福羅 達也","area":"三島","areas":["三島"]},{"name":"福羅 沙織","area":"三島","areas":["三島"]},{"name":"大沼","area":"三島","areas":["三島"]},{"name":"堀井 龍馬","area":"三島","areas":["三島"]},{"name":"増本","area":"一宮","areas":["一宮"]},{"name":"髙橋 悠","area":"一宮","areas":["一宮"]},{"name":"藤原","area":"一宮","areas":["一宮"]},{"name":"京極 雅彦","area":"中村区","areas":["中村区"]},{"name":"川西 亮太","area":"野洲","areas":["野洲"]},{"name":"山本 浩介","area":"野洲","areas":["野洲"]},{"name":"畑中 佑太","area":"富士","areas":["富士"]},{"name":"桑原 貴継","area":"駿河","areas":["駿河"]}];
 
@@ -472,7 +472,7 @@ if('serviceWorker'in navigator){navigator.serviceWorker.getRegistrations().then(
  function row(role,text){const d=document.createElement('div');d.className='ai-row '+role;d.innerHTML=`<div class="ai-avatar">${role==='jarvis'?'J':'YOU'}</div><div class="ai-bubble"><b>${role==='jarvis'?'JARVIS':'YOU'}</b><p>${esc(text)}</p></div>`;log.appendChild(d);log.scrollTop=log.scrollHeight}
  function ask(text){text=(text||'').trim();if(!text)return;input.value='';row('user',text);const main=q('voiceText'),btn=q('voiceSend');if(main&&btn){const before=document.querySelectorAll('#chatLog .msg.jarvis p').length;main.value=text;btn.click();setTimeout(()=>{const msgs=document.querySelectorAll('#chatLog .msg.jarvis p');row('jarvis',msgs.length>before?msgs[msgs.length-1].textContent:'業務データを確認しました。')},90)}}
  q('aiChatSend')?.addEventListener('click',()=>ask(input.value));input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ask(input.value)}});document.querySelectorAll('[data-aicmd]').forEach(b=>b.addEventListener('click',()=>ask(b.dataset.aicmd)));
- const SR2=window.SpeechRecognition||window.webkitSpeechRecognition; if(SR2){const rec=new SR2();rec.lang='ja-JP';rec.interimResults=false;rec.onstart=()=>{q('aiVoiceBtn')?.classList.add('listening');q('aiVoiceInline')?.classList.add('listening');if(q('aiVoiceStatus'))q('aiVoiceStatus').textContent='JARVIS LISTENING...'};rec.onend=()=>{q('aiVoiceBtn')?.classList.remove('listening');q('aiVoiceInline')?.classList.remove('listening');if(q('aiVoiceStatus'))q('aiVoiceStatus').textContent='音声入力 READY'};rec.onresult=e=>{const text=e.results[0][0].transcript;input.value=text;if(q('aiVoiceStatus'))q('aiVoiceStatus').textContent=`認識：${text}`;setTimeout(()=>ask(text),180);};rec.onerror=()=>row('jarvis','音声認識を開始できませんでした。マイクの許可を確認してください。');const start=()=>{try{rec.start()}catch{}};q('aiVoiceBtn')?.addEventListener('click',start);q('aiVoiceInline')?.addEventListener('click',start)}
+ const SR2=window.SpeechRecognition||window.webkitSpeechRecognition; if(SR2){const rec=new SR2();rec.lang='ja-JP';rec.interimResults=false;rec.onstart=()=>{q('aiVoiceBtn')?.classList.add('listening');q('aiVoiceInline')?.classList.add('listening');if(q('aiVoiceStatus'))q('aiVoiceStatus').textContent='JARVIS LISTENING...'};rec.onend=()=>{q('aiVoiceBtn')?.classList.remove('listening');q('aiVoiceInline')?.classList.remove('listening');if(q('aiVoiceStatus'))q('aiVoiceStatus').textContent='音声入力 READY'};rec.onresult=e=>{const text=e.results[0][0].transcript;input.value=text;if(q('aiVoiceStatus'))q('aiVoiceStatus').textContent=`認識：${text}`;input.focus();};rec.onerror=()=>row('jarvis','音声認識を開始できませんでした。マイクの許可を確認してください。');const start=()=>{try{rec.start()}catch{}};q('aiVoiceBtn')?.addEventListener('click',start);q('aiVoiceInline')?.addEventListener('click',start)}
 })();
 
 /* V4.8.8 REPORT / CONTACT / ABSENCE SUPPORT CORE */
@@ -528,7 +528,7 @@ if('serviceWorker'in navigator){navigator.serviceWorker.getRegistrations().then(
 
 
 // V4.9.21 Sales CRM
-const CRM_KEY='jarvis-v4921-sales-crm';
+const CRM_KEY='jarvis-v4922-sales-crm';
 let CRM=[];
 function loadCRM(){try{CRM=JSON.parse(localStorage.getItem(CRM_KEY)||'[]');if(!Array.isArray(CRM))CRM=[]}catch(e){CRM=[]}renderCRM()}
 function crmRow(x={},i=0){const statuses=['未連絡','連絡済','商談中','提案済','獲得','保留'];return `<tr data-crm="${i}"><td><select data-k="rank">${['S','A','B','C'].map(v=>`<option ${x.rank===v?'selected':''}>${v}</option>`).join('')}</select></td><td><input data-k="company" value="${esc(x.company||'')}"></td><td><input data-k="area" value="${esc(x.area||'')}"></td><td><input data-k="case" value="${esc(x.case||'')}"></td><td><select data-k="status">${statuses.map(v=>`<option ${x.status===v?'selected':''}>${v}</option>`).join('')}</select></td><td><input data-k="next" value="${esc(x.next||'')}"></td><td><input data-k="value" inputmode="numeric" value="${Number(x.value||0)||''}"></td><td><input data-k="memo" value="${esc(x.memo||'')}"></td><td><button type="button" class="crm-del" data-i="${i}">×</button></td></tr>`}
@@ -539,3 +539,32 @@ $('crmSaveBtn')?.addEventListener('click',()=>{syncCRMFromTable();localStorage.s
 $('crmBody')?.addEventListener('click',e=>{const b=e.target.closest('.crm-del');if(!b)return;syncCRMFromTable();CRM.splice(Number(b.dataset.i),1);localStorage.setItem(CRM_KEY,JSON.stringify(CRM));renderCRM()});
 $('crmAiBtn')?.addEventListener('click',()=>{syncCRMFromTable();localStorage.setItem(CRM_KEY,JSON.stringify(CRM));go('ai');const t=$('aiChatText');if(t){t.value='営業・案件獲得について、次に優先する営業先とアクションを整理して';t.focus()}});
 loadCRM();
+
+
+// V4.9.22 DAILY SALES / AI REVENUE STUDIO
+(function(){
+ const q=id=>document.getElementById(id);
+ q('crmImportCandidates')?.addEventListener('click',()=>{
+   const lines=(q('crmCandidatePaste').value||'').split(/\n+/).map(x=>x.trim()).filter(Boolean);
+   let added=0;
+   lines.forEach(line=>{const a=line.split(/[｜|\t]/).map(x=>x.trim()); const company=a[0]; if(!company)return;
+     if(CRM.some(x=>(x.company||'').trim()===company))return;
+     CRM.push({rank:(a[3]||'A').match(/^[SABC]$/)?a[3]:'A',company,area:a[1]||'',case:a[2]||'軽貨物配送',status:'未連絡',next:'営業メール作成',value:0,memo:a[4]||'毎日候補'}); added++;
+   });
+   localStorage.setItem(CRM_KEY,JSON.stringify(CRM)); renderCRM(); q('crmCandidatePaste').value=''; alert(`${added}件を営業リストへ追加しました`);
+ });
+ q('crmDraftMail')?.addEventListener('click',()=>{
+   syncCRMFromTable(); const x=CRM.find(v=>v.status==='未連絡')||CRM[0];
+   if(!x){q('crmMailDraft').value='営業先を追加してください。';return}
+   q('crmMailDraft').value=`件名：配送業務のご提案について\n\n${x.company} ご担当者様\n\n突然のご連絡失礼いたします。T_Expressです。\n${x.area?x.area+'エリアを中心に、':''}軽貨物配送・企業配送の運営を行っております。\n${x.case||'配送業務'}について、協力会社・配送体制のご相談機会をいただけないかと思いご連絡いたしました。\n\n案件内容や必要台数に合わせてご相談可能です。ご担当部署へお繋ぎいただけましたら幸いです。\n\n何卒よろしくお願いいたします。\nT_Express`;
+ });
+ const MON_KEY='jarvis-v4922-monetize-draft';
+ q('monGenerate')?.addEventListener('click',()=>{const type=q('monType').value,topic=(q('monTopic').value||'').trim();if(!topic)return alert('テーマを入力してください');let out='';
+   if(type==='note記事') out=`# ${topic}\n\n## はじめに\n現場で感じた課題から、${topic}について整理します。\n\n## 現場で起きていること\n・課題\n・実際の工夫\n・改善した結果\n\n## JARVIS / AIをどう活用するか\n日々の管理を仕組み化し、判断に使える時間を増やします。\n\n## まとめ\n現場で使える形に落とし込むことが重要です。`;
+   else out=`【${type}】\n${topic}\n\n現場目線でポイントを3つ。\n① 課題を見える化\n② 作業を仕組み化\n③ 継続して改善\n\nT_Expressでは物流×AIで、現場が動きやすい仕組みづくりを進めています。\n\n#軽貨物 #物流 #AI活用 #T_Express`;
+   q('monOutput').value=out;
+ });
+ q('monSave')?.addEventListener('click',()=>{localStorage.setItem(MON_KEY,q('monOutput').value||'');alert('下書きを保存しました')});
+ q('monCopy')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(q('monOutput').value||'');alert('コピーしました')}catch{q('monOutput').select()}});
+ if(q('monOutput'))q('monOutput').value=localStorage.getItem(MON_KEY)||'';
+})();
