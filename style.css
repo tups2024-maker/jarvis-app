@@ -39,3 +39,12 @@
 .shift-integrated{margin-top:18px;padding-top:18px;border-top:1px solid #17617d}.integrated-label{font:800 10px monospace;letter-spacing:2px;color:#55e7ff;margin:0 0 12px}.shift-integrated .panel{border-color:#18526a}.shift-integrated .report-panel{background:linear-gradient(145deg,rgba(8,36,52,.95),rgba(4,13,23,.95))}.today-on{background:linear-gradient(135deg,#0a3328,#09251f)!important;border-color:#42e58a!important;box-shadow:inset 3px 0 #55ef98,0 0 16px #32dc7b1f!important}.today-on b{color:#8effb5}.today-on small{color:#62f59b!important}.today-off{opacity:.48}
 @media(max-width:900px){.hud-topline{grid-template-columns:1fr auto}.hud-topline span:last-child{display:none}.command-reactor{display:block}.command-reactor .holo-ring{width:125px;height:125px}.shift-integrated{margin-top:12px}}
 @media(max-width:520px){.hud-topline{display:flex;justify-content:space-between;gap:6px;font-size:7px}.hud-topline span:nth-child(2){font-size:0}.hud-topline span:nth-child(2):after{content:"ONLINE";font-size:7px}.command-reactor{display:none}}
+
+/* V4.8.6 AI CORE */
+.command-reactor{overflow:hidden;position:relative}
+.command-visual{position:relative;width:100%;aspect-ratio:1/1;max-height:520px;border:1px solid rgba(0,240,255,.22);border-radius:22px;overflow:hidden;background:#01070d;box-shadow:0 0 36px rgba(0,238,255,.12),inset 0 0 45px rgba(0,255,174,.07)}
+.command-visual img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;filter:saturate(1.1) contrast(1.05) brightness(.9)}
+.command-visual:after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,transparent 35%,rgba(0,8,16,.18) 62%,rgba(0,4,10,.75) 100%);pointer-events:none}
+.core-overlay{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);z-index:2;text-align:center;letter-spacing:.18em;text-shadow:0 0 14px #00f0ff}
+.core-overlay span{display:block;color:#5ef6ff;font-size:12px}.core-overlay b{display:block;color:#51ff9a;font-size:18px;margin-top:4px}
+@media(max-width:800px){.command-visual{aspect-ratio:4/5;max-height:440px}.command-core-grid{grid-template-columns:1fr}.command-reactor{order:-1}}

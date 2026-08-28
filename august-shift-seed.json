@@ -1,6 +1,6 @@
 {
-  "version": "4.7.5",
-  "fix": "August columns locked to J:AN; avoids September duplicate day headers",
+  "version": "4.8.5",
+  "fix": "三島2026年8月 最新シフト(3)反映：島田25一宮/27休/28〇、津田27〇/28空欄",
   "raw_marks": 586,
   "unique_driver_dates": 569,
   "drivers": [
@@ -2335,12 +2335,12 @@
     },
     {
       "date": "2026-08-25",
-      "area": "三島",
+      "area": "一宮",
       "driver": "島田 真一",
-      "project": "三島Amazon",
+      "project": "一宮",
       "status": "出勤",
-      "work": "三島〇＋〇　2万円",
-      "source": "2026-08-shift-v475",
+      "work": "一宮",
+      "source": "2026-08-shift-v485",
       "sourceAreas": [
         "一宮",
         "三島"
@@ -2360,18 +2360,18 @@
       "area": "三島",
       "driver": "島田 真一",
       "project": "三島Amazon",
-      "status": "出勤",
-      "work": "〇",
-      "source": "2026-08-shift-v475"
+      "status": "休み",
+      "work": "休",
+      "source": "2026-08-shift-v485"
     },
     {
       "date": "2026-08-28",
       "area": "三島",
       "driver": "島田 真一",
       "project": "三島Amazon",
-      "status": "休み",
-      "work": "休",
-      "source": "2026-08-shift-v475"
+      "status": "出勤",
+      "work": "〇",
+      "source": "2026-08-shift-v485"
     },
     {
       "date": "2026-08-29",
@@ -3681,13 +3681,13 @@
       "source": "2026-08-shift-v475"
     },
     {
-      "date": "2026-08-28",
+      "date": "2026-08-27",
       "area": "三島",
       "driver": "津田 たけし",
       "project": "三島Amazon",
       "status": "出勤",
       "work": "〇",
-      "source": "2026-08-shift-v475"
+      "source": "2026-08-shift-v485"
     },
     {
       "date": "2026-08-29",

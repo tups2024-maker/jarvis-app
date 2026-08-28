@@ -1,17 +1,17 @@
 {
-  "version": "4.7.5",
+  "version": "4.8.5",
   "through": "2026-08-28",
   "counts": {
-    "静岡": 58,
-    "三島Amazon": 177,
-    "三島お酒": 28,
-    "秋山製麺": 19,
-    "三島便": 6,
     "一宮": 42,
-    "中村区": 8,
-    "野洲": 28,
+    "三島Amazon": 176,
+    "三島お酒": 28,
     "富士": 19,
-    "駿河": 20
+    "秋山製麺": 19,
+    "野洲": 28,
+    "静岡": 58,
+    "駿河": 20,
+    "中村区": 8,
+    "三島便": 6
   },
   "rates": {
     "静岡": [
@@ -57,8 +57,1648 @@
   },
   "rows": [
     {
+      "date": "2026-08-01",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-01",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-01",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-01",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-01",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-01",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-01",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-01",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-01",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-01",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-01",
+      "driver": "ヤシマ 聖美",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-01",
+      "driver": "山本 浩介",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-01",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-01",
+      "driver": "宇野 文夫",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-01",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "増本",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "福羅 沙織",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "京極 雅彦",
+      "project": "中村区",
+      "business": "中村区",
+      "mark": "〇",
+      "sales_unit": 19580,
+      "driver_pay": 17920,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "山本 浩介",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "宇野 文夫",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-02",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "増本",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "久松 慧大",
+      "project": "三島便",
+      "business": "三島5h",
+      "mark": "研/MX",
+      "sales_unit": 7900,
+      "driver_pay": 8500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "福羅 沙織",
+      "project": "三島便",
+      "business": "三島6h",
+      "mark": "cx",
+      "sales_unit": 7900,
+      "driver_pay": 8500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "京極 雅彦",
+      "project": "中村区",
+      "business": "中村区",
+      "mark": "〇",
+      "sales_unit": 19580,
+      "driver_pay": 17920,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "ヤシマ 聖美",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "津田 たけし",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-03",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-04",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-04",
+      "driver": "髙橋 悠",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-04",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-04",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-04",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-04",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-04",
+      "driver": "津田 たけし",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-04",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-04",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-04",
+      "driver": "京極 雅彦",
+      "project": "中村区",
+      "business": "中村区",
+      "mark": "〇",
+      "sales_unit": 19580,
+      "driver_pay": 17920,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-04",
+      "driver": "ヤシマ 聖美",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-04",
+      "driver": "宇野 文夫",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
       "date": "2026-08-04",
       "driver": "高橋 利旭",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-05",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-05",
+      "driver": "髙橋 悠",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-05",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-05",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-05",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-05",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-05",
+      "driver": "堀井 龍馬",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-05",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-05",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-05",
+      "driver": "中村",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-05",
+      "driver": "宇野 文夫",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-05",
+      "driver": "津田 たけし",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-05",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "福羅 沙織",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "高橋 利旭",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "京極 雅彦",
+      "project": "中村区",
+      "business": "中村区",
+      "mark": "〇",
+      "sales_unit": 19580,
+      "driver_pay": 17920,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "ヤシマ 聖美",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM 遅刻",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "津田 たけし",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-06",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-07",
+      "driver": "増本",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-07",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-07",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-07",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-07",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-07",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-07",
+      "driver": "福羅 沙織",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-07",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-07",
+      "driver": "高橋 利旭",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-07",
+      "driver": "京極 雅彦",
+      "project": "中村区",
+      "business": "中村区",
+      "mark": "〇",
+      "sales_unit": 19580,
+      "driver_pay": 17920,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-07",
+      "driver": "生駒 龍彦",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-07",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-07",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-07",
+      "driver": "宇野 文夫",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "津田 たけし",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "ヤシマ 聖美",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "山本 浩介",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "中村",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "宇野 文夫",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-08",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "増本",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "津田 たけし",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "福羅 沙織",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "京極 雅彦",
+      "project": "中村区",
+      "business": "中村区",
+      "mark": "〇",
+      "sales_unit": 19580,
+      "driver_pay": 17920,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "山本 浩介",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "中村",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-09",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "増本",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "津田 たけし",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "福羅 沙織",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "京極 雅彦",
+      "project": "中村区",
+      "business": "中村区",
+      "mark": "〇",
+      "sales_unit": 19580,
+      "driver_pay": 17920,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "ヤシマ 聖美",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "宇野 文夫",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-10",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-11",
+      "driver": "増本",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-11",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-11",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-11",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-11",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-11",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-11",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-11",
+      "driver": "津田 たけし",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-11",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-11",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-11",
+      "driver": "京極 雅彦",
+      "project": "中村区",
+      "business": "中村区",
+      "mark": "〇",
+      "sales_unit": 19580,
+      "driver_pay": 17920,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-11",
+      "driver": "ヤシマ 聖美",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-11",
+      "driver": "宇野 文夫",
       "project": "静岡",
       "business": "静岡",
       "mark": "〇",
@@ -78,7 +1718,907 @@
     },
     {
       "date": "2026-08-12",
+      "driver": "増本",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-12",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-12",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-12",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-12",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-12",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-12",
+      "driver": "津田 たけし",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-12",
+      "driver": "堀井 龍馬",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-12",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-12",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-12",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-12",
       "driver": "高橋 利旭",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-12",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "髙橋 悠",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "福羅 沙織",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "高橋 利旭",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "生駒 龍彦",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "中村",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "宇野 文夫",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-13",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-14",
+      "driver": "増本",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-14",
+      "driver": "髙橋 悠",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-14",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-14",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-14",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-14",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-14",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-14",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-14",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-14",
+      "driver": "高橋 利旭",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-14",
+      "driver": "生駒 龍彦",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-14",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-14",
+      "driver": "宇野 文夫",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-15",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-15",
+      "driver": "髙橋 悠",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-15",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-15",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-15",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-15",
+      "driver": "福羅 沙織",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-15",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-15",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-15",
+      "driver": "高橋 利旭",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-15",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-15",
+      "driver": "生駒 龍彦",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-15",
+      "driver": "山本 浩介",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-15",
+      "driver": "宇野 文夫",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-15",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "増本",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "髙橋 悠",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "福羅 沙織",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒＋MX",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "津田 たけし",
+      "project": "三島便",
+      "business": "三島6h",
+      "mark": "CX",
+      "sales_unit": 7900,
+      "driver_pay": 8500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "生駒 龍彦",
+      "project": "三島便",
+      "business": "三島5h",
+      "mark": "お酒＋MX",
+      "sales_unit": 7900,
+      "driver_pay": 8500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "山本 浩介",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "宇野 文夫",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-16",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "増本",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "髙橋 悠",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "福羅 沙織",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "髙橋 和也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒+MX",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "大沼",
+      "project": "三島便",
+      "business": "三島6h",
+      "mark": "CX",
+      "sales_unit": 7900,
+      "driver_pay": 8500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "生駒 龍彦",
+      "project": "三島便",
+      "business": "三島5h",
+      "mark": "お酒+MX",
+      "sales_unit": 7900,
+      "driver_pay": 8500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "ヤシマ 聖美",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "中村",
       "project": "静岡",
       "business": "静岡",
       "mark": "〇",
@@ -89,6 +2629,136 @@
     {
       "date": "2026-08-17",
       "driver": "高橋 利旭",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-17",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-18",
+      "driver": "増本",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-18",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-18",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-18",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-18",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-18",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-18",
+      "driver": "津田 たけし",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-18",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-18",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-18",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-18",
+      "driver": "ヤシマ 聖美",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-18",
+      "driver": "宇野 文夫",
       "project": "静岡",
       "business": "静岡",
       "mark": "〇",
@@ -108,7 +2778,667 @@
     },
     {
       "date": "2026-08-19",
+      "driver": "増本",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-19",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-19",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-19",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-19",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-19",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-19",
+      "driver": "堀井 龍馬",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-19",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-19",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-19",
+      "driver": "津田 たけし",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-19",
       "driver": "高橋 利旭",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-19",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "福羅 沙織",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "ヤシマ 聖美",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "中村",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-20",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-21",
+      "driver": "増本",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-21",
+      "driver": "髙橋 悠",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-21",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-21",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-21",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-21",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-21",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-21",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-21",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-21",
+      "driver": "ヤシマ 聖美",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-21",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-21",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-21",
+      "driver": "中村",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-21",
+      "driver": "津田 たけし",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-22",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-22",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-22",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-22",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-22",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-22",
+      "driver": "福羅 沙織",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-22",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-22",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-22",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-22",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-22",
+      "driver": "ヤシマ 聖美",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-22",
+      "driver": "山本 浩介",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-22",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-22",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-23",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-23",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-23",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-23",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-23",
+      "driver": "福羅 沙織",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-23",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-23",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-23",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-23",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-23",
+      "driver": "山本 浩介",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-23",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-23",
+      "driver": "中島 由江",
       "project": "静岡",
       "business": "静岡",
       "mark": "〇",
@@ -127,243 +3457,133 @@
       "actual": 1
     },
     {
-      "date": "2026-08-25",
-      "driver": "高橋 利旭",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-26",
-      "driver": "高橋 利旭",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-27",
-      "driver": "高橋 利旭",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "津田 たけし",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-05",
-      "driver": "津田 たけし",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "津田 たけし",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-19",
-      "driver": "津田 たけし",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-21",
-      "driver": "津田 たけし",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-01",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-02",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-07",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-08",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-12",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-20",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-21",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-22",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
       "date": "2026-08-23",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
       "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-24",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-24",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-24",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-24",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-24",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-24",
+      "driver": "津田 たけし",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-24",
+      "driver": "福羅 沙織",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-24",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-24",
+      "driver": "堀井 龍馬",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-24",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-24",
+      "driver": "生駒 龍彦",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-24",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
       "actual": 1
     },
     {
@@ -377,8 +3597,8 @@
       "actual": 1
     },
     {
-      "date": "2026-08-27",
-      "driver": "中島 由江",
+      "date": "2026-08-24",
+      "driver": "宇野 文夫",
       "project": "静岡",
       "business": "静岡",
       "mark": "〇",
@@ -387,83 +3607,113 @@
       "actual": 1
     },
     {
-      "date": "2026-08-28",
-      "driver": "中島 由江",
-      "project": "静岡",
-      "business": "静岡",
+      "date": "2026-08-24",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
       "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
+      "sales_unit": 20160,
+      "driver_pay": 19000,
       "actual": 1
     },
     {
-      "date": "2026-08-05",
-      "driver": "中村",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
+      "date": "2026-08-25",
+      "driver": "島田 真一",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "一宮",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
       "actual": 1
     },
     {
-      "date": "2026-08-08",
-      "driver": "中村",
-      "project": "静岡",
-      "business": "静岡",
+      "date": "2026-08-25",
+      "driver": "藤原",
+      "project": "一宮",
+      "business": "一宮",
       "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
+      "sales_unit": 19300,
+      "driver_pay": 18720,
       "actual": 1
     },
     {
-      "date": "2026-08-09",
-      "driver": "中村",
-      "project": "静岡",
-      "business": "静岡",
+      "date": "2026-08-25",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
       "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
+      "sales_unit": 18200,
+      "driver_pay": 17000,
       "actual": 1
     },
     {
-      "date": "2026-08-13",
-      "driver": "中村",
-      "project": "静岡",
-      "business": "静岡",
+      "date": "2026-08-25",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
       "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
+      "sales_unit": 18200,
+      "driver_pay": 17000,
       "actual": 1
     },
     {
-      "date": "2026-08-17",
-      "driver": "中村",
-      "project": "静岡",
-      "business": "静岡",
+      "date": "2026-08-25",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
       "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
+      "sales_unit": 18200,
+      "driver_pay": 17000,
       "actual": 1
     },
     {
-      "date": "2026-08-20",
-      "driver": "中村",
-      "project": "静岡",
-      "business": "静岡",
+      "date": "2026-08-25",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
       "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
+      "sales_unit": 18200,
+      "driver_pay": 17000,
       "actual": 1
     },
     {
-      "date": "2026-08-21",
-      "driver": "中村",
-      "project": "静岡",
-      "business": "静岡",
+      "date": "2026-08-25",
+      "driver": "津田 たけし",
+      "project": "三島Amazon",
+      "business": "三島11h",
       "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-25",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-25",
+      "driver": "生駒 龍彦",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-25",
+      "driver": "ヤシマ 聖美",
+      "project": "秋山製麺",
+      "business": "秋山製麺",
+      "mark": "AM",
+      "sales_unit": 10000,
+      "driver_pay": 9000,
       "actual": 1
     },
     {
@@ -477,318 +3727,28 @@
       "actual": 1
     },
     {
-      "date": "2026-08-01",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-02",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-04",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-05",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-07",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-08",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-11",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-14",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-15",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-18",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-24",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-26",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-28",
-      "driver": "宇野 文夫",
-      "project": "静岡",
-      "business": "静岡",
-      "mark": "〇",
-      "sales_unit": 18700,
-      "driver_pay": 18000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-01",
-      "driver": "ヤシマ 聖美",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "ヤシマ 聖美",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-04",
-      "driver": "ヤシマ 聖美",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "ヤシマ 聖美",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM 遅刻",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-08",
-      "driver": "ヤシマ 聖美",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "ヤシマ 聖美",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-11",
-      "driver": "ヤシマ 聖美",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "ヤシマ 聖美",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-18",
-      "driver": "ヤシマ 聖美",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-20",
-      "driver": "ヤシマ 聖美",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-21",
-      "driver": "ヤシマ 聖美",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-22",
-      "driver": "ヤシマ 聖美",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
       "date": "2026-08-25",
-      "driver": "ヤシマ 聖美",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-28",
-      "driver": "ヤシマ 聖美",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "髙橋 和也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
       "driver": "高橋 利旭",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-26",
+      "driver": "髙橋 悠",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-26",
+      "driver": "大沼",
       "project": "三島Amazon",
       "business": "三島11h",
       "mark": "〇",
@@ -797,8 +3757,168 @@
       "actual": 1
     },
     {
-      "date": "2026-08-07",
+      "date": "2026-08-26",
+      "driver": "持麾 満",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-26",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-26",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-26",
+      "driver": "堀井 龍馬",
+      "project": "三島お酒",
+      "business": "三島お酒",
+      "mark": "お酒",
+      "sales_unit": 20000,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-26",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-26",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-26",
+      "driver": "宇野 文夫",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-26",
       "driver": "高橋 利旭",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-26",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-27",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-27",
+      "driver": "日置 将人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-27",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-27",
+      "driver": "津田 たけし",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-27",
+      "driver": "福羅 沙織",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-27",
+      "driver": "福羅 達也",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-27",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-27",
+      "driver": "生駒 龍彦",
       "project": "三島お酒",
       "business": "三島お酒",
       "mark": "お酒",
@@ -807,37 +3927,127 @@
       "actual": 1
     },
     {
-      "date": "2026-08-13",
+      "date": "2026-08-27",
+      "driver": "畑中 佑太",
+      "project": "富士",
+      "business": "富士",
+      "mark": "〇",
+      "sales_unit": 20880,
+      "driver_pay": 18710,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-27",
+      "driver": "川西 亮太",
+      "project": "野洲",
+      "business": "野洲",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 17500,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-27",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-27",
       "driver": "高橋 利旭",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
+      "project": "静岡",
+      "business": "静岡",
+      "mark": "〇",
+      "sales_unit": 18700,
+      "driver_pay": 18000,
       "actual": 1
     },
     {
-      "date": "2026-08-14",
-      "driver": "高橋 利旭",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
+      "date": "2026-08-27",
+      "driver": "桑原 貴継",
+      "project": "駿河",
+      "business": "駿河",
+      "mark": "〇",
+      "sales_unit": 20160,
+      "driver_pay": 19000,
       "actual": 1
     },
     {
-      "date": "2026-08-15",
-      "driver": "高橋 利旭",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
+      "date": "2026-08-28",
+      "driver": "増本",
+      "project": "一宮",
+      "business": "一宮",
+      "mark": "〇",
+      "sales_unit": 19300,
+      "driver_pay": 18720,
       "actual": 1
     },
     {
-      "date": "2026-08-01",
+      "date": "2026-08-28",
+      "driver": "久松 慧大",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-28",
+      "driver": "堀井 龍馬",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-28",
+      "driver": "大沼",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-28",
+      "driver": "島田 真一",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-28",
+      "driver": "林 真人",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-28",
+      "driver": "雨宮 渉",
+      "project": "三島Amazon",
+      "business": "三島11h",
+      "mark": "〇",
+      "sales_unit": 18200,
+      "driver_pay": 17000,
+      "actual": 1
+    },
+    {
+      "date": "2026-08-28",
       "driver": "生駒 龍彦",
       "project": "三島お酒",
       "business": "三島お酒",
@@ -847,48 +4057,8 @@
       "actual": 1
     },
     {
-      "date": "2026-08-02",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-04",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-07",
-      "driver": "生駒 龍彦",
+      "date": "2026-08-28",
+      "driver": "ヤシマ 聖美",
       "project": "秋山製麺",
       "business": "秋山製麺",
       "mark": "AM",
@@ -897,2736 +4067,6 @@
       "actual": 1
     },
     {
-      "date": "2026-08-08",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-11",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "生駒 龍彦",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-14",
-      "driver": "生駒 龍彦",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-15",
-      "driver": "生駒 龍彦",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒＋MX",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "生駒 龍彦",
-      "project": "三島便",
-      "business": "三島5h",
-      "mark": "お酒＋MX",
-      "sales_unit": 7900,
-      "driver_pay": 8500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒+MX",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "生駒 龍彦",
-      "project": "三島便",
-      "business": "三島5h",
-      "mark": "お酒+MX",
-      "sales_unit": 7900,
-      "driver_pay": 8500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-18",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-20",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-21",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-22",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-23",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-24",
-      "driver": "生駒 龍彦",
-      "project": "秋山製麺",
-      "business": "秋山製麺",
-      "mark": "AM",
-      "sales_unit": 10000,
-      "driver_pay": 9000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-25",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-27",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-28",
-      "driver": "生駒 龍彦",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-01",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-02",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-05",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-08",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-12",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-19",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-20",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-23",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-24",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-26",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-27",
-      "driver": "日置 将人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-01",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "久松 慧大",
-      "project": "三島便",
-      "business": "三島5h",
-      "mark": "研/MX",
-      "sales_unit": 7900,
-      "driver_pay": 8500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-04",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-07",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-08",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-12",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-14",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-15",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-18",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-19",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-21",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-22",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-23",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-24",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-28",
-      "driver": "久松 慧大",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-01",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-02",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-07",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-08",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-11",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-14",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-15",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-20",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-22",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-23",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-25",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-27",
-      "driver": "島田 真一",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-01",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-02",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-04",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-08",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-11",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-14",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-15",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-18",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-21",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-22",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-23",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-25",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-26",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-27",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-28",
-      "driver": "雨宮 渉",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-01",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-02",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-04",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-05",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-07",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-08",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-11",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-12",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-14",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-18",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-19",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-21",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-22",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-23",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-25",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-26",
-      "driver": "持麾 満",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-05",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-08",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-11",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-14",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-18",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-20",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-21",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-22",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-24",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-25",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-27",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-28",
-      "driver": "林 真人",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-02",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-07",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-15",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-18",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-20",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-22",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-23",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-24",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-27",
-      "driver": "福羅 達也",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-02",
-      "driver": "福羅 沙織",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "福羅 沙織",
-      "project": "三島便",
-      "business": "三島6h",
-      "mark": "cx",
-      "sales_unit": 7900,
-      "driver_pay": 8500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "福羅 沙織",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-07",
-      "driver": "福羅 沙織",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "福羅 沙織",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "福羅 沙織",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "福羅 沙織",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-15",
-      "driver": "福羅 沙織",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "福羅 沙織",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "福羅 沙織",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-20",
-      "driver": "福羅 沙織",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-22",
-      "driver": "福羅 沙織",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-23",
-      "driver": "福羅 沙織",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-24",
-      "driver": "福羅 沙織",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-27",
-      "driver": "福羅 沙織",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-01",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-02",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-04",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-05",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-07",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-11",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-12",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-14",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-15",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "大沼",
-      "project": "三島便",
-      "business": "三島6h",
-      "mark": "CX",
-      "sales_unit": 7900,
-      "driver_pay": 8500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-19",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-20",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-21",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-24",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-25",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-26",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-28",
-      "driver": "大沼",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-04",
-      "driver": "津田 たけし",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-08",
-      "driver": "津田 たけし",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "津田 たけし",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "津田 たけし",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-11",
-      "driver": "津田 たけし",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-12",
-      "driver": "津田 たけし",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "津田 たけし",
-      "project": "三島便",
-      "business": "三島6h",
-      "mark": "CX",
-      "sales_unit": 7900,
-      "driver_pay": 8500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-18",
-      "driver": "津田 たけし",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-24",
-      "driver": "津田 たけし",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-25",
-      "driver": "津田 たけし",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-28",
-      "driver": "津田 たけし",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-01",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-04",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-05",
-      "driver": "堀井 龍馬",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-07",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-11",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-12",
-      "driver": "堀井 龍馬",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-14",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-18",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-19",
-      "driver": "堀井 龍馬",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-20",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-21",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-24",
-      "driver": "堀井 龍馬",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-25",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-26",
-      "driver": "堀井 龍馬",
-      "project": "三島お酒",
-      "business": "三島お酒",
-      "mark": "お酒",
-      "sales_unit": 20000,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-27",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-28",
-      "driver": "堀井 龍馬",
-      "project": "三島Amazon",
-      "business": "三島11h",
-      "mark": "〇",
-      "sales_unit": 18200,
-      "driver_pay": 17000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-02",
-      "driver": "増本",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "増本",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-07",
-      "driver": "増本",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "増本",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "増本",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-11",
-      "driver": "増本",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-12",
-      "driver": "増本",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-14",
-      "driver": "増本",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "増本",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "増本",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-18",
-      "driver": "増本",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-19",
-      "driver": "増本",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-21",
-      "driver": "増本",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-28",
-      "driver": "増本",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-04",
-      "driver": "髙橋 悠",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-05",
-      "driver": "髙橋 悠",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "髙橋 悠",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-14",
-      "driver": "髙橋 悠",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-15",
-      "driver": "髙橋 悠",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "髙橋 悠",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "髙橋 悠",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-21",
-      "driver": "髙橋 悠",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-26",
-      "driver": "髙橋 悠",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-01",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-04",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-05",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-08",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-11",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-12",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-15",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-18",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-19",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-20",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-22",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-24",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-25",
-      "driver": "藤原",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-25",
-      "driver": "島田 真一",
-      "project": "一宮",
-      "business": "一宮",
-      "mark": "〇　2万円",
-      "sales_unit": 19300,
-      "driver_pay": 18720,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-02",
-      "driver": "京極 雅彦",
-      "project": "中村区",
-      "business": "中村区",
-      "mark": "〇",
-      "sales_unit": 19580,
-      "driver_pay": 17920,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "京極 雅彦",
-      "project": "中村区",
-      "business": "中村区",
-      "mark": "〇",
-      "sales_unit": 19580,
-      "driver_pay": 17920,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-04",
-      "driver": "京極 雅彦",
-      "project": "中村区",
-      "business": "中村区",
-      "mark": "〇",
-      "sales_unit": 19580,
-      "driver_pay": 17920,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "京極 雅彦",
-      "project": "中村区",
-      "business": "中村区",
-      "mark": "〇",
-      "sales_unit": 19580,
-      "driver_pay": 17920,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-07",
-      "driver": "京極 雅彦",
-      "project": "中村区",
-      "business": "中村区",
-      "mark": "〇",
-      "sales_unit": 19580,
-      "driver_pay": 17920,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "京極 雅彦",
-      "project": "中村区",
-      "business": "中村区",
-      "mark": "〇",
-      "sales_unit": 19580,
-      "driver_pay": 17920,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "京極 雅彦",
-      "project": "中村区",
-      "business": "中村区",
-      "mark": "〇",
-      "sales_unit": 19580,
-      "driver_pay": 17920,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-11",
-      "driver": "京極 雅彦",
-      "project": "中村区",
-      "business": "中村区",
-      "mark": "〇",
-      "sales_unit": 19580,
-      "driver_pay": 17920,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-02",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-05",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-07",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-12",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-14",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-19",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-20",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-21",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-23",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-24",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-26",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-27",
-      "driver": "川西 亮太",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
       "date": "2026-08-28",
       "driver": "川西 亮太",
       "project": "野洲",
@@ -3637,473 +4077,23 @@
       "actual": 1
     },
     {
-      "date": "2026-08-01",
-      "driver": "山本 浩介",
-      "project": "野洲",
-      "business": "野洲",
+      "date": "2026-08-28",
+      "driver": "中島 由江",
+      "project": "静岡",
+      "business": "静岡",
       "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
+      "sales_unit": 18700,
+      "driver_pay": 18000,
       "actual": 1
     },
     {
-      "date": "2026-08-02",
-      "driver": "山本 浩介",
-      "project": "野洲",
-      "business": "野洲",
+      "date": "2026-08-28",
+      "driver": "宇野 文夫",
+      "project": "静岡",
+      "business": "静岡",
       "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-08",
-      "driver": "山本 浩介",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "山本 浩介",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-15",
-      "driver": "山本 浩介",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "山本 浩介",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-22",
-      "driver": "山本 浩介",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-23",
-      "driver": "山本 浩介",
-      "project": "野洲",
-      "business": "野洲",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 17500,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-01",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-05",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-08",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-12",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-15",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-19",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-20",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-22",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-23",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-24",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-26",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-27",
-      "driver": "畑中 佑太",
-      "project": "富士",
-      "business": "富士",
-      "mark": "〇",
-      "sales_unit": 20880,
-      "driver_pay": 18710,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-01",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-02",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-03",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-05",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-06",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-08",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-09",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-10",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-12",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-13",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-15",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-16",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-17",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-19",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-20",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-22",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-23",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-24",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-26",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
-      "actual": 1
-    },
-    {
-      "date": "2026-08-27",
-      "driver": "桑原 貴継",
-      "project": "駿河",
-      "business": "駿河",
-      "mark": "〇",
-      "sales_unit": 20160,
-      "driver_pay": 19000,
+      "sales_unit": 18700,
+      "driver_pay": 18000,
       "actual": 1
     }
   ]
