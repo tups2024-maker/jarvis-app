@@ -1,5 +1,5 @@
 {
-  "version": "4.9.0",
+  "version": "4.9.1",
   "month": "2026-08",
   "data_date": "2026-08-28",
   "sales_tax_rate": 0.1,
@@ -100,16 +100,18 @@
     "駿河": 20
   },
   "rate_version": "2026-08-28-sales-and-grossprofit-v1",
-  "shift_version": "2026-08-28-v490-latest-shift3-integrated",
-  "actuals_version": "2026-08-28-v490-sales-shift-delivery-integrated",
+  "shift_version": "2026-08-28-v491-latest-shift3-integrated",
+  "actuals_version": "2026-08-28-v491-sales-shift-delivery-integrated",
   "actuals_basis": "2026-08-01_to_2026-08-28",
   "notes": [
+    "V4.9.1: トップ画面の売上・粗利・稼働が—表示になる初期化エラーを修正",
+    "V4.9.1: 公式の売上・単価データを毎回JSONから読み込み、古い端末保存データによる未反映を防止",
     "V4.9.0: 最新の三島8月シフト(静岡県 シフト(3).xlsx)をJARVISシフトに統合",
     "V4.9.0: 8/28までの案件別実績・売上・粗利をトップ/売上画面へ統合",
     "V4.9.0: シフト変更は本日稼働/欠車/出勤者表示へ連動",
     "三島Amazon実績は最新変更反映後176件",
     "売上単価は税別、DR支払は税込、粗利は税込基準"
   ],
-  "ui_version": "2026-08-28-v490-command-center-all-data-integrated",
+  "ui_version": "2026-08-28-v491-render-fix",
   "driver_baseline": "2026-08-01_to_2026-08-27"
 }
