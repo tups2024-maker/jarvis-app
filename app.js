@@ -1,4 +1,4 @@
-const meta={dashboard:['JARVIS V4.7.6','音声・チャット・活動報告・経営数値を統合'],delivery:['配送・シフト','エリア別の出勤者・案件・活動報告を管理'],drivers:['ドライバー稼働','各ドライバーの今月稼働日数を確認'],absence:['欠車対応','欠車・不足案件の確認'],sales:['売上・利益','案件別売上・粗利・欠車損失'],locations:['案件別実績','案件単位の稼働状況'],ai:['AI分析','JARVISによる経営判断'],shiftboard:['シフト表','活動報告を日付×ドライバーで確認・編集'],workbook:['配送管理表','ExcelをJARVIS内で確認・編集・保存・再ダウンロード'],settings:['設定','データ連携・システム状態']};
+const meta={dashboard:['JARVIS V4.7.7','音声・チャット・活動報告・経営数値を統合'],delivery:['配送・シフト','エリア別の出勤者・案件・活動報告を管理'],drivers:['ドライバー稼働','各ドライバーの今月稼働日数を確認'],absence:['欠車対応','欠車・不足案件の確認'],sales:['売上・利益','案件別売上・粗利・欠車損失'],locations:['案件別実績','案件単位の稼働状況'],ai:['AI分析','JARVISによる経営判断'],shiftboard:['シフト表','活動報告を日付×ドライバーで確認・編集'],workbook:['配送管理表','ExcelをJARVIS内で確認・編集・保存・再ダウンロード'],settings:['設定','データ連携・システム状態']};
 const AREA_PROJECTS={静岡:['静岡'],三島:['三島Amazon','三島お酒','秋山製麺','三島便'],一宮:['一宮'],中村区:['中村区'],野洲:['野洲'],富士:['富士'],駿河:['駿河']};
 const DRIVERS=[{"name":"高橋 利旭","area":"静岡","areas":["静岡","三島"]},{"name":"津田 たけし","area":"静岡","areas":["静岡","三島"]},{"name":"中島 由江","area":"静岡","areas":["静岡"]},{"name":"中村","area":"静岡","areas":["静岡"]},{"name":"宇野 文夫","area":"静岡","areas":["静岡"]},{"name":"ヤシマ 聖美","area":"三島","areas":["三島"]},{"name":"髙橋 和也","area":"三島","areas":["三島"]},{"name":"生駒 龍彦","area":"三島","areas":["三島"]},{"name":"日置 将人","area":"三島","areas":["三島"]},{"name":"久松 慧大","area":"三島","areas":["三島"]},{"name":"島田 真一","area":"三島","areas":["三島","一宮"]},{"name":"雨宮 渉","area":"三島","areas":["三島"]},{"name":"持麾 満","area":"三島","areas":["三島"]},{"name":"林 真人","area":"三島","areas":["三島"]},{"name":"福羅 達也","area":"三島","areas":["三島"]},{"name":"福羅 沙織","area":"三島","areas":["三島"]},{"name":"大沼","area":"三島","areas":["三島"]},{"name":"堀井 龍馬","area":"三島","areas":["三島"]},{"name":"増本","area":"一宮","areas":["一宮"]},{"name":"髙橋 悠","area":"一宮","areas":["一宮"]},{"name":"藤原","area":"一宮","areas":["一宮"]},{"name":"京極 雅彦","area":"中村区","areas":["中村区"]},{"name":"川西 亮太","area":"野洲","areas":["野洲"]},{"name":"山本 浩介","area":"野洲","areas":["野洲"]},{"name":"畑中 佑太","area":"富士","areas":["富士"]},{"name":"桑原 貴継","area":"駿河","areas":["駿河"]}];
 
@@ -128,13 +128,13 @@ async function initWorkbook(){
     const a=[];a[0]=['案件名：',project,'','','','請求先：',client[project],'','','','令和8年8月分','','','','','','DR','所属','業務名','単価','実績','合計','調整','支払'];
     a[1]=[];
     a[2]=['走行日','DR','業務名','積み地','納品先','','着車','完了','天引き金額','DR金額','フォロー金額','備考','','実績','記入者','','DR','所属','業務名','単価','実績','合計','調整','支払'];
-    rows.forEach(x=>a.push([x.date.replaceAll('-','/'),short(x.driver),biz[project]||x.business,'','','','','',0,x.driver_pay,0,x.mark==='〇'?'':x.mark,'',1,'JARVIS']));
+    rows.forEach(x=>{const d=new Date(x.date+'T00:00:00');const md=`${d.getMonth()+1}月${d.getDate()}日`;a.push([md,short(x.driver),biz[project]||x.business,'','','','','',0,x.driver_pay,0,x.mark==='〇'?'':x.mark,'',1,''])});
     const by={};rows.forEach(x=>{const k=short(x.driver);by[k]=(by[k]||0)+1});
     Object.entries(by).sort((x,y)=>x[0].localeCompare(y[0],'ja')).forEach(([dr,c],i)=>{const rr=3+i;while(a.length<=rr)a.push([]);a[rr][16]=dr;a[rr][17]='';a[rr][18]=biz[project];a[rr][19]=rate[1];a[rr][20]=c;a[rr][21]=c*rate[1];a[rr][22]=0;a[rr][23]=c*rate[1]});
     const ws=XLSX.utils.aoa_to_sheet(a);ws['!cols']=[{wch:12},{wch:14},{wch:14},{wch:12},{wch:12},{wch:3},{wch:9},{wch:9},{wch:12},{wch:12},{wch:12},{wch:16},{wch:3},{wch:8},{wch:10},{wch:3},{wch:14},{wch:14},{wch:14},{wch:12},{wch:8},{wch:14},{wch:10},{wch:14}];
     XLSX.utils.book_append_sheet(WB,ws,names[project]);
   });
-  WB_NAME='2026年8月_配送管理表_過去フォーマット_JARVIS反映.xlsx';setupSheetSelect();$('workbookStatus').textContent='✓ 過去の配送管理表と同じ列構成で、個人別実績を8/28まで反映済み';renderWorkbook()
+  WB_NAME='2026年8月_配送管理表_既存形式_JARVIS反映.xlsx';setupSheetSelect();$('workbookStatus').textContent='✓ 静岡は既存表と同じ仕分け（走行日→DR→業務名→金額→備考→実績）で8/28まで反映済み';renderWorkbook()
  }}catch(e){console.warn(e)}}
  $('xlsxInput').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f||!window.XLSX)return;const buf=await f.arrayBuffer();WB=XLSX.read(buf,{type:'array'});WB_NAME=f.name;setupSheetSelect();await saveWorkbookBytes(buf,f.name);$('workbookStatus').textContent=`✓ ${f.name} をJARVISに保存しました`;renderWorkbook()});
  $('sheetSelect').addEventListener('change',renderWorkbook);
