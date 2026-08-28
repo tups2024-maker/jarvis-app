@@ -8,3 +8,6 @@
 /* V4.7.1 shift code visibility */
 .shift-cell{min-width:48px;padding:5px 3px;font-size:11px;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .shift-row{grid-auto-columns:minmax(48px,1fr)}
+
+/* V4.7.4 weekday headers */
+.shift-date{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05;gap:2px}.shift-date small{font-size:9px;opacity:.75}.shift-date.sun{font-weight:800}.shift-date.sat{font-weight:800}.shift-head .shift-date{min-height:38px}
