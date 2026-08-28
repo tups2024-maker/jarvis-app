@@ -285,7 +285,7 @@ function integrateMishimaWorkbook(){
   const routeSheets=WB.SheetNames.filter(n=>n!==target&&/三島便/.test(n));
   routeSheets.forEach(n=>{const a=XLSX.utils.sheet_to_json(WB.Sheets[n],{header:1,defval:''});a.slice(3).forEach(r=>{if(r.some(v=>String(v).trim())){rows.push(r);added++}});delete WB.Sheets[n];WB.SheetNames=WB.SheetNames.filter(x=>x!==n)});
   const hasTraining=rows.some(r=>/8月2日/.test(String(r[0]))&&normalizeDriverForOrder(r[1])===normalizeDriverForOrder('久松 慧大')&&String(r[2]).includes('研修'));
-  if(!hasTraining){rows.push(['8月2日','久松','研修費',0,'',0,mergeReferral('研修',referralForDriver('久松 慧大')),1,'']);added++}
+  if(!hasTraining){rows.push(['8月2日','久松','研修費',0,17500,0,mergeReferral('研修',referralForDriver('久松 慧大')),1,'']);added++}
   const order=SHIFT_DRIVER_ORDER['三島']||[],rank=new Map(order.map((n,i)=>[normalizeDriverForOrder(n),i]));
   rows.sort((a,b)=>mdSortValue(a[0])-mdSortValue(b[0])||((rank.get(normalizeDriverForOrder(a[1]))??9999)-(rank.get(normalizeDriverForOrder(b[1]))??9999))||String(a[2]).localeCompare(String(b[2]),'ja'));
   WB.Sheets[target]=XLSX.utils.aoa_to_sheet(base.slice(0,3).concat(rows));
@@ -320,18 +320,36 @@ function splitMishimaSpecialSheets(){
   WB.Sheets[target]=XLSX.utils.aoa_to_sheet(base.slice(0,3).concat(keep));
   return alcohol.length+noodles.length;
 }
+function applyV4917DeliveryRules(){
+  if(!WB||!window.XLSX)return 0;let changed=0;
+  WB.SheetNames.forEach(name=>{
+    const a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});if(a.length<3)return;
+    const hdr=a[2]||[], drCol=hdr.findIndex(x=>String(x).trim()==='DR'), bizCol=hdr.findIndex(x=>String(x).trim()==='業務名'), payCol=hdr.findIndex(x=>String(x).trim()==='DR金額');
+    const isAlcohol=/三島お酒/.test(name), isAmazon=/2026年8月 三島$/.test(name)||(/三島/.test(name)&&!/お酒|秋山|製麺/.test(name));
+    if(isAlcohol){const follow=hdr.findIndex(x=>String(x).trim()==='フォロー金額');if(follow>=0&&a[2][follow]!=='残業代'){a[2][follow]='残業代';changed++}}
+    for(let r=3;r<a.length;r++){
+      const dr=normalizeDriverForOrder(a[r]?.[drCol]), biz=String(a[r]?.[bizCol]||'');
+      if(isAlcohol&&dr===normalizeDriverForOrder('堀井 龍馬')&&payCol>=0&&Number(a[r][payCol])!==18150){a[r][payCol]=18150;changed++}
+      if(isAmazon&&payCol>=0){
+        if((dr===normalizeDriverForOrder('久松 慧大')||dr===normalizeDriverForOrder('生駒 龍彦'))&&Number(a[r][payCol])!==17500){a[r][payCol]=17500;changed++}
+        if(dr===normalizeDriverForOrder('久松 慧大')&&/研修/.test(biz)&&Number(a[r][payCol])!==17500){a[r][payCol]=17500;changed++}
+      }
+    }
+    WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);
+  });return changed;
+}
 async function persistMigratedWorkbook(){
   if(!WB||!window.XLSX)return;
   try{
     const bytes=XLSX.write(WB,{bookType:'xlsx',type:'array'});
     await saveWorkbookBytes(bytes,WB_NAME||'2026年8月_配送管理表_JARVIS.xlsx');
-    localStorage.setItem('jarvis-v4916-delivery-migrated','1');
+    localStorage.setItem('jarvis-v4917-delivery-migrated','1');
   }catch(e){console.warn('delivery migration save failed',e)}
 }
 async function initWorkbook(){
  if(!$('xlsxInput'))return;
  const saved=await loadWorkbookBytes().catch(()=>null);
- if(saved&&window.XLSX){const u8=new Uint8Array(saved.bytes);WB=XLSX.read(u8,{type:'array'});WB_NAME=saved.name||WB_NAME;const mishimaN=integrateMishimaWorkbook();const splitN=splitMishimaSpecialSheets();const forceN=forceDriverNamesAndNotes();reorderWorkbookByShiftOrder();const refN=applyReferralToWorkbook();setupSheetSelect();await persistMigratedWorkbook();$('workbookStatus').textContent=`✓ iPhone保存データをV4.9.16へ自動移行済み：三島Amazon＋5h/6h ／ 三島お酒 ／ 秋山製麺を別表化 ／ 研修費・備考も保持`;renderWorkbook()}else if(window.XLSX){try{const r=await fetch('./delivery-seed.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){
+ if(saved&&window.XLSX){const u8=new Uint8Array(saved.bytes);WB=XLSX.read(u8,{type:'array'});WB_NAME=saved.name||WB_NAME;const mishimaN=integrateMishimaWorkbook();const splitN=splitMishimaSpecialSheets();const forceN=forceDriverNamesAndNotes();const ruleN=applyV4917DeliveryRules();reorderWorkbookByShiftOrder();const refN=applyReferralToWorkbook();setupSheetSelect();await persistMigratedWorkbook();$('workbookStatus').textContent=`✓ iPhone保存データをV4.9.17へ自動移行済み：三島Amazon＋5h/6h ／ 三島お酒 ／ 秋山製麺を別表化 ／ 研修費・備考も保持`;renderWorkbook()}else if(window.XLSX){try{const r=await fetch('./delivery-seed.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){
   const ds=await r.json();WB=XLSX.utils.book_new();
   const order=['静岡','三島Amazon','三島お酒','秋山製麺','三島便','一宮','中村区','野洲','富士','駿河'];
   const names={'静岡':'2026年8月 静岡','三島Amazon':'2026年8月 三島','三島お酒':'2026年8月 三島お酒','秋山製麺':'2026年8月 秋山製麺所','三島便':'2026年8月 三島便','一宮':'2026年8月 一宮','中村区':'2026年8月 中村区','野洲':'2026年8月 野洲','富士':'2026年8月 富士','駿河':'2026年8月 駿河'};
@@ -348,7 +366,7 @@ async function initWorkbook(){
     const ws=XLSX.utils.aoa_to_sheet(a);ws['!cols']=[{wch:12},{wch:14},{wch:16},{wch:13},{wch:13},{wch:14},{wch:22},{wch:8},{wch:12}];
     XLSX.utils.book_append_sheet(WB,ws,names[project]);
   });
-  integrateMishimaWorkbook();splitMishimaSpecialSheets();forceDriverNamesAndNotes();WB_NAME='2026年8月_配送管理表_業務別_JARVIS.xlsx';setupSheetSelect();await persistMigratedWorkbook();$('workbookStatus').textContent='✓ V4.9.16形式で保存：三島Amazon＋5h/6h、三島お酒、秋山製麺を別管理表に分離';renderWorkbook()
+  integrateMishimaWorkbook();splitMishimaSpecialSheets();forceDriverNamesAndNotes();applyV4917DeliveryRules();WB_NAME='2026年8月_配送管理表_業務別_JARVIS.xlsx';setupSheetSelect();await persistMigratedWorkbook();$('workbookStatus').textContent='✓ V4.9.17形式で保存：三島Amazon＋5h/6h、三島お酒、秋山製麺を別管理表に分離';renderWorkbook()
  }}catch(e){console.warn(e)}}
  $('xlsxInput').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f||!window.XLSX)return;const buf=await f.arrayBuffer();WB=XLSX.read(buf,{type:'array'});WB_NAME=f.name;setupSheetSelect();await saveWorkbookBytes(buf,f.name);$('workbookStatus').textContent=`✓ ${f.name} をJARVISに保存しました`;renderWorkbook()});
  $('sheetSelect').addEventListener('change',()=>{WB_SELECTED_COL=null;WB_SELECTED_ROW=null;WB_SELECTED_CELL=null;renderWorkbook()});
