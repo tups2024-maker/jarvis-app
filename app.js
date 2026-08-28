@@ -508,8 +508,8 @@ async function load(){
   populateForm();
   seedAugustShift();
   syncTodayFromAttendance();
-  DATA.version='5.0';
-  DATA.shift_version='2026-08-28-v50-production';
+  DATA.version='5.1';
+  DATA.shift_version='2026-08-29-v51-secure-google';
   DATA.actuals_version='2026-08-28-v499-safe-voice';
   localStorage.setItem(STORAGE_KEY,JSON.stringify(DATA));
   initShiftControls();
@@ -529,7 +529,15 @@ if('serviceWorker'in navigator){navigator.serviceWorker.getRegistrations().then(
  function row(role,text){const d=document.createElement('div');d.className='ai-row '+role;d.innerHTML=`<div class="ai-avatar">${role==='jarvis'?'J':'YOU'}</div><div class="ai-bubble"><b>${role==='jarvis'?'JARVIS':'YOU'}</b><p>${esc(text)}</p></div>`;log.appendChild(d);log.scrollTop=log.scrollHeight}
  function ask(text){text=(text||'').trim();if(!text)return;input.value='';row('user',text);const main=q('voiceText'),btn=q('voiceSend');if(main&&btn){const before=document.querySelectorAll('#chatLog .msg.jarvis p').length;main.value=text;btn.click();setTimeout(()=>{const msgs=document.querySelectorAll('#chatLog .msg.jarvis p');row('jarvis',msgs.length>before?msgs[msgs.length-1].textContent:'業務データを確認しました。')},90)}}
  q('aiChatSend')?.addEventListener('click',()=>ask(input.value));input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ask(input.value)}});document.querySelectorAll('[data-aicmd]').forEach(b=>b.addEventListener('click',()=>ask(b.dataset.aicmd)));
- const SR2=window.SpeechRecognition||window.webkitSpeechRecognition; if(SR2){const rec=new SR2();rec.lang='ja-JP';rec.interimResults=false;rec.onstart=()=>{q('aiVoiceBtn')?.classList.add('listening');q('aiVoiceInline')?.classList.add('listening');if(q('aiVoiceStatus'))q('aiVoiceStatus').textContent='JARVIS LISTENING...'};rec.onend=()=>{q('aiVoiceBtn')?.classList.remove('listening');q('aiVoiceInline')?.classList.remove('listening');if(q('aiVoiceStatus'))q('aiVoiceStatus').textContent='音声入力 READY'};rec.onresult=e=>{const text=e.results[0][0].transcript;input.value=text;if(q('aiVoiceStatus'))q('aiVoiceStatus').textContent=`認識：${text}`;input.focus();};rec.onerror=()=>row('jarvis','音声認識を開始できませんでした。マイクの許可を確認してください。');const start=()=>{try{rec.start()}catch{}};q('aiVoiceBtn')?.addEventListener('click',start);q('aiVoiceInline')?.addEventListener('click',start)}
+ const SR2=window.SpeechRecognition||window.webkitSpeechRecognition; if(SR2){const rec=new SR2();rec.lang='ja-JP';rec.interimResults=false;rec.onstart=()=>{q('aiVoiceBtn')?.classList.add('listening');q('aiVoiceInline')?.classList.add('listening');if(q('aiVoiceStatus'))q('aiVoiceStatus').textContent='JARVIS LISTENING...'};rec.onend=()=>{q('aiVoiceBtn')?.classList.remove('listening');q('aiVoiceInline')?.classList.remove('listening');if(q('aiVoiceStatus'))q('aiVoiceStatus').textContent='音声入力 READY'};rec.onresult=e=>{const text=e.results[0][0].transcript;input.value=text;if(q('aiVoiceStatus'))q('aiVoiceStatus').textContent=`認識：${text} / 送信中…`;setTimeout(()=>ask(text),120);};rec.onerror=()=>row('jarvis','音声認識を開始できませんでした。マイクの許可を確認してください。');const start=()=>{try{rec.start()}catch{}};q('aiVoiceBtn')?.addEventListener('click',start);q('aiVoiceInline')?.addEventListener('click',start)}
+})();
+
+/* V5.1 secure Google hub bridge: no credentials stored in frontend */
+(()=>{
+ const q=id=>document.getElementById(id);
+ const sendToJarvis=text=>{go('ai');setTimeout(()=>{const t=q('aiChatText');if(t){t.value=text;t.focus();}},120)};
+ q('googleAskMail')?.addEventListener('click',()=>sendToJarvis('対応が必要なGmailを確認したい'));
+ q('googleAskCal')?.addEventListener('click',()=>sendToJarvis('今日と明日のGoogleカレンダー予定を確認したい'));
 })();
 
 /* V4.8.8 REPORT / CONTACT / ABSENCE SUPPORT CORE */

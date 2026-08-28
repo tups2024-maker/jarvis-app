@@ -1,9 +1,5 @@
-JARVIS V5.0 実運用版
-- シフト→配送管理表 自動連携
-- 本日/明日出勤・エリア人数をシフト基準で表示
-- 本日の必要人数差分チェック
-- 配送管理表スプレッド編集
-- JARVISチャット/音声
-- 営業・案件獲得 / AI収益化の土台
-- JSONバックアップ/復元
-- 秘密鍵をフロントに保存しない設計
+JARVIS V5.1 Secure Gmail / Calendar
+- No API secret stored in GitHub Pages/localStorage
+- Gmail / Calendar hub UI
+- Voice transcript auto-sends into JARVIS chat
+- Google data read/write requires a secure authenticated bridge; static GitHub Pages alone cannot access ChatGPT connectors.
