@@ -35,8 +35,35 @@ $('workbookDeleteRowBtn')?.addEventListener('click',()=>{if(WB[activeSheet].leng
 $('workbookDownloadBtn')?.addEventListener('click',()=>{if(typeof XLSX==='undefined'){alert('Excelライブラリを読み込めません');return}const wb=XLSX.utils.book_new();Object.entries(WB).forEach(([name,rows])=>{const aoa=[['案件名：',name],[],HEADERS,...rows.map(r=>r.map((v,i)=>i===0?fmtDate(v):v))];const ws=XLSX.utils.aoa_to_sheet(aoa);XLSX.utils.book_append_sheet(wb,ws,name.slice(0,31))});XLSX.writeFile(wb,'2026年8月_配送管理表_JARVIS_V5.3.xlsx')});
 function renderShift(){const av=$('attArea');if(av)av.innerHTML='<option>鶴見DS</option><option>三島</option><option>静岡</option><option>一宮</option><option>中村区</option><option>野洲</option><option>富士</option><option>駿河</option>';const dv=$('attDriver');if(dv)dv.innerHTML=[...new Set(ATT.map(x=>x.driver))].map(x=>`<option>${x}</option>`).join('');const pv=$('attProject');if(pv)pv.innerHTML='<option>鶴見DS</option><option>三島Amazon</option><option>三島お酒</option><option>秋山製麺</option><option>静岡</option>';const host=$('areaDriverView');if(host){const active=ATT.filter(x=>x.status==='出勤');host.innerHTML='<div class="area-block"><b>鶴見DS</b><small>アップロード済み8月・9月シフト</small><div class="driver-chips">'+[...new Set(active.map(x=>x.driver))].map(d=>`<div class="driver-chip on"><b>${d}</b><span>鶴見DS</span></div>`).join('')+'</div></div>'}}
 $('attendanceForm')?.addEventListener('submit',e=>{e.preventDefault();const r={date:$('attDate').value,area:$('attArea').value,driver:$('attDriver').value,project:$('attProject').value,status:$('attStatus').value,work:$('attWork').value};ATT.push(r);$('attendanceStatus').textContent='✓ 登録しました';renderDashboard()});
-function renderDashboard(){const today='2026-08-29';const on=ATT.filter(x=>x.date===today&&x.status==='出勤');if($('kpiActive'))$('kpiActive').textContent=on.length+' 台';if($('aiSummary'))$('aiSummary').textContent='鶴見DSを追加済み。卸20,158円（税別）／DR19,000円（税込）。配送管理表は元の9列形式で直接編集できます。'}
+const BASE_ACTUALS={
+ '静岡':{count:58,sales:18700,driver:18000},
+ '三島Amazon':{count:176,sales:18200,driver:17000},
+ '三島お酒':{count:28,sales:20000,driver:17500},
+ '秋山製麺':{count:19,sales:10000,driver:9000},
+ '三島便':{count:6,sales:7900,driver:8500},
+ '一宮':{count:42,sales:19300,driver:18720},
+ '中村区':{count:8,sales:19580,driver:17920},
+ '野洲':{count:28,sales:20160,driver:17500},
+ '富士':{count:19,sales:20880,driver:18710},
+ '駿河':{count:20,sales:20160,driver:19000}
+};
+function money(n){return '¥'+Math.round(n).toLocaleString('ja-JP')}
+function tsurumiActualCount(){return ATT.filter(x=>x.area==='鶴見DS'&&x.status==='出勤'&&x.date>='2026-08-01'&&x.date<='2026-08-29').length}
+function businessSummary(){
+ const rows=Object.entries(BASE_ACTUALS).map(([name,v])=>({name,count:v.count,sales:v.sales*v.count,driver:v.driver*v.count}));
+ const tc=tsurumiActualCount(); rows.push({name:'鶴見DS',count:tc,sales:20158*tc,driver:19000*tc});
+ return rows.map(r=>({...r,gross:r.sales*1.10-r.driver}));
+}
+function renderSalesData(){
+ const rows=businessSummary(); const sales=rows.reduce((a,r)=>a+r.sales,0); const gross=rows.reduce((a,r)=>a+r.gross,0);
+ const baseToday=14; const tsToday=ATT.filter(x=>x.date==='2026-08-29'&&x.area==='鶴見DS'&&x.status==='出勤').length;
+ if($('kpiSales'))$('kpiSales').textContent=money(sales); if($('kpiGross'))$('kpiGross').textContent=money(gross); if($('kpiActive'))$('kpiActive').textContent=(baseToday+tsToday)+' 台'; if($('kpiAbsence'))$('kpiAbsence').textContent='0 件'; if($('kpiLoss'))$('kpiLoss').textContent=money(0);
+ if($('salesMonth'))$('salesMonth').textContent=money(sales); if($('salesGross'))$('salesGross').textContent=money(gross); if($('grossMargin'))$('grossMargin').textContent=(gross/(sales*1.10)*100).toFixed(1)+'%'; if($('salesLoss'))$('salesLoss').textContent=money(0); if($('rateCoverage'))$('rateCoverage').textContent='100%';
+ const st=$('salesTable'); if(st){st.innerHTML='<div class="thead"><span>案件</span><span>実績</span><span>売上(税別)</span><span>DR支払</span><span>粗利(税込基準)</span></div>'+rows.map(r=>`<div><b>${r.name}</b><span>${r.count} 稼働</span><span>${money(r.sales)}</span><span>${money(r.driver)}</span><span>${money(r.gross)}</span></div>`).join('')}
+ const pr=$('profitRanking'); if(pr){pr.innerHTML='<div class="thead"><span>案件</span><span>実績</span><span>売上</span><span>DR支払</span><span>粗利</span></div>'+[...rows].sort((a,b)=>b.gross-a.gross).map(r=>`<div><b>${r.name}</b><span>${r.count}</span><span>${money(r.sales)}</span><span>${money(r.driver)}</span><span>${money(r.gross)}</span></div>`).join('')}
+}
+function renderDashboard(){renderSalesData();if($('aiSummary'))$('aiSummary').textContent='既存10案件の8月実績を復旧し、鶴見DSを追加集計しています。鶴見DS：卸20,158円（税別）／DR19,000円（税込）。'}
 function applyNoAutoPay(){Object.values(WB).forEach(rows=>rows.forEach(r=>{const note=String(r[6]||'');if(NO_AUTO_PAY.some(x=>note.includes(x)))r[4]=''}));saveWB()}
 function setupImport(){const bar=document.querySelector('.workbook-tools');if(!bar||$('wbExcelImport'))return;const lab=document.createElement('label');lab.className='action-btn file-btn';lab.innerHTML='↥ 元Excel読込<input id="wbExcelImport" type="file" accept=".xlsx,.xls" hidden>';bar.prepend(lab);setTimeout(()=>{$('wbExcelImport').onchange=async e=>{const f=e.target.files[0];if(!f)return;const data=await f.arrayBuffer();const wb=XLSX.read(data);WB={};wb.SheetNames.forEach(n=>{const a=XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,defval:''});let hi=a.findIndex(row=>row.includes('走行日')&&row.includes('DR'));if(hi<0)return;let heads=a[hi];WB[n]=a.slice(hi+1).filter(r=>r.some(v=>v!=='' )).map(r=>HEADERS.map(h=>{let key=h;if(h==='フォロー金額'&&!heads.includes(h)&&heads.includes('残業代'))key='残業代';return r[heads.indexOf(key)]??''}))});activeSheet=Object.keys(WB)[0]||activeSheet;applyNoAutoPay();renderWorkbook();$('workbookStatus').textContent='✓ 元の配送管理Excelを読み込みました'}} ,0)}
 function setupAI(){const send=()=>{const t=$('aiChatText');if(!t||!t.value.trim())return;const q=t.value.trim();t.value='';const log=$('aiChatLog');log.insertAdjacentHTML('beforeend',`<div class="ai-row"><div class="ai-bubble"><b>YOU</b><p>${q}</p></div></div>`);let a=q.includes('鶴見')?'鶴見DSは卸20,158円（税別）、DR19,000円（税込）で登録済みです。':q.includes('配送')?'配送管理表は元の9列形式で、セル直接編集・絞り込み・Excel再ダウンロードに対応しています。':'業務データを確認しました。';log.insertAdjacentHTML('beforeend',`<div class="ai-row"><div class="ai-bubble"><b>JARVIS</b><p>${a}</p></div></div>`)};$('aiChatSend')?.addEventListener('click',send)}
-initWB();applyNoAutoPay();addWorkbookControls();setupImport();setupAI();renderDashboard();renderShift();renderWorkbook();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+initWB();applyNoAutoPay();addWorkbookControls();setupImport();setupAI();renderDashboard();renderSalesData();renderShift();renderWorkbook();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
