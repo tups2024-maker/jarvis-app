@@ -1,4 +1,4 @@
-const meta={dashboard:['JARVIS V6.4 FINAL','T-EXPRESS FUTURE COMMAND CENTER'],sales:['売上・利益','案件別売上・粗利・欠車損失'],ai:['JARVIS AI','JARVISと業務データについて会話'],texpress:['T_Express','軽貨物事業 × AI事業 オフィシャルサイト'],shiftboard:['シフト / 配送','シフト・出勤状況・活動報告・案件情報を統合管理'],workbook:['配送管理表','JARVIS内で確認・編集・保存・再ダウンロード'],salescrm:['営業・案件獲得','毎日の候補リスト・メール営業・進捗を管理'],monetize:['AI収益化','note・SNS・求人コンテンツ作成ツール'],jobs:['求人管理','全国求人・ジモティー・各媒体の掲載状況を管理'],googlehub:['メール・カレンダー','Gmail / Google Calendar クイックアクセス'],slackhub:['Slack','業務連絡・チームコミュニケーション'],settings:['設定','データ連携・システム状態']};
+const meta={dashboard:['JARVIS V6.5 三島パイロット','T-EXPRESS FUTURE COMMAND CENTER'],sales:['売上・利益','案件別売上・粗利・欠車損失'],ai:['JARVIS AI','JARVISと業務データについて会話'],texpress:['T_Express','軽貨物事業 × AI事業 オフィシャルサイト'],shiftboard:['シフト / 配送','シフト・出勤状況・活動報告・案件情報を統合管理'],workbook:['配送管理表','JARVIS内で確認・編集・保存・再ダウンロード'],salescrm:['営業・案件獲得','毎日の候補リスト・メール営業・進捗を管理'],monetize:['AI収益化','note・SNS・求人コンテンツ作成ツール'],jobs:['求人管理','全国求人・ジモティー・各媒体の掲載状況を管理'],googlehub:['メール・カレンダー','Gmail / Google Calendar クイックアクセス'],slackhub:['Slack','業務連絡・チームコミュニケーション'],settings:['設定','データ連携・システム状態']};
 const AREA_PROJECTS={静岡:['静岡'],三島:['三島Amazon','三島お酒','秋山製麺','三島便'],一宮:['一宮'],中村区:['中村区'],野洲:['野洲'],富士:['富士'],駿河:['駿河'],'鶴見DS':['鶴見DS']};
 const DRIVERS=[{"name":"高橋 利旭","area":"静岡","areas":["静岡","三島"]},{"name":"津田 たけし","area":"静岡","areas":["静岡","三島"]},{"name":"中島 由江","area":"静岡","areas":["静岡"]},{"name":"中村","area":"静岡","areas":["静岡"]},{"name":"宇野 文夫","area":"静岡","areas":["静岡"]},{"name":"ヤシマ 聖美","area":"三島","areas":["三島"]},{"name":"髙橋 和也","area":"三島","areas":["三島"]},{"name":"生駒 龍彦","area":"三島","areas":["三島"]},{"name":"日置 将人","area":"三島","areas":["三島"]},{"name":"久松 慧大","area":"三島","areas":["三島"]},{"name":"島田 真一","area":"三島","areas":["三島","一宮"]},{"name":"雨宮 渉","area":"三島","areas":["三島"]},{"name":"持麾 満","area":"三島","areas":["三島"]},{"name":"林 真人","area":"三島","areas":["三島"]},{"name":"福羅 達也","area":"三島","areas":["三島"]},{"name":"福羅 沙織","area":"三島","areas":["三島"]},{"name":"大沼","area":"三島","areas":["三島"]},{"name":"堀井 龍馬","area":"三島","areas":["三島"]},{"name":"増本","area":"一宮","areas":["一宮"]},{"name":"髙橋 悠","area":"一宮","areas":["一宮"]},{"name":"藤原","area":"一宮","areas":["一宮"]},{"name":"京極 雅彦","area":"中村区","areas":["中村区"]},{"name":"川西 亮太","area":"野洲","areas":["野洲"]},{"name":"山本 浩介","area":"野洲","areas":["野洲"]},{"name":"畑中 佑太","area":"富士","areas":["富士"]},{"name":"桑原 貴継","area":"駿河","areas":["駿河"]}];
 
@@ -139,10 +139,29 @@ function initShiftControls(){
 
 // ===== V4.6 XLSX WORKSPACE / IndexedDB =====
 let WB=null,WB_EDIT=true,WB_NAME='JARVIS_配送管理表.xlsx',WB_SELECTED_COL=null,WB_SELECTED_ROW=null,WB_SELECTED_CELL=null,WB_EDIT_TARGET=null;
+const WB_MANUAL_KEY='jarvis-v65-mishima-manual-overrides';
+let WB_MANUAL_OVERRIDES=(()=>{try{return JSON.parse(localStorage.getItem(WB_MANUAL_KEY)||'{}')}catch(e){return {}}})();
+function wbManualKey(sheet,row,header){
+  const date=String(row?.[0]??'').trim(),driver=normalizeDriverForOrder(row?.[1]??''),biz=String(row?.[2]??'').trim();
+  return [sheet,date,driver,biz,String(header??'').trim()].join('|');
+}
+function rememberManualCell(sheet,a,r,c,value){
+  if(r<3)return; const h=a[2]||[], header=h[c]??`COL${c}`;
+  const row=[...(a[r]||[])]; row[c]=value;
+  WB_MANUAL_OVERRIDES[wbManualKey(sheet,row,header)]={value,ts:Date.now()};
+  localStorage.setItem(WB_MANUAL_KEY,JSON.stringify(WB_MANUAL_OVERRIDES));
+}
+function applyManualWorkbookOverrides(){
+  if(!WB||!window.XLSX)return 0; let n=0;
+  WB.SheetNames.forEach(sheet=>{const a=XLSX.utils.sheet_to_json(WB.Sheets[sheet],{header:1,defval:''});if(a.length<4)return;const h=a[2]||[];
+    for(let r=3;r<a.length;r++)for(let c=0;c<h.length;c++){const o=WB_MANUAL_OVERRIDES[wbManualKey(sheet,a[r],h[c])];if(o&&a[r][c]!==o.value){a[r][c]=o.value;n++}}
+    WB.Sheets[sheet]=XLSX.utils.aoa_to_sheet(a);
+  }); return n;
+}
 let SHIFT_EDIT=false;
 function idb(){return new Promise((resolve,reject)=>{const r=indexedDB.open('jarvis-v47-db',1);r.onupgradeneeded=()=>r.result.createObjectStore('files');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
-async function saveWorkbookBytes(bytes,name){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').put({bytes:Array.from(new Uint8Array(bytes)),name,ts:Date.now()},'deliveryWorkbookV478');tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
-async function loadWorkbookBytes(){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction('files','readonly');const q=tx.objectStore('files').get('deliveryWorkbookV478');q.onsuccess=()=>res(q.result||null);q.onerror=()=>rej(q.error)})}
+async function saveWorkbookBytes(bytes,name){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').put({bytes:Array.from(new Uint8Array(bytes)),name,ts:Date.now()},'deliveryWorkbookMishimaV65');tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
+async function loadWorkbookBytes(){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction('files','readonly');const q=tx.objectStore('files').get('deliveryWorkbookMishimaV65');q.onsuccess=()=>res(q.result||null);q.onerror=()=>rej(q.error)})}
 const SHIFT_DRIVER_ORDER={
  '静岡':['高橋 利旭','津田 たけし','中島 由江','中村','宇野 文夫'],
  '三島':['ヤシマ 聖美','髙橋 和也','高橋 利旭','生駒 龍彦','日置 将人','久松 慧大','島田 真一','雨宮 渉','持麾 満','林 真人','福羅 達也','福羅 沙織','大沼','津田 たけし','堀井 龍馬'],
@@ -156,7 +175,13 @@ const SHIFT_DRIVER_ORDER={
 function projectShiftArea(project){if(project==='静岡')return '静岡';if(['三島Amazon','三島お酒','秋山製麺','三島便'].includes(project))return '三島';return project}
 const SHIFT_ORDER_ALIAS=(()=>{const m=new Map();Object.values(SHIFT_DRIVER_ORDER).flat().forEach(full=>{const n=normName(full),surname=normName(String(full).trim().split(/[ 　]/)[0]);m.set(n,n);if(!m.has(surname))m.set(surname,n)});m.set(normName('津田'),normName('津田 たけし'));return m})();
 function normalizeDriverForOrder(v){const x=normName(String(v||''));return SHIFT_ORDER_ALIAS.get(x)||x}
-function deliveryDateRank(v){const t=String(v||'').trim();let m=t.match(/(\d{1,2})月(\d{1,2})日/);if(m)return Number(m[1])*100+Number(m[2]);m=t.match(/2026[-/](\d{1,2})[-/](\d{1,2})/);if(m)return Number(m[1])*100+Number(m[2]);return 9999}
+function isoFromDeliveryDate(v){
+  if(v instanceof Date && !isNaN(v))return `${v.getFullYear()}-${String(v.getMonth()+1).padStart(2,'0')}-${String(v.getDate()).padStart(2,'0')}`;
+  if(typeof v==='number'&&isFinite(v)){const d=XLSX?.SSF?.parse_date_code?XLSX.SSF.parse_date_code(v):null;if(d)return `${d.y}-${String(d.m).padStart(2,'0')}-${String(d.d).padStart(2,'0')}`;}
+  const t=String(v??'').trim();let m=t.match(/(\d{1,2})月(\d{1,2})日/);if(m)return `2026-${String(+m[1]).padStart(2,'0')}-${String(+m[2]).padStart(2,'0')}`;
+  m=t.match(/(20\d{2})[-/](\d{1,2})[-/](\d{1,2})/);if(m)return `${m[1]}-${String(+m[2]).padStart(2,'0')}-${String(+m[3]).padStart(2,'0')}`;return '';
+}
+function deliveryDateRank(v){const iso=isoFromDeliveryDate(v);if(!iso)return 9999;const p=iso.split('-');return Number(p[1])*100+Number(p[2])}
 function reorderAOAByShift(a,project){
  if(!Array.isArray(a)||a.length<=4)return a;
  const order=SHIFT_DRIVER_ORDER[projectShiftArea(project)]||[];if(!order.length)return a;
@@ -188,7 +213,7 @@ function closeWorkbookCellEditor(){
 function applyWorkbookCellEdit(value){
  if(!WB||!WB_EDIT_TARGET)return;
  const {name,r,c}=WB_EDIT_TARGET,a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});
- while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');a[r][c]=value;
+ while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');a[r][c]=value;rememberManualCell(name,a,r,c,value);
  WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);closeWorkbookCellEditor();renderWorkbook();
  $('workbookStatus').textContent=`✓ 行${r+1}・列${c+1}を変更しました。「JARVISに保存」で確定してください。`;
 }
@@ -198,7 +223,7 @@ function renderWorkbook(){
  const name=$('sheetSelect').value||WB.SheetNames[0]; if(!name||!WB.Sheets[name]){$('workbookTable').innerHTML='<tbody><tr><td>配送管理表を自動復旧しています…</td></tr></tbody>';setTimeout(async()=>{if(!workbookIsUsable()){const ok=await loadBundledOriginalWorkbook(true);if(ok){ensureTsurumiWorkbook();setupSheetSelect();await syncWorkbookFromShift();renderWorkbook();}}},0);return} let aoa=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''}); if(!aoa.length){aoa=[['案件名：',name],['請求先：',''],['走行日','DR','業務名','天引き金額','DR金額','フォロー金額','備考','実績','記入者']]; WB.Sheets[name]=XLSX.utils.aoa_to_sheet(aoa);}
  const maxCols=Math.max(1,...aoa.map(r=>r.length));let h='<tbody>';
  aoa.slice(0,500).forEach((row,r)=>{h+=`<tr class="${WB_SELECTED_ROW===r?'selected-row':''}">`;for(let c=0;c<maxCols;c++){
-   const v=row[c]??'',selCol=WB_SELECTED_COL===c?' selected-col':'',selCell=WB_SELECTED_CELL===`${r}:${c}`?' selected-cell':'';
+   let v=row[c]??'';if(c===0&&r>=3){const iso=isoFromDeliveryDate(v);if(iso){const p=iso.split('-');v=`${+p[1]}月${+p[2]}日`;}}const selCol=WB_SELECTED_COL===c?' selected-col':'',selCell=WB_SELECTED_CELL===`${r}:${c}`?' selected-cell':'';
    if(WB_EDIT){
      h+=`<td class="${r===2?'workbook-header-cell ':''}${selCol}${selCell}" data-r="${r}" data-c="${c}"><input class="wb-cell-input" data-r="${r}" data-c="${c}" value="${esc(v)}" aria-label="行${r+1} 列${c+1}"></td>`;
    }else{
@@ -211,7 +236,7 @@ function renderWorkbook(){
      inp.addEventListener('focus',select);inp.addEventListener('click',select);
      const commitInput=()=>{
        select();const a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''}),r=+inp.dataset.r,c=+inp.dataset.c;
-       while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');a[r][c]=inp.value;WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);
+       while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');a[r][c]=inp.value;rememberManualCell(name,a,r,c,inp.value);WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);
        $('workbookStatus').textContent=`編集中：行${r+1}・列${c+1}（入力内容は保持されています）`;
      };
      inp.addEventListener('input',commitInput);inp.addEventListener('change',commitInput);
@@ -380,6 +405,32 @@ function applyV4918DedupRules(){
         rows=rows.filter(r=>!isTarget(r));rows.push(keep);changed+=Math.max(0,targets.length-1);
       }
     }
+    // V6.4.2: 8/2 三島の福羅さん2名も別ドライバーとして固定。
+    // 正: 福羅達也=三島11h / 福羅沙織=三島11h。福羅興業のためDR金額は空白、実績・売上は反映。
+    if(/2026年8月 三島$/.test(name)||(/三島/.test(name)&&!/お酒|秋山|製麺/.test(name))){
+      const payCol=hdr.findIndex(x=>String(x).trim()==='DR金額'),noteCol=hdr.findIndex(x=>String(x).trim().replace(/\s/g,'')==='備考'),actualCol=hdr.findIndex(x=>String(x).trim()==='実績');
+      const isAug2=r=>/8月0?2日/.test(String(r[dateCol]||''));
+      const isFukura=r=>normalizeDriverForOrder(r[drCol]).startsWith('福羅');
+      const old=rows.filter(r=>isAug2(r)&&isFukura(r));
+      if(old.length){rows=rows.filter(r=>!(isAug2(r)&&isFukura(r)));changed+=old.length}
+      const make=(driver)=>{const r=Array(Math.max(hdr.length,9)).fill('');r[dateCol]='8月2日';r[drCol]=driver;if(bizCol>=0)r[bizCol]='三島11h';if(payCol>=0)r[payCol]='';if(noteCol>=0)r[noteCol]='福羅興業';if(actualCol>=0)r[actualCol]=1;return r};
+      rows.push(make('福羅 達也'));
+      rows.push(make('福羅 沙織'));
+      changed+=2;
+    }
+    // V6.4.1: 8/3 三島の福羅さん2名は別ドライバーとして固定。
+    // 正: 福羅達也=三島11h / 福羅沙織=三島6h。旧「福羅」行や誤重複は除去して作り直す。
+    if(/2026年8月 三島$/.test(name)||(/三島/.test(name)&&!/お酒|秋山|製麺/.test(name))){
+      const payCol=hdr.findIndex(x=>String(x).trim()==='DR金額'),noteCol=hdr.findIndex(x=>String(x).trim().replace(/\s/g,'')==='備考'),actualCol=hdr.findIndex(x=>String(x).trim()==='実績');
+      const isAug3=r=>/8月0?3日/.test(String(r[dateCol]||''));
+      const isFukura=r=>normalizeDriverForOrder(r[drCol]).startsWith('福羅');
+      const old=rows.filter(r=>isAug3(r)&&isFukura(r));
+      if(old.length){rows=rows.filter(r=>!(isAug3(r)&&isFukura(r)));changed+=old.length}
+      const make=(driver,biz)=>{const r=Array(Math.max(hdr.length,9)).fill('');r[dateCol]='8月3日';r[drCol]=driver;if(bizCol>=0)r[bizCol]=biz;if(payCol>=0)r[payCol]='';if(noteCol>=0)r[noteCol]='福羅興業';if(actualCol>=0)r[actualCol]=1;return r};
+      rows.push(make('福羅 達也','三島11h'));
+      rows.push(make('福羅 沙織','三島6h'));
+      changed+=2;
+    }
     // 同一「走行日＋DR＋業務名」の完全重複も1行に統合。
     const seen=new Set(),dedup=[];
     for(const r of rows){const key=[String(r[dateCol]||'').trim(),normalizeDriverForOrder(r[drCol]),bizCol>=0?String(r[bizCol]||'').trim():''].join('|');if(seen.has(key)){changed++;continue}seen.add(key);dedup.push(r)}
@@ -471,13 +522,13 @@ async function syncWorkbookFromShift(){
   for(const sheet of WB.SheetNames){
     if(!/^2026年(8|9)月 /.test(sheet))continue;const a=XLSX.utils.sheet_to_json(WB.Sheets[sheet],{header:1,defval:''});if(a.length<3)continue;const h=a[2]||[],dc=h.indexOf('走行日'),rc=h.indexOf('DR'),bc=h.indexOf('業務名'),pc=h.indexOf('DR金額'),nc=h.indexOf('備考');if(dc<0||rc<0||bc<0)continue;
     const expected=bySheet[sheet]||[], expKeys=new Set(expected.map(x=>`${x.rec.date}|${normalizeDriverForOrder(x.rec.driver)}|${x.biz}`));
-    const isoFromMd=v=>{const m=String(v).match(/(\d+)月(\d+)日/);return m?`2026-${String(+m[1]).padStart(2,'0')}-${String(+m[2]).padStart(2,'0')}`:''};
+    const isoFromMd=v=>isoFromDeliveryDate(v);
     const existing=new Map();a.slice(3).forEach(r=>existing.set(`${isoFromMd(r[dc])}|${normalizeDriverForOrder(r[rc])}|${String(r[bc]).trim()}`,r));
     let rows=a.slice(3).filter(r=>{const iso=isoFromMd(r[dc]),k=`${iso}|${normalizeDriverForOrder(r[rc])}|${String(r[bc]).trim()}`;if(!known.test(String(r[bc]).trim()))return true;const hasAtt=ATT.some(x=>x.date===iso&&normalizeDriverForOrder(x.driver)===normalizeDriverForOrder(r[rc]));return !hasAtt||expKeys.has(k)});
     for(const x of expected){const k=`${x.rec.date}|${normalizeDriverForOrder(x.rec.driver)}|${x.biz}`;if(rows.some(r=>`${isoFromMd(r[dc])}|${normalizeDriverForOrder(r[rc])}|${String(r[bc]).trim()}`===k))continue;const prior=existing.get(k);if(prior){rows.push(prior);continue}const d=new Date(x.rec.date+'T00:00:00'),row=Array(Math.max(h.length,9)).fill('');row[dc]=`${d.getMonth()+1}月${d.getDate()}日`;row[rc]=x.rec.driver;row[bc]=x.biz;if(pc>=0)row[pc]=x.pay;const fn=forcedNoteForDriver(x.rec.driver);if(pc>=0&&['カメレオン','福羅興業','sitycanvas','オーロラネクスト'].includes(fn))row[pc]='';if(nc>=0)row[nc]=fn||referralForDriver(x.rec.driver)||'';const ei=h.indexOf('実績');if(ei>=0)row[ei]=1;rows.push(row);changes++}
     const area=projectShiftArea(sheet.replace('2026年8月 ','').replace('三島','三島Amazon').replace('秋山製麺所','秋山製麺')),order=SHIFT_DRIVER_ORDER[area]||[],rank=new Map(order.map((n,i)=>[normalizeDriverForOrder(n),i]));rows.sort((x,y)=>mdSortValue(x[dc])-mdSortValue(y[dc])||((rank.get(normalizeDriverForOrder(x[rc]))??9999)-(rank.get(normalizeDriverForOrder(y[rc]))??9999)));WB.Sheets[sheet]=XLSX.utils.aoa_to_sheet(a.slice(0,3).concat(rows));
   }
-  applyV4917DeliveryRules();applyV4918DedupRules();forceDriverNamesAndNotes();applyReferralToWorkbook();applyNoAutoPayRows();reorderWorkbookByShiftOrder();await persistMigratedWorkbook();setupSheetSelect();renderWorkbook();return changes;
+  applyV4917DeliveryRules();applyV4918DedupRules();forceDriverNamesAndNotes();applyReferralToWorkbook();applyManualWorkbookOverrides();applyNoAutoPayRows();reorderWorkbookByShiftOrder();await persistMigratedWorkbook();setupSheetSelect();renderWorkbook();return changes;
 }
 
 async function loadBundledOriginalWorkbook(force=false){
@@ -489,11 +540,14 @@ async function loadBundledOriginalWorkbook(force=false){
    const r=await fetch(url+'?ts='+Date.now(),{cache:'no-store'});
    if(!r.ok)continue;
    const buf=await r.arrayBuffer();
-   const book=XLSX.read(buf,{type:'array'});
+   const book=XLSX.read(buf,{type:'array',cellDates:true});
    if(book && Array.isArray(book.SheetNames) && book.SheetNames.length){
-    WB=book;WB_NAME=url.includes('配送管理表')?'配送管理表_原本_JARVIS.xlsx':'遠州トラック_原本_JARVIS.xlsx';
-    await saveWorkbookBytes(buf,WB_NAME).catch(()=>{});
-    return true;
+    const mishima=book.SheetNames.find(n=>String(n).trim()==='2026年8月 三島');
+    if(url.includes('配送管理表') && mishima){
+      book.SheetNames=[mishima]; book.Sheets={[mishima]:book.Sheets[mishima]};
+      WB=book; WB_NAME='三島_配送管理表_JARVIS.xlsx';
+      const pilotBytes=XLSX.write(WB,{bookType:'xlsx',type:'array'}); await saveWorkbookBytes(pilotBytes,WB_NAME).catch(()=>{}); return true;
+    }
    }
   }catch(e){console.warn('bundled workbook load failed',url,e)}
  }
@@ -504,7 +558,7 @@ function workbookIsUsable(){return !!(WB && Array.isArray(WB.SheetNames) && WB.S
 async function initWorkbook(){
  if(!$('xlsxInput'))return;
  const saved=await loadWorkbookBytes().catch(()=>null);
- if(saved&&window.XLSX){const u8=new Uint8Array(saved.bytes);WB=XLSX.read(u8,{type:'array'});WB_NAME=saved.name||WB_NAME;if(!workbookIsUsable()){WB=null;await loadBundledOriginalWorkbook(true);}const mishimaN=integrateMishimaWorkbook();const splitN=splitMishimaSpecialSheets();const forceN=forceDriverNamesAndNotes();const ruleN=applyV4917DeliveryRules();const ichiN=applyV4920IchinomiyaWorkmarks();const dedupN=applyV4918DedupRules();reorderWorkbookByShiftOrder();const refN=applyReferralToWorkbook();const noAutoN=applyNoAutoPayRows();setupSheetSelect();await persistMigratedWorkbook();await syncWorkbookFromShift();$('workbookStatus').textContent=`✓ V6.4 FINAL：配送管理表原本を自動復旧・シフト同期済み：三島Amazon＋5h/6h ／ 三島お酒 ／ 秋山製麺を別表化 ／ 研修費・備考も保持`;renderWorkbook()}else if(window.XLSX){try{const r=await fetch('./delivery-seed.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){
+ if(saved&&window.XLSX){const u8=new Uint8Array(saved.bytes);WB=XLSX.read(u8,{type:'array'});WB_NAME=saved.name||WB_NAME;if(!workbookIsUsable()){WB=null;await loadBundledOriginalWorkbook(true);}const mishimaN=integrateMishimaWorkbook();const splitN=splitMishimaSpecialSheets();const forceN=forceDriverNamesAndNotes();const ruleN=applyV4917DeliveryRules();const ichiN=applyV4920IchinomiyaWorkmarks();const dedupN=applyV4918DedupRules();reorderWorkbookByShiftOrder();const refN=applyReferralToWorkbook();const noAutoN=applyNoAutoPayRows();setupSheetSelect();await persistMigratedWorkbook();await syncWorkbookFromShift();$('workbookStatus').textContent=`✓ V6.4.3 FINAL：配送管理表原本を自動復旧・シフト同期済み：三島Amazon＋5h/6h ／ 三島お酒 ／ 秋山製麺を別表化 ／ 研修費・備考も保持`;renderWorkbook()}else if(window.XLSX){try{const r=await fetch('./delivery-seed.json?ts='+Date.now(),{cache:'no-store'});if(r.ok){
   const ds=await r.json();WB=XLSX.utils.book_new();
   const order=['静岡','三島Amazon','三島お酒','秋山製麺','三島便','一宮','中村区','野洲','富士','駿河'];
   const names={'静岡':'2026年8月 静岡','三島Amazon':'2026年8月 三島','三島お酒':'2026年8月 三島お酒','秋山製麺':'2026年8月 秋山製麺所','三島便':'2026年8月 三島便','一宮':'2026年8月 一宮','中村区':'2026年8月 中村区','野洲':'2026年8月 野洲','富士':'2026年8月 富士','駿河':'2026年8月 駿河'};
@@ -521,12 +575,12 @@ async function initWorkbook(){
     const ws=XLSX.utils.aoa_to_sheet(a);ws['!cols']=[{wch:12},{wch:14},{wch:16},{wch:13},{wch:13},{wch:14},{wch:22},{wch:8},{wch:12}];
     XLSX.utils.book_append_sheet(WB,ws,names[project]);
   });
-  integrateMishimaWorkbook();splitMishimaSpecialSheets();forceDriverNamesAndNotes();applyV4917DeliveryRules();applyV4920IchinomiyaWorkmarks();applyV4918DedupRules();applyNoAutoPayRows();WB_NAME='2026年8月_配送管理表_業務別_JARVIS.xlsx';setupSheetSelect();await persistMigratedWorkbook();await syncWorkbookFromShift();$('workbookStatus').textContent='✓ V6.4 FINAL形式で保存・シフト自動連携：三島Amazon＋5h/6h、三島お酒、秋山製麺を別管理表に分離';renderWorkbook()
+  integrateMishimaWorkbook();splitMishimaSpecialSheets();forceDriverNamesAndNotes();applyV4917DeliveryRules();applyV4920IchinomiyaWorkmarks();applyV4918DedupRules();applyNoAutoPayRows();WB_NAME='2026年8月_配送管理表_業務別_JARVIS.xlsx';setupSheetSelect();await persistMigratedWorkbook();await syncWorkbookFromShift();$('workbookStatus').textContent='✓ V6.4.3 FINAL形式で保存・シフト自動連携：三島Amazon＋5h/6h、三島お酒、秋山製麺を別管理表に分離';renderWorkbook()
  }}catch(e){console.warn(e)}
  if(!workbookIsUsable()){const ok=await loadBundledOriginalWorkbook(true);if(ok){ensureTsurumiWorkbook();setupSheetSelect();await syncWorkbookFromShift();await persistMigratedWorkbook();renderWorkbook();$('workbookStatus').textContent='✓ 配送管理表の原本を自動復旧し、シフト連動しました';}}}
  $('xlsxInput').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f||!window.XLSX)return;const buf=await f.arrayBuffer();WB=XLSX.read(buf,{type:'array'});WB_NAME=f.name;setupSheetSelect();await saveWorkbookBytes(buf,f.name);$('workbookStatus').textContent=`✓ ${f.name} をJARVISに保存しました`;renderWorkbook()});
  $('sheetSelect').addEventListener('change',()=>{WB_SELECTED_COL=null;WB_SELECTED_ROW=null;WB_SELECTED_CELL=null;renderWorkbook()});
- $('workbookSyncBtn')?.addEventListener('click',async()=>{if(!workbookIsUsable()){ $('workbookStatus').textContent='配送管理表の原本を復旧中…'; const ok=await loadBundledOriginalWorkbook(true); if(!ok){$('workbookStatus').textContent='配送管理表の原本を読み込めませんでした';return} ensureTsurumiWorkbook();setupSheetSelect(); } $('workbookStatus').textContent='シフト → 配送管理表を同期中…';const n=await syncWorkbookFromShift();applyNoAutoPayRows();await persistMigratedWorkbook();renderWorkbook();$('workbookStatus').textContent=`✓ シフトと配送管理表を同期しました（更新 ${n} 件）／4社のDR金額は空白・売上集計は維持`;});
+ $('workbookSyncBtn')?.addEventListener('click',async()=>{if(!workbookIsUsable()){ $('workbookStatus').textContent='配送管理表の原本を復旧中…'; const ok=await loadBundledOriginalWorkbook(true); if(!ok){$('workbookStatus').textContent='配送管理表の原本を読み込めませんでした';return} ensureTsurumiWorkbook();setupSheetSelect(); } $('workbookStatus').textContent='シフト → 配送管理表を同期中…';const n=await syncWorkbookFromShift();applyNoAutoPayRows();await persistMigratedWorkbook();renderWorkbook();$('workbookStatus').textContent=`✓ 三島シフトと配送管理表を同期しました（更新 ${n} 件）／手動編集は保存優先`; });
  $('workbookEditBtn').addEventListener('click',()=>{WB_EDIT=!WB_EDIT;$('workbookEditBtn').textContent=WB_EDIT?'✓ 入力編集 OFF':'✎ 入力編集 ON';if(!WB_EDIT)closeWorkbookCellEditor();renderWorkbook();$('workbookStatus').textContent=WB_EDIT?'編集モードON：表の各セルに入力欄が表示されます。タップしてその場で書き換えてください。':'編集モードを終了しました。';});
 
  $('workbookAddColBtn')?.addEventListener('click',()=>{if(!WB)return;const x=workbookSheetData();if(!x)return;const max=Math.max(0,...x.a.map(r=>r.length));const pos=WB_SELECTED_COL==null?max:WB_SELECTED_COL+1;x.a.forEach((r,i)=>{while(r.length<pos)r.push('');r.splice(pos,0,i===2?'新しい項目':'')});WB_SELECTED_COL=pos;setWorkbookAOA(x.name,x.a);$('workbookStatus').textContent='＋ 列を追加しました。3行目の項目名を直接入力して保存してください。';});
@@ -540,10 +594,10 @@ async function initWorkbook(){
  $('cellEditCancel')?.addEventListener('click',closeWorkbookCellEditor);
  $('cellEditClose')?.addEventListener('click',closeWorkbookCellEditor);
  $('cellEditModal')?.addEventListener('click',e=>{if(e.target===$('cellEditModal'))closeWorkbookCellEditor()});
- $('workbookSaveBtn').addEventListener('click',async()=>{if(!WB)return;$('workbookStatus').textContent='保存するExcelがありません';const buf=XLSX.write(WB,{bookType:'xlsx',type:'array'});await saveWorkbookBytes(buf,WB_NAME);$('workbookStatus').textContent=`✓ 編集内容をJARVISに保存：${new Date().toLocaleTimeString('ja-JP')}`});
+ $('workbookSaveBtn').addEventListener('click',async()=>{if(!WB)return;$('workbookStatus').textContent='保存するExcelがありません';applyManualWorkbookOverrides();applyNoAutoPayRows();const buf=XLSX.write(WB,{bookType:'xlsx',type:'array'});await saveWorkbookBytes(buf,WB_NAME);$('workbookStatus').textContent=`✓ 編集内容をJARVISに保存：${new Date().toLocaleTimeString('ja-JP')}`});
  $('workbookDownloadBtn').addEventListener('click',()=>{if(!WB)return;$('workbookStatus').textContent='ダウンロードするExcelがありません';XLSX.writeFile(WB,WB_NAME.replace(/\.xlsx?$/i,'')+'_JARVIS編集版.xlsx');$('workbookStatus').textContent='⬇ 編集可能なExcelをダウンロードしました'});
 }
-function setupSheetSelect(){if(!WB)return;$('sheetSelect').innerHTML=WB.SheetNames.map(n=>`<option>${esc(n)}</option>`).join('');}
+function setupSheetSelect(){if(!WB)return;const names=WB.SheetNames.filter(n=>String(n).trim()==='2026年8月 三島');$('sheetSelect').innerHTML=names.map(n=>`<option>${esc(n)}</option>`).join('')||'<option>2026年8月 三島</option>';if(names[0])$('sheetSelect').value=names[0];}
 
 
 function ensureTsurumiWorkbook(){
