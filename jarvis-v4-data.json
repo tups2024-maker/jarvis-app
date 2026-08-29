@@ -1,7 +1,7 @@
 {
-  "version": "4.9.1",
+  "version": "5.3.3",
   "month": "2026-08",
-  "data_date": "2026-08-28",
+  "data_date": "2026-08-29",
   "sales_tax_rate": 0.1,
   "sales_price_basis": "税別",
   "driver_pay_basis": "税込",
@@ -85,6 +85,14 @@
       "absence": 0,
       "unit_price": 20160,
       "driver_pay": 19000
+    },
+    {
+      "name": "鶴見DS",
+      "required": 0,
+      "active": 1,
+      "absence": 0,
+      "unit_price": 20158,
+      "driver_pay": 19000
     }
   ],
   "month_actuals": {
@@ -97,13 +105,16 @@
     "中村区": 8,
     "野洲": 28,
     "富士": 19,
-    "駿河": 20
+    "駿河": 20,
+    "鶴見DS": 46
   },
   "rate_version": "2026-08-28-sales-and-grossprofit-v1",
   "shift_version": "2026-08-28-v491-latest-shift3-integrated",
   "actuals_version": "2026-08-28-v491-sales-shift-delivery-integrated",
   "actuals_basis": "2026-08-01_to_2026-08-28",
   "notes": [
+    "V5.3.3: 安定版を土台に鶴見DSを追加。卸20,158円（税別）／DR19,000円（税込）",
+    "カメレオン・福羅興業・sitycanvas・オーロラネクストは配送管理表のDR金額を自動反映しない",
     "V4.9.1: トップ画面の売上・粗利・稼働が—表示になる初期化エラーを修正",
     "V4.9.1: 公式の売上・単価データを毎回JSONから読み込み、古い端末保存データによる未反映を防止",
     "V4.9.0: 最新の三島8月シフト(静岡県 シフト(3).xlsx)をJARVISシフトに統合",

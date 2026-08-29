@@ -1,1 +1,8 @@
-{"name":"JARVIS V5.3","short_name":"JARVIS","start_url":"./","display":"standalone","background_color":"#020711","theme_color":"#020711"}
+{
+  "name": "JARVIS V4.9.6",
+  "short_name": "JARVIS",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#020711",
+  "theme_color": "#020711"
+}
