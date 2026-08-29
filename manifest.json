@@ -1,7 +1,7 @@
 {
-  "name": "JARVIS V4.9.6",
-  "short_name": "JARVIS",
-  "start_url": "./",
+  "name": "JARVIS V6.5.3 三島安定版",
+  "short_name": "JARVIS 6.5.3",
+  "start_url": "./v653.html",
   "display": "standalone",
   "background_color": "#020711",
   "theme_color": "#020711"
