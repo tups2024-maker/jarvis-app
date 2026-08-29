@@ -111,3 +111,6 @@
 
 /* V6.0 FINAL */
 .source-workbooks{padding:14px 16px;margin:12px 0 14px;border:1px solid rgba(92,220,255,.16);border-radius:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}.source-workbooks>span{opacity:.72;font-size:.88rem}.status-pill{display:inline-flex;align-items:center;padding:8px 12px;border:1px solid rgba(87,255,188,.28);border-radius:999px;font-size:.82rem}.jimoty-daily{border-color:rgba(87,255,188,.2)}.hub-card{min-height:190px}.quick-hub-btn:last-child{min-width:54px}@media(max-width:720px){.source-workbooks{align-items:flex-start;flex-direction:column}.source-workbooks .crm-actions{width:100%}.source-workbooks .action-btn{width:100%;justify-content:center}}
+
+/* V6.1 FINAL FIX */
+.dashboard-chat-wrap{margin-top:18px}.live-workbook-link{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.live-workbook-link b{letter-spacing:.08em}.live-workbook-link span{opacity:.82;flex:1;min-width:220px}
