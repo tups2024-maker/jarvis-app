@@ -1,8 +1,1 @@
-{
-  "name": "JARVIS V6.5.3 三島安定版",
-  "short_name": "JARVIS 6.5.3",
-  "start_url": "./v653.html",
-  "display": "standalone",
-  "background_color": "#020711",
-  "theme_color": "#020711"
-}
+{"name":"JARVIS V6.5.4 三島シンプル連携版","short_name":"JARVIS 6.5.3","start_url":"./v654.html","display":"standalone","background_color":"#020711","theme_color":"#020711"}
