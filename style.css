@@ -114,3 +114,8 @@
 
 /* V6.1 FINAL FIX */
 .dashboard-chat-wrap{margin-top:18px}.live-workbook-link{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.live-workbook-link b{letter-spacing:.08em}.live-workbook-link span{opacity:.82;flex:1;min-width:220px}
+/* V6.5.1 三島完成テンプレート: 全列フィルター */
+.workbook-filter-row td{position:sticky;top:0;z-index:3;background:rgba(3,12,25,.96);padding:5px;min-width:110px}
+.wb-filter{width:100%;min-width:92px;box-sizing:border-box;background:#071526;color:#d9f7ff;border:1px solid rgba(89,220,255,.35);border-radius:7px;padding:7px 24px 7px 7px;font-size:12px}
+.wb-filter:focus{outline:1px solid rgba(89,220,255,.8)}
+@media(max-width:720px){.workbook-filter-row td{min-width:100px}.wb-filter{font-size:11px;padding:6px}}
