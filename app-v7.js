@@ -350,6 +350,30 @@ async function applyWorkbookCellEdit(value){
   $('workbookStatus').textContent='セルの保存に失敗しました：'+(e?.message||e);
  }finally{WB_CELL_EDIT_ACTION_BUSY=false}
 }
+async function promptWorkbookCellEdit(r,c){
+ if(!WB||WB_CELL_EDIT_ACTION_BUSY)return;
+ const name=$('sheetSelect').value||WB.SheetNames[0],oldSheet=WB.Sheets[name];
+ const a=XLSX.utils.sheet_to_json(oldSheet,{header:1,defval:''});
+ while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');
+ const oldValue=a[r][c]??'',next=window.prompt('セルを編集',String(oldValue));
+ if(next===null)return;
+ WB_CELL_EDIT_ACTION_BUSY=true;
+ const oldOverrides=JSON.stringify(WB_MANUAL_OVERRIDES);
+ try{
+  a[r][c]=next;rememberManualCell(name,a,r,c,next);
+  WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);
+  applyManualWorkbookOverrides();applyNoAutoPayRows();renderWorkbook();
+  const buf=XLSX.write(WB,{bookType:'xlsx',type:'array'});
+  await saveWorkbookBytes(buf,WB_NAME);
+  $('workbookStatus').textContent='✓ セルを反映しJARVISに自動保存しました';
+ }catch(e){
+  WB.Sheets[name]=oldSheet;
+  try{WB_MANUAL_OVERRIDES=JSON.parse(oldOverrides);localStorage.setItem(WB_MANUAL_KEY,oldOverrides)}catch{}
+  renderWorkbook();
+  console.error('prompt workbook cell save failed',e);
+  $('workbookStatus').textContent='セルの保存に失敗したため元の値へ戻しました：'+(e?.message||e);
+ }finally{WB_CELL_EDIT_ACTION_BUSY=false}
+}
 function logWorkbookCellHitTest(button,e){
  const rect=button.getBoundingClientRect(),point=e.changedTouches?.[0]||e;
  const tapHit=document.elementFromPoint(point.clientX??rect.left+rect.width/2,point.clientY??rect.top+rect.height/2);
@@ -386,7 +410,7 @@ function renderWorkbook(){
  const visible=aoa.map((row,r)=>({row,r})).slice(3).filter(({row})=>Object.entries(WB_FILTERS).every(([c,val])=>!val||String(row[+c]??'').trim()===val));
  visible.slice(0,500).forEach(({row,r})=>{h+=`<tr class="${WB_SELECTED_ROW===r?'selected-row':''}">`;for(let c=0;c<maxCols;c++){const v=row[c]??'',selCol=WB_SELECTED_COL===c?' selected-col':'',selCell=WB_SELECTED_CELL===`${r}:${c}`?' selected-cell':'';if(WB_EDIT&&!touchEdit){h+=`<td class="${selCol}${selCell}" data-r="${r}" data-c="${c}"><input class="wb-cell-input" data-r="${r}" data-c="${c}" value="${esc(v)}"></td>`}else h+=`<td class="${selCol}${selCell}" data-r="${r}" data-c="${c}" tabindex="0">${esc(v)}</td>`}h+='</tr>'});h+='</tbody>';$('workbookTable').innerHTML=h;
  document.querySelectorAll('#workbookTable .wb-filter').forEach(sel=>sel.addEventListener('change',()=>{const c=sel.dataset.c;if(sel.value)WB_FILTERS[c]=sel.value;else delete WB_FILTERS[c];renderWorkbook()}));
- if(WB_EDIT&&!touchEdit){document.querySelectorAll('#workbookTable .wb-cell-input').forEach(inp=>{const select=()=>{WB_SELECTED_ROW=+inp.dataset.r;WB_SELECTED_COL=+inp.dataset.c;WB_SELECTED_CELL=`${inp.dataset.r}:${inp.dataset.c}`};inp.addEventListener('focus',select);inp.addEventListener('click',select);const commit=()=>{select();const a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''}),r=+inp.dataset.r,c=+inp.dataset.c;while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');a[r][c]=inp.value;rememberManualCell(name,a,r,c,inp.value);WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);$('workbookStatus').textContent=`編集中：行${r+1}・列${c+1}`};inp.addEventListener('input',commit);inp.addEventListener('change',commit)})}else{document.querySelectorAll('#workbookTable td[data-r]').forEach(td=>td.addEventListener('click',()=>{if(WB_EDIT&&touchEdit){openWorkbookCellEditor(+td.dataset.r,+td.dataset.c);return}WB_SELECTED_ROW=+td.dataset.r;WB_SELECTED_COL=+td.dataset.c;WB_SELECTED_CELL=`${td.dataset.r}:${td.dataset.c}`;renderWorkbook()}))}
+ if(WB_EDIT&&!touchEdit){document.querySelectorAll('#workbookTable .wb-cell-input').forEach(inp=>{const select=()=>{WB_SELECTED_ROW=+inp.dataset.r;WB_SELECTED_COL=+inp.dataset.c;WB_SELECTED_CELL=`${inp.dataset.r}:${inp.dataset.c}`};inp.addEventListener('focus',select);inp.addEventListener('click',select);const commit=()=>{select();const a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''}),r=+inp.dataset.r,c=+inp.dataset.c;while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');a[r][c]=inp.value;rememberManualCell(name,a,r,c,inp.value);WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);$('workbookStatus').textContent=`編集中：行${r+1}・列${c+1}`};inp.addEventListener('input',commit);inp.addEventListener('change',commit)})}else{document.querySelectorAll('#workbookTable td[data-r]').forEach(td=>td.addEventListener('click',()=>{if(WB_EDIT&&touchEdit){promptWorkbookCellEdit(+td.dataset.r,+td.dataset.c);return}WB_SELECTED_ROW=+td.dataset.r;WB_SELECTED_COL=+td.dataset.c;WB_SELECTED_CELL=`${td.dataset.r}:${td.dataset.c}`;renderWorkbook()}))}
 }
 const REFERRAL_BY_DRIVER={
   '高橋利旭':'古本紹介','高橋':'古本紹介','髙橋和也':'高橋紹介','高橋和也':'高橋紹介',
