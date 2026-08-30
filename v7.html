@@ -82,13 +82,16 @@ function escapeHtml(value) {
   return result;
 }
   
-async function saveCurrentShift() {
-  const table = document.querySelector('#shiftMatrix table');
+const result = await saveCurrentShift();
 
-  if (!table) {
-    alert('シフト表が見つかりません');
-    return;
-  }
+if (!result) {
+  console.log('保存処理は実行されませんでした');
+  return;
+}
+
+if (!result.success) {
+  alert('シフト保存に失敗しました');
+}
 
   const rows = Array.from(table.querySelectorAll('tr'));
 
