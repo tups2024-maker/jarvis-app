@@ -18,41 +18,34 @@ async function jarvisGetShift() {
   return result.data;
 }
 async function saveCurrentShift() {
-  const table = document.querySelector('#shiftMatrix .shift-table');
+  const target = document.getElementById('shiftMatrix');
 
-  if (!table) {
-    alert('三島シフト表が見つかりません');
+  if (!target) {
+    alert('三島シフトエリアが見つかりません');
     return { success: false };
   }
 
-  const rows = Array.from(table.querySelectorAll('tr'));
+  const rows = Array.from(target.querySelectorAll('.shift-row'));
+
+  if (!rows.length) {
+    alert('三島シフトデータが見つかりません');
+    return { success: false };
+  }
 
   const values = rows.map(row =>
-    Array.from(row.querySelectorAll('th, td')).map(cell =>
-      cell.innerText.trim()
+    Array.from(row.children).map(cell =>
+      (cell.innerText || '').trim()
     )
   );
 
-  console.log('SAVE SIZE:', values.length, values[0]?.length);
+  console.log('JARVIS SAVE SIZE:', values.length, values.map(r => r.length));
 
-  if (
-    values.length !== 26 ||
-    values.some(row => row.length !== 59)
-  ) {
-    alert('三島シフトのサイズが26行×59列ではありません');
-    return { success: false };
-  }
-
-  const response = await fetch(`${GAS_API_URL}/shift/save`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      range: 'A1:BG26',
-      values: values
-    })
-  });
+  return {
+    success: false,
+    preview: true,
+    values: values
+  };
+}
 
   const result = await response.json();
 
