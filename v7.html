@@ -59,16 +59,6 @@ async function saveCurrentShift() {
   console.log('SHIFT SAVE:', result);
   return result;
 }
- async function saveCurrentShift() {
-  const target = document.getElementById('shiftMatrix');
-
-  if (!target) {
-    alert('シフトエリアが見つかりません');
-    return { success: false };
-  }
-
-  let values = [];
-
   const table = target.querySelector('.shift-table');
 
   if (table) {
