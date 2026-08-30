@@ -25,32 +25,181 @@ async function saveCurrentShift() {
     return { success: false };
   }
 
-  const rows = Array.from(target.querySelectorAll('.shift-row'));
+  // 三島原本を取得
+  const data = await jarvisGetShift();
+  const source = data.values || [];
 
-  if (!rows.length) {
-    alert('三島シフトデータが見つかりません');
+  if (!source.length) {
+    alert('Google三島シフトを取得できませんでした');
     return { success: false };
   }
 
-  const values = rows.map(row =>
-    Array.from(row.children).map(cell =>
-      (cell.innerText || '').trim()
-    )
+  // 名前比較用
+  const norm = (v) =>
+    String(v || '')
+      .replace(/\u3000/g, ' ')
+      .replace(/\s+/g, '')
+      .replace(/髙/g, '高')
+      .trim();
+
+  // JARVIS表示名 → Google原本名
+  const driverAlias = {
+    '高橋': '髙橋利旭',
+    '髙橋利旭': '髙橋利旭',
+    '高橋利旭': '髙橋利旭',
+    '髙橋和也': '髙橋和也',
+    '高橋和也': '髙橋和也',
+    '津田': '津田たけし',
+    '津田たけし': '津田たけし',
+    '久松': '久松慧大',
+    '久松慧大': '久松慧大'
+  };
+
+  // Excel列番号 → A1列名
+  function colToLetter(col) {
+    let s = '';
+    while (col > 0) {
+      col--;
+      s = String.fromCharCode(65 + (col % 26)) + s;
+      col = Math.floor(col / 26);
+    }
+    return s;
+  }
+
+  // JARVIS表示値 → 原本保存値
+  function cleanValue(v) {
+    let x = String(v || '').trim();
+
+    if (x === '・') return '';
+    if (x === '休み') return '休';
+    if (x === '×') return '欠車';
+
+    return x;
+  }
+
+  const rows = Array.from(
+    target.querySelectorAll('.shift-row:not(.shift-head)')
   );
 
-  console.log('JARVIS SAVE SIZE:', values.length, values.map(r => r.length));
+  const changes = [];
+
+  for (const row of rows) {
+    const nameEl = row.querySelector('.sticky-name b');
+    if (!nameEl) continue;
+
+    const uiName = nameEl.innerText.trim();
+    const targetName =
+      driverAlias[norm(uiName)] || norm(uiName);
+
+    // Google原本ではドライバー名はC列
+    const sourceRowIndex = source.findIndex((r) => {
+      const googleName = norm(r?.[2]);
+
+      return (
+        googleName === norm(targetName) ||
+        googleName === norm(uiName)
+      );
+    });
+
+    if (sourceRowIndex < 0) {
+      console.warn('原本でドライバーが見つかりません:', uiName);
+      continue;
+    }
+
+    const cells = Array.from(row.querySelectorAll('.shift-cell'));
+
+    // 1日～31日
+    cells.forEach((cell, index) => {
+      const day = index + 1;
+
+      // 原本は 1日=10列目(J列)、31日=40列目(AN列)
+      const sourceCol = 10 + index;
+
+      const uiValue = cleanValue(cell.innerText);
+      const oldValue = cleanValue(
+        source[sourceRowIndex]?.[sourceCol - 1]
+      );
+
+      if (uiValue !== oldValue) {
+        changes.push({
+          driver: uiName,
+          day,
+          range:
+            colToLetter(sourceCol) +
+            String(sourceRowIndex + 1),
+          oldValue,
+          newValue: uiValue
+        });
+      }
+    });
+  }
+
+  console.log('SHIFT CHANGES:', changes);
+
+  if (changes.length === 0) {
+    alert('変更されたシフトはありません');
+    return {
+      success: true,
+      changes: 0
+    };
+  }
+
+  // 変更されたセルだけGoogleへ保存
+  for (const change of changes) {
+    console.log(
+      'SAVE:',
+      change.driver,
+      change.day + '日',
+      change.range,
+      change.oldValue,
+      '→',
+      change.newValue
+    );
+
+    const response = await fetch(
+      `${GAS_API_URL}/shift/save`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          range: change.range,
+          values: [[change.newValue]]
+        })
+      }
+    );
+
+    const result = await response.json();
+
+    if (!result.success) {
+      console.error(
+        'SAVE ERROR:',
+        change,
+        result
+      );
+
+      alert(
+        `${change.driver} ${change.day}日の保存に失敗しました`
+      );
+
+      return {
+        success: false,
+        error: result
+      };
+    }
+  }
+
+  console.log(
+    'SHIFT SAVE COMPLETE:',
+    changes
+  );
 
   return {
-    success: false,
-    preview: true,
-    values: values
+    success: true,
+    changes: changes.length
   };
 }
-
-  const result = await response.json();
-
-  console.log('SHIFT SAVE:', result);
-  return result;
 }
 document.addEventListener('DOMContentLoaded', () => {
   const saveBtn = Array.from(document.querySelectorAll('button'))
