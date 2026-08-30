@@ -4,10 +4,10 @@
   try{localStorage.setItem('jarvis-current-version',V)}catch(e){}
   if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(rs=>Promise.all(rs.map(r=>r.unregister()))).catch(()=>{});}
   if('caches' in window){caches.keys().then(ks=>Promise.all(ks.map(k=>caches.delete(k)))).catch(()=>{});}
-})();const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxQPOYL_8_-cWyYZ27jVdAE9gg4bYLWrGFlE_wIKRRYmxOUTS4ZlO4wcPwDjuwoXTdRfQ/exec';
+})();const GAS_API_URL = 'https://jarvis-api.t-ups2024.workers.dev';
 
 async function jarvisGasTest() {
-  const response = await fetch(`${https://jarvis-api.t-ups2024.workers.dev}?action=health`);
+ const response = await fetch(`${GAS_API_URL}/health`);
   const result = await response.json();
   console.log('JARVIS GAS:', result);
   return result;　 }
