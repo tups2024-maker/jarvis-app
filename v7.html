@@ -18,20 +18,18 @@ async function jarvisGetShift() {
   return result.data;
 }
 async function saveCurrentShift() {
-  const target = document.getElementById('shiftMatrix');
+  const dirty = window.JARVIS_DIRTY_SHIFT;
 
-  if (!target) {
-    alert('三島シフトエリアが見つかりません');
-    return { success: false };
+  if (!dirty || dirty.size === 0) {
+    alert('変更されたシフトはありません');
+    return {
+      success: true,
+      changes: 0
+    };
   }
 
   const data = await jarvisGetShift();
   const source = data.values || [];
-
-  if (!source.length) {
-    alert('Google三島シフトを取得できませんでした');
-    return { success: false };
-  }
 
   const norm = (v) =>
     String(v || '')
@@ -58,106 +56,90 @@ async function saveCurrentShift() {
     '堀井龍馬': '堀井龍馬'
   };
 
-  const mishimaDrivers = new Set([
-    'ヤシマ聖美',
-    '高橋和也',
-    '高橋',
-    '生駒龍彦',
-    '日置将人',
-    '久松',
-    '島田真一',
-    '雨宮渉',
-    '持麾満',
-    '林真人',
-    '福羅達也',
-    '福羅沙織',
-    '大沼',
-    '津田たけし',
-    '堀井龍馬'
-  ]);
-
   function colToLetter(col) {
     let s = '';
+
     while (col > 0) {
       col--;
-      s = String.fromCharCode(65 + (col % 26)) + s;
+      s =
+        String.fromCharCode(65 + (col % 26)) +
+        s;
       col = Math.floor(col / 26);
     }
+
     return s;
   }
 
-  function normalizeShiftValue(v) {
-    let x = String(v || '').trim();
+  function getDisplayValue(driver, date) {
+    const button = document.querySelector(
+      `.shift-cell[data-date="${date}"][data-driver="${CSS.escape(driver)}"]`
+    );
 
-    if (x === '' || x === '・') return '';
+    if (!button) return null;
+
+    let x = String(button.innerText || '').trim();
+
+    if (x === '・') return '';
     if (['O', '○', '〇'].includes(x)) return '○';
-    if (['休', '休み', '製麺所休'].includes(x)) return '休';
+    if (['休', '休み'].includes(x)) return '休';
     if (['×', '欠車'].includes(x)) return '×';
 
     return x;
   }
 
-  const rows = Array.from(
-    target.querySelectorAll('.shift-row:not(.shift-head)')
-  );
-
   const changes = [];
 
-  for (const row of rows) {
-    const nameEl = row.querySelector('.sticky-name b');
-    if (!nameEl) continue;
+  for (const item of dirty.values()) {
+    const date = item.date;
+    const uiDriver = item.driver;
 
-    const uiNameRaw = nameEl.innerText.trim();
-    const uiName = norm(uiNameRaw);
+    const parts = date.split('-');
+    const day = Number(parts[2]);
 
-    if (!mishimaDrivers.has(uiName)) {
-      continue;
-    }
+    if (!day || day < 1 || day > 31) continue;
 
-    const googleTargetName =
+    const uiName = norm(uiDriver);
+    const targetName =
       driverAlias[uiName] || uiName;
 
-    const sourceRowIndex = source.findIndex((r) => {
-      const googleName = norm(r?.[2]);
-      return googleName === norm(googleTargetName);
-    });
+    const sourceRowIndex = source.findIndex(
+      row =>
+        norm(row?.[2]) === norm(targetName)
+    );
 
     if (sourceRowIndex < 0) {
-      console.warn('原本でドライバーが見つかりません:', uiNameRaw);
+      console.warn(
+        '原本でドライバーが見つかりません:',
+        uiDriver
+      );
       continue;
     }
 
-    const cells = Array.from(row.querySelectorAll('.shift-cell'));
+    // 1日=J列=10
+    const sourceCol = 9 + day;
 
-    cells.forEach((cell, index) => {
-      const day = index + 1;
+    const newValue =
+      getDisplayValue(uiDriver, date);
 
-      // 8/1 = J列(10), 8/31 = AN列(40)
-      const sourceCol = 10 + index;
+    if (newValue === null) continue;
 
-      const uiValue = normalizeShiftValue(cell.innerText);
-      const oldValue = normalizeShiftValue(
-        source[sourceRowIndex]?.[sourceCol - 1]
-      );
-
-      if (uiValue !== oldValue) {
-        changes.push({
-          driver: uiNameRaw,
-          day,
-          range:
-            colToLetter(sourceCol) +
-            String(sourceRowIndex + 1),
-          oldValue,
-          newValue: uiValue
-        });
-      }
+    changes.push({
+      driver: uiDriver,
+      day,
+      range:
+        colToLetter(sourceCol) +
+        String(sourceRowIndex + 1),
+      newValue
     });
   }
 
-  console.log('SHIFT CHANGES:', changes);
+  console.log(
+    'DIRTY SHIFT CHANGES:',
+    changes
+  );
 
   if (changes.length === 0) {
-    alert('変更されたシフトはありません');
+    alert('保存対象がありません');
     return {
       success: true,
       changes: 0
@@ -166,11 +148,10 @@ async function saveCurrentShift() {
 
   for (const change of changes) {
     console.log(
-      'SAVE:',
+      'SAVE ONLY:',
       change.driver,
       change.day + '日',
       change.range,
-      change.oldValue,
       '→',
       change.newValue
     );
@@ -180,7 +161,8 @@ async function saveCurrentShift() {
       {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type':
+            'application/json'
         },
         body: JSON.stringify({
           range: change.range,
@@ -189,10 +171,15 @@ async function saveCurrentShift() {
       }
     );
 
-    const result = await response.json();
+    const result =
+      await response.json();
 
     if (!result.success) {
-      console.error('SAVE ERROR:', change, result);
+      console.error(
+        'SAVE ERROR:',
+        change,
+        result
+      );
 
       alert(
         `${change.driver} ${change.day}日の保存に失敗しました`
@@ -205,7 +192,13 @@ async function saveCurrentShift() {
     }
   }
 
-  console.log('SHIFT SAVE COMPLETE:', changes);
+  // 保存成功したセルだけリセット
+  window.JARVIS_DIRTY_SHIFT.clear();
+
+  console.log(
+    'SHIFT SAVE COMPLETE:',
+    changes
+  );
 
   return {
     success: true,
