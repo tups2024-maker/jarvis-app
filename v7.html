@@ -81,21 +81,40 @@ function escapeHtml(value) {
 
   return result;
 }
-  async function saveCurrentShift() {
-  const table = document.querySelector('#shiftMatrix .shift-table');
+ async function saveCurrentShift() {
+  const target = document.getElementById('shiftMatrix');
 
-  if (!table) {
-    alert('シフト表が見つかりません');
+  if (!target) {
+    alert('シフトエリアが見つかりません');
     return { success: false };
   }
 
-  const rows = Array.from(table.querySelectorAll('tr'));
+  let values = [];
 
-  const values = rows.map(row =>
-    Array.from(row.querySelectorAll('th, td')).map(cell =>
-      cell.innerText.trim()
-    )
-  );
+  const table = target.querySelector('.shift-table');
+
+  if (table) {
+    const rows = Array.from(table.querySelectorAll('tr'));
+
+    values = rows.map(row =>
+      Array.from(row.querySelectorAll('th, td')).map(cell =>
+        cell.innerText.trim()
+      )
+    );
+  } else {
+    const liveRows = Array.from(target.children);
+
+    values = liveRows.map(row =>
+      Array.from(row.children).map(cell =>
+        (cell.innerText || '').trim()
+      )
+    ).filter(row => row.length);
+  }
+
+  if (!values.length) {
+    alert('保存できるシフトデータがありません');
+    return { success: false };
+  }
 
   const response = await fetch(`${GAS_API_URL}/shift/save`, {
     method: 'POST',
@@ -113,6 +132,7 @@ function escapeHtml(value) {
   console.log('SHIFT SAVE:', result);
 
   return result;
+}
 }
 document.addEventListener('DOMContentLoaded', () => {
   const saveBtn = Array.from(document.querySelectorAll('button'))
