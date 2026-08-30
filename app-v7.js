@@ -97,6 +97,11 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 function daysInMonth(ym){const [y,m]=ym.split('-').map(Number);return new Date(y,m,0).getDate()}
 function shiftAreaDrivers(area){return DRIVERS.filter(d=>area==='all'||driverAreas(d).includes(area))}
 function getShiftRec(date,d){return ATT.find(a=>a.date===date&&normName(a.driver)===normName(d.name))}
+window.JARVIS_DIRTY_SHIFT = window.JARVIS_DIRTY_SHIFT || new Map();
+function markShiftDirty(date,d,value){
+  const key=`${date}|${normName(d.name)}`;
+  window.JARVIS_DIRTY_SHIFT.set(key,{dirtyKey:key,date,driver:d.name,value});
+}
 function cycleShift(date,d){
   const states=['出勤','休み','欠車',''];
   let rec=getShiftRec(date,d),cur=rec?.status||'',next=states[(states.indexOf(cur)+1)%states.length];
@@ -107,6 +112,9 @@ function cycleShift(date,d){
     const idx=ATT.findIndex(a=>a.date===date&&normName(a.driver)===normName(d.name));
     if(idx>=0)ATT[idx]=nr; else ATT.push(nr);
   }
+  const changed=getShiftRec(date,d);
+  const value=!changed?'':changed.status==='休み'?'休':changed.status==='欠車'?'×':changed.status==='研修'?(changed.work||'研'):(changed.status==='出勤'?((changed.work&&!['〇','○'].includes(changed.work))?changed.work:'○'):'');
+  markShiftDirty(date,d,value);
   localStorage.setItem(ATT_KEY,JSON.stringify(ATT));renderShiftMatrix();renderDrivers();renderAreaDrivers();
 }
 function editShiftCell(date,d){
@@ -116,6 +124,9 @@ function editShiftCell(date,d){
   if(!x){ATT=ATT.filter(a=>!(a.date===date&&normName(a.driver)===normName(d.name)));}
   else{let status='出勤',work=x;if(x==='休'||x==='休み'){status='休み';work='休'}else if(x==='×'||x==='欠車'){status='欠車';work='×'}else if(x==='研修'){status='研修';work='研修'}else if(x==='○'||x==='〇'){status='出勤';work='○'}
     const area=old?.area||d.area,project=old?.project||AREA_PROJECTS[area]?.[0]||'';const nr={date,area,driver:d.name,project,status,work,source:'manual-v492'};const i=ATT.findIndex(a=>a.date===date&&normName(a.driver)===normName(d.name));if(i>=0)ATT[i]=nr;else ATT.push(nr)}
+  const changed=getShiftRec(date,d);
+  const value=!changed?'':changed.status==='休み'?'休':changed.status==='欠車'?'×':changed.status==='研修'?(changed.work||'研'):(changed.status==='出勤'?((changed.work&&!['〇','○'].includes(changed.work))?changed.work:'○'):'');
+  markShiftDirty(date,d,value);
   localStorage.setItem(ATT_KEY,JSON.stringify(ATT));renderShiftMatrix();renderAreaDrivers();render();
 }
 function renderShiftMatrix(){
@@ -264,7 +275,6 @@ function applyManualWorkbookOverrides(){
   }); return n;
 }
 let SHIFT_EDIT=false;
-window.JARVIS_DIRTY_SHIFT = window.JARVIS_DIRTY_SHIFT || new Map();
 function idb(){return new Promise((resolve,reject)=>{const r=indexedDB.open('jarvis-v47-db',1);r.onupgradeneeded=()=>r.result.createObjectStore('files');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
 async function saveWorkbookBytes(bytes,name){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').put({bytes:Array.from(new Uint8Array(bytes)),name,ts:Date.now()},'deliveryWorkbookV478');tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
 async function loadWorkbookBytes(){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction('files','readonly');const q=tx.objectStore('files').get('deliveryWorkbookV478');q.onsuccess=()=>res(q.result||null);q.onerror=()=>rej(q.error)})}
