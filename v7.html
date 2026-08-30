@@ -7,7 +7,7 @@
 })();const GAS_API_URL = 'https://jarvis-api.t-ups2024.workers.dev';
 
 async function jarvisGasTest() {
- const response = await fetch(`${GAS_API_URL}/health`);
+const response = await fetch(`${GAS_API_URL}/health`);
   const result = await response.json();
   console.log('JARVIS GAS:', result);
   return result;　 }
