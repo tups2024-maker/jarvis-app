@@ -20,9 +20,9 @@ async function jarvisGetShift() {
 async function renderShiftTable() {
   const data = await jarvisGetShift();
 
-  const target = document.getElementById('shiftmatrix');
+  const target = document.getElementById('shiftMatrix');
   if (!target) {
-    console.error('shiftmatrix が見つかりません');
+    console.error('shiftMatrix が見つかりません');
     return;
   }
 
