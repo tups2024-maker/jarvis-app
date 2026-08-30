@@ -80,6 +80,51 @@ function escapeHtml(value) {
   console.log('SHIFT SAVE:', result);
 
   return result;
+
+  async function testShiftSave() {
+  // 今あるテスト保存
+  ...
+  return result;
+}
+
+// ← この下に追加
+async function saveCurrentShift() {
+  const table = document.querySelector('#shiftMatrix table');
+
+  if (!table) {
+    alert('シフト表が見つかりません');
+    return;
+  }
+
+  const rows = Array.from(table.querySelectorAll('tr'));
+
+  const values = rows.map(row =>
+    Array.from(row.querySelectorAll('th, td')).map(cell =>
+      cell.innerText.trim()
+    )
+  );
+
+  const response = await fetch(`${GAS_API_URL}/shift/save`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      range: 'A1:BG26',
+      values: values
+    })
+  });
+
+  const result = await response.json();
+  console.log('SHIFT SAVE:', result);
+
+  if (result.success) {
+    alert('シフト保存完了');
+  } else {
+    alert('シフト保存に失敗しました');
+  }
+
+  return result;
 }
 document.addEventListener('DOMContentLoaded', () => {
   const saveBtn = Array.from(document.querySelectorAll('button'))
@@ -94,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('シフト保存ボタンが押されました');
 
     try {
-      const result = await testShiftSave();
+      const result = await saveCurrentShift();
 
       if (result.success) {
         alert('シフト保存テスト成功');
