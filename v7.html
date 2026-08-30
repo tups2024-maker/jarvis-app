@@ -25,7 +25,6 @@ async function saveCurrentShift() {
     return { success: false };
   }
 
-  // 三島原本を取得
   const data = await jarvisGetShift();
   const source = data.values || [];
 
@@ -34,7 +33,6 @@ async function saveCurrentShift() {
     return { success: false };
   }
 
-  // 名前比較用
   const norm = (v) =>
     String(v || '')
       .replace(/\u3000/g, ' ')
@@ -42,20 +40,42 @@ async function saveCurrentShift() {
       .replace(/髙/g, '高')
       .trim();
 
-  // JARVIS表示名 → Google原本名
   const driverAlias = {
-    '高橋': '髙橋利旭',
-    '髙橋利旭': '髙橋利旭',
-    '高橋利旭': '髙橋利旭',
-    '髙橋和也': '髙橋和也',
-    '高橋和也': '髙橋和也',
-    '津田': '津田たけし',
-    '津田たけし': '津田たけし',
+    'ヤシマ聖美': 'ヤシマ聖美',
+    '高橋和也': '高橋和也',
+    '高橋': '高橋利旭',
+    '生駒龍彦': '生駒龍彦',
+    '日置将人': '日置将人',
     '久松': '久松慧大',
-    '久松慧大': '久松慧大'
+    '島田真一': '島田真一',
+    '雨宮渉': '雨宮渉',
+    '持麾満': '持麾満',
+    '林真人': '林真人',
+    '福羅達也': '福羅達也',
+    '福羅沙織': '福羅沙織',
+    '大沼': '大沼',
+    '津田たけし': '津田たけし',
+    '堀井龍馬': '堀井龍馬'
   };
 
-  // Excel列番号 → A1列名
+  const mishimaDrivers = new Set([
+    'ヤシマ聖美',
+    '高橋和也',
+    '高橋',
+    '生駒龍彦',
+    '日置将人',
+    '久松',
+    '島田真一',
+    '雨宮渉',
+    '持麾満',
+    '林真人',
+    '福羅達也',
+    '福羅沙織',
+    '大沼',
+    '津田たけし',
+    '堀井龍馬'
+  ]);
+
   function colToLetter(col) {
     let s = '';
     while (col > 0) {
@@ -66,13 +86,13 @@ async function saveCurrentShift() {
     return s;
   }
 
-  // JARVIS表示値 → 原本保存値
-  function cleanValue(v) {
+  function normalizeShiftValue(v) {
     let x = String(v || '').trim();
 
-    if (x === '・') return '';
-    if (x === '休み') return '休';
-    if (x === '×') return '欠車';
+    if (x === '' || x === '・') return '';
+    if (['O', '○', '〇'].includes(x)) return '○';
+    if (['休', '休み', '製麺所休'].includes(x)) return '休';
+    if (['×', '欠車'].includes(x)) return '×';
 
     return x;
   }
@@ -87,42 +107,42 @@ async function saveCurrentShift() {
     const nameEl = row.querySelector('.sticky-name b');
     if (!nameEl) continue;
 
-    const uiName = nameEl.innerText.trim();
-    const targetName =
-      driverAlias[norm(uiName)] || norm(uiName);
+    const uiNameRaw = nameEl.innerText.trim();
+    const uiName = norm(uiNameRaw);
 
-    // Google原本ではドライバー名はC列
+    if (!mishimaDrivers.has(uiName)) {
+      continue;
+    }
+
+    const googleTargetName =
+      driverAlias[uiName] || uiName;
+
     const sourceRowIndex = source.findIndex((r) => {
       const googleName = norm(r?.[2]);
-
-      return (
-        googleName === norm(targetName) ||
-        googleName === norm(uiName)
-      );
+      return googleName === norm(googleTargetName);
     });
 
     if (sourceRowIndex < 0) {
-      console.warn('原本でドライバーが見つかりません:', uiName);
+      console.warn('原本でドライバーが見つかりません:', uiNameRaw);
       continue;
     }
 
     const cells = Array.from(row.querySelectorAll('.shift-cell'));
 
-    // 1日～31日
     cells.forEach((cell, index) => {
       const day = index + 1;
 
-      // 原本は 1日=10列目(J列)、31日=40列目(AN列)
+      // 8/1 = J列(10), 8/31 = AN列(40)
       const sourceCol = 10 + index;
 
-      const uiValue = cleanValue(cell.innerText);
-      const oldValue = cleanValue(
+      const uiValue = normalizeShiftValue(cell.innerText);
+      const oldValue = normalizeShiftValue(
         source[sourceRowIndex]?.[sourceCol - 1]
       );
 
       if (uiValue !== oldValue) {
         changes.push({
-          driver: uiName,
+          driver: uiNameRaw,
           day,
           range:
             colToLetter(sourceCol) +
@@ -144,7 +164,6 @@ async function saveCurrentShift() {
     };
   }
 
-  // 変更されたセルだけGoogleへ保存
   for (const change of changes) {
     console.log(
       'SAVE:',
@@ -173,11 +192,7 @@ async function saveCurrentShift() {
     const result = await response.json();
 
     if (!result.success) {
-      console.error(
-        'SAVE ERROR:',
-        change,
-        result
-      );
+      console.error('SAVE ERROR:', change, result);
 
       alert(
         `${change.driver} ${change.day}日の保存に失敗しました`
@@ -190,10 +205,7 @@ async function saveCurrentShift() {
     }
   }
 
-  console.log(
-    'SHIFT SAVE COMPLETE:',
-    changes
-  );
+  console.log('SHIFT SAVE COMPLETE:', changes);
 
   return {
     success: true,
