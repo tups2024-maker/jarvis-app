@@ -142,7 +142,14 @@ function initShiftControls(){
  $('shiftEditBtn')?.addEventListener('click',()=>{SHIFT_EDIT=!SHIFT_EDIT;$('shiftEditBtn').textContent=SHIFT_EDIT?'✓ シフト直接編集 OFF':'✎ シフト直接編集 ON';$('attendanceStatus').textContent=SHIFT_EDIT?'編集ON：セルをタップして ○ / 休 / × / AM / MX / CX / お酒 などを直接入力できます。':'編集OFF：セルタップは簡易切替です。';renderShiftMatrix()});
  $('shiftArea').addEventListener('change',renderShiftMatrix);$('shiftMonth').addEventListener('change',renderShiftMatrix);
  $('shiftSaveBtn').addEventListener('click',async()=>{
-  localStorage.setItem(ATT_KEY,JSON.stringify(ATT));
+  window.JARVIS_DIRTY_SHIFT.set(
+  `${date}|${normName(d.name)}`,
+  {
+    date: date,
+    driver: d.name
+  }
+);
+   localStorage.setItem(ATT_KEY,JSON.stringify(ATT));
   const n=await syncWorkbookFromShift().catch(()=>0);
   $('attendanceStatus')&&(
     $('attendanceStatus').textContent=
