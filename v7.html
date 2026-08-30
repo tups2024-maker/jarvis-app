@@ -17,68 +17,46 @@ async function jarvisGetShift() {
   console.log('SHIFT DATA:', result.data);
   return result.data;
 }
-async function renderShiftTable() {
-  const data = await jarvisGetShift();
+async function saveCurrentShift() {
+  const table = document.querySelector('#shiftMatrix .shift-table');
 
-  const target = document.getElementById('shiftMatrix');
-  if (!target) {
-    console.error('shiftMatrix が見つかりません');
-    return;
+  if (!table) {
+    alert('三島シフト表が見つかりません');
+    return { success: false };
   }
 
-  const values = data.values || [];
+  const rows = Array.from(table.querySelectorAll('tr'));
 
-  if (!values.length) {
-    target.innerHTML = '<p>シフトデータがありません。</p>';
-    return;
+  const values = rows.map(row =>
+    Array.from(row.querySelectorAll('th, td')).map(cell =>
+      cell.innerText.trim()
+    )
+  );
+
+  console.log('SAVE SIZE:', values.length, values[0]?.length);
+
+  if (
+    values.length !== 26 ||
+    values.some(row => row.length !== 59)
+  ) {
+    alert('三島シフトのサイズが26行×59列ではありません');
+    return { success: false };
   }
 
-  let html = '<div class="shift-table-wrap"><table class="shift-table">';
-
-  values.forEach((row, rowIndex) => {
-    html += '<tr>';
-
-    row.forEach((cell) => {
-      const tag = rowIndex === 0 ? 'th' : 'td';
-      html += `<${tag}>${escapeHtml(cell)}</${tag}>`;
-    });
-
-    html += '</tr>';
-  });
-
-  html += '</table></div>';
-
-  target.innerHTML = html;
-}
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
-}document.addEventListener('DOMContentLoaded', () => {
-  renderShiftTable().catch((error) => {
-    console.error('シフト自動読込エラー:', error);
-  });
-});
-  async function testShiftSave() {
   const response = await fetch(`${GAS_API_URL}/shift/save`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      range: 'BG26',
-      values: [['JARVIS TEST']]
+      range: 'A1:BG26',
+      values: values
     })
   });
 
   const result = await response.json();
 
   console.log('SHIFT SAVE:', result);
-
   return result;
 }
  async function saveCurrentShift() {
