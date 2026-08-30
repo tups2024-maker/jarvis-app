@@ -327,11 +327,12 @@ function openWorkbookCellEditor(r,c){
  const title=r===2?'項目名を編集':'セルを編集';
  $('cellEditTitle').textContent=title;$('cellEditPos').textContent=`行 ${r+1} / 列 ${c+1}`;$('cellEditInput').value=String(a[r][c]??'');
  $('cellEditModal').classList.add('open');$('cellEditModal').setAttribute('aria-hidden','false');
+ document.body.classList.add('cell-edit-open');
  setTimeout(()=>{$('cellEditInput').focus();$('cellEditInput').select()},80);
  renderWorkbook();
 }
 function closeWorkbookCellEditor(){
- $('cellEditModal')?.classList.remove('open');$('cellEditModal')?.setAttribute('aria-hidden','true');WB_EDIT_TARGET=null;
+ $('cellEditModal')?.classList.remove('open');$('cellEditModal')?.setAttribute('aria-hidden','true');document.body.classList.remove('cell-edit-open');WB_EDIT_TARGET=null;
 }
 async function applyWorkbookCellEdit(value){
  if(!WB||!WB_EDIT_TARGET){WB_CELL_EDIT_ACTION_BUSY=false;return}
@@ -349,19 +350,29 @@ async function applyWorkbookCellEdit(value){
   $('workbookStatus').textContent='セルの保存に失敗しました：'+(e?.message||e);
  }finally{WB_CELL_EDIT_ACTION_BUSY=false}
 }
-function handleWorkbookCellEditAction(e){
- const modal=$('cellEditModal');if(!modal)return;
- const now=Date.now();
- if(e.type==='click'&&now-WB_CELL_EDIT_LAST_POINTER<700)return;
- if(e.type==='pointerup')WB_CELL_EDIT_LAST_POINTER=now;
- const button=e.target.closest?.('#cellEditSave,#cellEditClear,#cellEditCancel,#cellEditClose');
- if(!button&&e.target!==modal)return;
- e.preventDefault();e.stopPropagation();
- if(WB_CELL_EDIT_ACTION_BUSY)return;
- WB_CELL_EDIT_ACTION_BUSY=true;
- if(button?.id==='cellEditSave'){applyWorkbookCellEdit($('cellEditInput').value);return}
- if(button?.id==='cellEditClear'){applyWorkbookCellEdit('');return}
- closeWorkbookCellEditor();WB_CELL_EDIT_ACTION_BUSY=false;
+function logWorkbookCellHitTest(button,e){
+ const rect=button.getBoundingClientRect(),point=e.changedTouches?.[0]||e;
+ const tapHit=document.elementFromPoint(point.clientX??rect.left+rect.width/2,point.clientY??rect.top+rect.height/2);
+ const centerHit=document.elementFromPoint(rect.left+rect.width/2,rect.top+rect.height/2);
+ console.debug('CELL EDIT HIT TEST',{button:button.id,event:e.type,tapHit,centerHit});
+}
+function bindWorkbookCellEditButton(id,action){
+ const button=$(id);if(!button)return;
+ const run=e=>{
+  const now=Date.now();
+  e.preventDefault();e.stopPropagation();
+  logWorkbookCellHitTest(button,e);
+  if(e.type==='click'&&now-WB_CELL_EDIT_LAST_POINTER<700)return;
+  if(e.type==='pointerup')WB_CELL_EDIT_LAST_POINTER=now;
+  if(WB_CELL_EDIT_ACTION_BUSY)return;
+  WB_CELL_EDIT_ACTION_BUSY=true;
+  if(action==='save'){applyWorkbookCellEdit($('cellEditInput').value);return}
+  if(action==='clear'){applyWorkbookCellEdit('');return}
+  closeWorkbookCellEditor();
+  setTimeout(()=>{WB_CELL_EDIT_ACTION_BUSY=false},700);
+ };
+ button.addEventListener('pointerup',run,{passive:false});
+ button.addEventListener('click',run,{passive:false});
 }
 function renderWorkbook(){
  if(!$('workbookTable'))return;
@@ -745,8 +756,10 @@ async function downloadLatestWorkbook(){
  $('workbookMoveColRightBtn')?.addEventListener('click',()=>{if(!WB||WB_SELECTED_COL==null){$('workbookStatus').textContent='右へ移動する列を選択してください。';return}const x=workbookSheetData(),c=WB_SELECTED_COL;x.a.forEach(r=>{while(r.length<=c+1)r.push('');[r[c],r[c+1]]=[r[c+1],r[c]]});WB_SELECTED_COL=c+1;setWorkbookAOA(x.name,x.a);$('workbookStatus').textContent='列を右へ移動しました →';});
  $('workbookAddRowBtn')?.addEventListener('click',()=>{if(!WB)return;const name=$('sheetSelect').value||WB.SheetNames[0],a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});a.push(['','','',0,'',0,'',1,'']);WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);WB_EDIT=true;$('workbookEditBtn').textContent='✓ セル編集 OFF';renderWorkbook();$('workbookStatus').textContent='＋ 新しい入力行を追加しました。入力後「JARVISに保存」を押してください。'});
  $('workbookDeleteRowBtn')?.addEventListener('click',()=>{if(!WB||WB_SELECTED_ROW==null){$('workbookStatus').textContent='削除したい行のセルを先にタップしてください。';return}if(WB_SELECTED_ROW<=2){$('workbookStatus').textContent='上部の情報・項目行は誤削除防止のため行削除できません。セル内容は編集できます。';return}const x=workbookSheetData(),r=WB_SELECTED_ROW;x.a.splice(r,1);WB_SELECTED_ROW=Math.min(r,x.a.length-1);WB_SELECTED_CELL=null;setWorkbookAOA(x.name,x.a);$('workbookStatus').textContent='－ 選択した行を削除しました。保存すると確定します。';});
- $('cellEditModal')?.addEventListener('pointerup',handleWorkbookCellEditAction);
- $('cellEditModal')?.addEventListener('click',handleWorkbookCellEditAction);
+ bindWorkbookCellEditButton('cellEditSave','save');
+ bindWorkbookCellEditButton('cellEditClear','clear');
+ bindWorkbookCellEditButton('cellEditCancel','cancel');
+ bindWorkbookCellEditButton('cellEditClose','cancel');
  $('workbookSaveBtn').addEventListener('click',async()=>{if(!WB)return;$('workbookStatus').textContent='保存するExcelがありません';applyManualWorkbookOverrides();applyNoAutoPayRows();const buf=XLSX.write(WB,{bookType:'xlsx',type:'array'});await saveWorkbookBytes(buf,WB_NAME);$('workbookStatus').textContent=`✓ 編集内容をJARVISに保存：${new Date().toLocaleTimeString('ja-JP')}`});
  $('workbookDownloadBtn').addEventListener('click',downloadLatestWorkbook);
  $('workbookClearFiltersBtn')?.addEventListener('click',()=>{WB_FILTERS={};renderWorkbook();$('workbookStatus').textContent='フィルターを解除しました';});
