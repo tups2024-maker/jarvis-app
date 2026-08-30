@@ -102,6 +102,14 @@ function markShiftDirty(date,d,value){
   const key=`${date}|${normName(d.name)}`;
   window.JARVIS_DIRTY_SHIFT.set(key,{dirtyKey:key,date,driver:d.name,value});
 }
+function shiftCellValue(rec){
+  if(!rec)return '';
+  if(rec.status==='休み')return '休';
+  if(rec.status==='欠車')return '×';
+  if(rec.status==='研修')return rec.work||'研';
+  if(rec.status==='出勤')return rec.work&&!['〇','○'].includes(rec.work)?rec.work:'○';
+  return '';
+}
 function cycleShift(date,d){
   const states=['出勤','休み','欠車',''];
   let rec=getShiftRec(date,d),cur=rec?.status||'',next=states[(states.indexOf(cur)+1)%states.length];
@@ -112,9 +120,7 @@ function cycleShift(date,d){
     const idx=ATT.findIndex(a=>a.date===date&&normName(a.driver)===normName(d.name));
     if(idx>=0)ATT[idx]=nr; else ATT.push(nr);
   }
-  const changed=getShiftRec(date,d);
-  const value=!changed?'':changed.status==='休み'?'休':changed.status==='欠車'?'×':changed.status==='研修'?(changed.work||'研'):(changed.status==='出勤'?((changed.work&&!['〇','○'].includes(changed.work))?changed.work:'○'):'');
-  markShiftDirty(date,d,value);
+  markShiftDirty(date,d,shiftCellValue(getShiftRec(date,d)));
   localStorage.setItem(ATT_KEY,JSON.stringify(ATT));renderShiftMatrix();renderDrivers();renderAreaDrivers();
 }
 function editShiftCell(date,d){
@@ -124,9 +130,7 @@ function editShiftCell(date,d){
   if(!x){ATT=ATT.filter(a=>!(a.date===date&&normName(a.driver)===normName(d.name)));}
   else{let status='出勤',work=x;if(x==='休'||x==='休み'){status='休み';work='休'}else if(x==='×'||x==='欠車'){status='欠車';work='×'}else if(x==='研修'){status='研修';work='研修'}else if(x==='○'||x==='〇'){status='出勤';work='○'}
     const area=old?.area||d.area,project=old?.project||AREA_PROJECTS[area]?.[0]||'';const nr={date,area,driver:d.name,project,status,work,source:'manual-v492'};const i=ATT.findIndex(a=>a.date===date&&normName(a.driver)===normName(d.name));if(i>=0)ATT[i]=nr;else ATT.push(nr)}
-  const changed=getShiftRec(date,d);
-  const value=!changed?'':changed.status==='休み'?'休':changed.status==='欠車'?'×':changed.status==='研修'?(changed.work||'研'):(changed.status==='出勤'?((changed.work&&!['〇','○'].includes(changed.work))?changed.work:'○'):'');
-  markShiftDirty(date,d,value);
+  markShiftDirty(date,d,shiftCellValue(getShiftRec(date,d)));
   localStorage.setItem(ATT_KEY,JSON.stringify(ATT));renderShiftMatrix();renderAreaDrivers();render();
 }
 function renderShiftMatrix(){

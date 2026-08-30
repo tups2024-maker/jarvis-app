@@ -18,6 +18,7 @@ async function jarvisGetShift() {
   return result.data;
 }
 async function saveCurrentShift() {
+  // app-v7.js が記録したセル単位の変更だけをGoogle Sheetsへ保存する。
   const dirty = window.JARVIS_DIRTY_SHIFT;
 
   if (!dirty || dirty.size === 0) {
