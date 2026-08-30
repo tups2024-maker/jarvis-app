@@ -81,6 +81,39 @@ function escapeHtml(value) {
 
   return result;
 }
+  async function saveCurrentShift() {
+  const table = document.querySelector('#shiftMatrix .shift-table');
+
+  if (!table) {
+    alert('シフト表が見つかりません');
+    return { success: false };
+  }
+
+  const rows = Array.from(table.querySelectorAll('tr'));
+
+  const values = rows.map(row =>
+    Array.from(row.querySelectorAll('th, td')).map(cell =>
+      cell.innerText.trim()
+    )
+  );
+
+  const response = await fetch(`${GAS_API_URL}/shift/save`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      range: 'A1:BG26',
+      values: values
+    })
+  });
+
+  const result = await response.json();
+
+  console.log('SHIFT SAVE:', result);
+
+  return result;
+}
 document.addEventListener('DOMContentLoaded', () => {
   const saveBtn = Array.from(document.querySelectorAll('button'))
     .find(btn => btn.textContent.includes('シフト保存'));
@@ -97,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const result = await saveCurrentShift();
 
       if (result.success) {
-        alert('シフト保存テスト成功');
+        alert('シフト保存完了');
       } else {
         alert('シフト保存に失敗しました');
       }
