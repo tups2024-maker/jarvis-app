@@ -137,28 +137,109 @@ function renderShiftMatrix(){
   document.querySelectorAll('.shift-cell').forEach(b=>b.addEventListener('click',()=>{const d=DRIVERS.find(x=>normName(x.name)===normName(b.dataset.driver));if(!d)return;if(!SHIFT_EDIT){cycleShift(b.dataset.date,d);return}editShiftCell(b.dataset.date,d)}));
 }
 function initShiftControls(){
- if(!$('shiftArea'))return;
- $('shiftArea').innerHTML='<option value="all">全エリア</option>'+Object.keys(AREA_PROJECTS).map(a=>`<option>${a}</option>`).join('');
- $('shiftEditBtn')?.addEventListener('click',()=>{SHIFT_EDIT=!SHIFT_EDIT;$('shiftEditBtn').textContent=SHIFT_EDIT?'✓ シフト直接編集 OFF':'✎ シフト直接編集 ON';$('attendanceStatus').textContent=SHIFT_EDIT?'編集ON：セルをタップして ○ / 休 / × / AM / MX / CX / お酒 などを直接入力できます。':'編集OFF：セルタップは簡易切替です。';renderShiftMatrix()});
- $('shiftArea').addEventListener('change',renderShiftMatrix);$('shiftMonth').addEventListener('change',renderShiftMatrix);
-);
-   localStorage.setItem(ATT_KEY,JSON.stringify(ATT));
-  const n=await syncWorkbookFromShift().catch(()=>0);
-  $('attendanceStatus')&&(
-    $('attendanceStatus').textContent=
-    `✓ シフト保存・配送管理表へ自動反映しました${n?'（'+n+'件追加）':''}`
-  );
-  render();
-  renderAreaDrivers();
-});
-  const n=await syncWorkbookFromShift().catch(()=>0);$('attendanceStatus')&&($('attendanceStatus').textContent=`✓ シフト保存・配送管理表へ自動反映しました${n?'（'+n+'件追加）':''}`);render();renderAreaDrivers()});
- $('shiftExportBtn').addEventListener('click',()=>{
-   const ym=$('shiftMonth').value,area=$('shiftArea').value,ds=shiftAreaDrivers(area),n=daysInMonth(ym);
-   const rows=[['ドライバー','エリア',...Array.from({length:n},(_,i)=>i+1)]];
-   ds.forEach(d=>rows.push([d.name,d.area,...Array.from({length:n},(_,i)=>{const date=`${ym}-${String(i+1).padStart(2,'0')}`,r=getShiftRec(date,d);return r?.status||''})]));
-   const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\r\n');
-   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=`JARVIS_シフト_${ym}.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
- });
+  if(!$('shiftArea')) return;
+
+  $('shiftArea').innerHTML =
+    '<option value="all">全エリア</option>' +
+    Object.keys(AREA_PROJECTS)
+      .map(a => `<option>${a}</option>`)
+      .join('');
+
+  $('shiftEditBtn')?.addEventListener('click', () => {
+    SHIFT_EDIT = !SHIFT_EDIT;
+
+    $('shiftEditBtn').textContent =
+      SHIFT_EDIT
+        ? '✓ シフト直接編集 OFF'
+        : '✎ シフト直接編集 ON';
+
+    if ($('attendanceStatus')) {
+      $('attendanceStatus').textContent =
+        SHIFT_EDIT
+          ? '編集ON：セルをタップして ○ / 休 / × / AM / MX / CX / お酒 などを直接入力できます。'
+          : '編集OFF：セルタップは簡易切替です。';
+    }
+
+    renderShiftMatrix();
+  });
+
+  $('shiftArea').addEventListener('change', renderShiftMatrix);
+  $('shiftMonth').addEventListener('change', renderShiftMatrix);
+
+  $('shiftSaveBtn').addEventListener('click', async () => {
+    localStorage.setItem(
+      ATT_KEY,
+      JSON.stringify(ATT)
+    );
+
+    const n = await syncWorkbookFromShift().catch(() => 0);
+
+    if ($('attendanceStatus')) {
+      $('attendanceStatus').textContent =
+        `✓ シフト保存・配送管理表へ自動反映しました${n ? '（' + n + '件追加）' : ''}`;
+    }
+
+    render();
+    renderAreaDrivers();
+  });
+
+  $('shiftExportBtn').addEventListener('click', () => {
+    const ym = $('shiftMonth').value;
+    const area = $('shiftArea').value;
+    const ds = shiftAreaDrivers(area);
+    const n = daysInMonth(ym);
+
+    const rows = [
+      ['ドライバー', 'エリア',
+        ...Array.from({length:n}, (_,i) => i + 1)
+      ]
+    ];
+
+    ds.forEach(d =>
+      rows.push([
+        d.name,
+        d.area,
+        ...Array.from({length:n}, (_,i) => {
+          const date =
+            `${ym}-${String(i + 1).padStart(2,'0')}`;
+
+          const r = getShiftRec(date, d);
+
+          return r?.status || '';
+        })
+      ])
+    );
+
+    const csv =
+      '\ufeff' +
+      rows
+        .map(r =>
+          r
+            .map(v =>
+              `"${String(v ?? '')
+                .replace(/"/g, '""')}"`
+            )
+            .join(',')
+        )
+        .join('\r\n');
+
+    const a = document.createElement('a');
+
+    a.href = URL.createObjectURL(
+      new Blob(
+        [csv],
+        {type:'text/csv;charset=utf-8'}
+      )
+    );
+
+    a.download = `JARVIS_シフト_${ym}.csv`;
+    a.click();
+
+    setTimeout(
+      () => URL.revokeObjectURL(a.href),
+      1000
+    );
+  });
 }
 
 // ===== V4.6 XLSX WORKSPACE / IndexedDB =====
