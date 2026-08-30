@@ -59,48 +59,6 @@ async function saveCurrentShift() {
   console.log('SHIFT SAVE:', result);
   return result;
 }
-  const table = target.querySelector('.shift-table');
-
-  if (table) {
-    const rows = Array.from(table.querySelectorAll('tr'));
-
-    values = rows.map(row =>
-      Array.from(row.querySelectorAll('th, td')).map(cell =>
-        cell.innerText.trim()
-      )
-    );
-  } else {
-    const liveRows = Array.from(target.children);
-
-    values = liveRows.map(row =>
-      Array.from(row.children).map(cell =>
-        (cell.innerText || '').trim()
-      )
-    ).filter(row => row.length);
-  }
-
-  if (!values.length) {
-    alert('保存できるシフトデータがありません');
-    return { success: false };
-  }
-
-  const response = await fetch(`${GAS_API_URL}/shift/save`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      range: 'A1:BG26',
-      values: values
-    })
-  });
-
-  const result = await response.json();
-
-  console.log('SHIFT SAVE:', result);
-
-  return result;
-}
 document.addEventListener('DOMContentLoaded', () => {
   const saveBtn = Array.from(document.querySelectorAll('button'))
     .find(btn => btn.textContent.includes('シフト保存'));
