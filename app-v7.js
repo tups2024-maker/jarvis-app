@@ -141,7 +141,13 @@ function initShiftControls(){
  $('shiftArea').innerHTML='<option value="all">全エリア</option>'+Object.keys(AREA_PROJECTS).map(a=>`<option>${a}</option>`).join('');
  $('shiftEditBtn')?.addEventListener('click',()=>{SHIFT_EDIT=!SHIFT_EDIT;$('shiftEditBtn').textContent=SHIFT_EDIT?'✓ シフト直接編集 OFF':'✎ シフト直接編集 ON';$('attendanceStatus').textContent=SHIFT_EDIT?'編集ON：セルをタップして ○ / 休 / × / AM / MX / CX / お酒 などを直接入力できます。':'編集OFF：セルタップは簡易切替です。';renderShiftMatrix()});
  $('shiftArea').addEventListener('change',renderShiftMatrix);$('shiftMonth').addEventListener('change',renderShiftMatrix);
- $('shiftSaveBtn').addEventListener('click',async()=>{localStorage.setItem(ATT_KEY,JSON.stringify(ATT));const n=await syncWorkbookFromShift().catch(()=>0);$('attendanceStatus')&&($('attendanceStatus').textContent=`✓ シフト保存・配送管理表へ自動反映しました${n?'（'+n+'件追加）':''}`);render();renderAreaDrivers()});
+ $('shiftSaveBtn').addEventListener('click',async()=>window.JARVIS_DIRTY_SHIFT.set(
+  `${date}|${normName(d.name)}`,
+  {
+    date: date,
+    driver: d.name
+  }
+);{localStorage.setItem(ATT_KEY,JSON.stringify(ATT));const n=await syncWorkbookFromShift().catch(()=>0);$('attendanceStatus')&&($('attendanceStatus').textContent=`✓ シフト保存・配送管理表へ自動反映しました${n?'（'+n+'件追加）':''}`);render();renderAreaDrivers()});
  $('shiftExportBtn').addEventListener('click',()=>{
    const ym=$('shiftMonth').value,area=$('shiftArea').value,ds=shiftAreaDrivers(area),n=daysInMonth(ym);
    const rows=[['ドライバー','エリア',...Array.from({length:n},(_,i)=>i+1)]];
@@ -173,6 +179,7 @@ function applyManualWorkbookOverrides(){
   }); return n;
 }
 let SHIFT_EDIT=false;
+window.JARVIS_DIRTY_SHIFT = window.JARVIS_DIRTY_SHIFT || new Map();
 function idb(){return new Promise((resolve,reject)=>{const r=indexedDB.open('jarvis-v47-db',1);r.onupgradeneeded=()=>r.result.createObjectStore('files');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
 async function saveWorkbookBytes(bytes,name){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').put({bytes:Array.from(new Uint8Array(bytes)),name,ts:Date.now()},'deliveryWorkbookV478');tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})}
 async function loadWorkbookBytes(){const db=await idb();return new Promise((res,rej)=>{const tx=db.transaction('files','readonly');const q=tx.objectStore('files').get('deliveryWorkbookV478');q.onsuccess=()=>res(q.result||null);q.onerror=()=>rej(q.error)})}
