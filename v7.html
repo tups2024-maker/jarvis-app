@@ -81,18 +81,6 @@ function escapeHtml(value) {
 
   return result;
 }
-  
-const result = await saveCurrentShift();
-
-if (!result) {
-  console.log('保存処理は実行されませんでした');
-  return;
-}
-
-if (!result.success) {
-  alert('シフト保存に失敗しました');
-}
-
   const rows = Array.from(table.querySelectorAll('tr'));
 
   const values = rows.map(row =>
