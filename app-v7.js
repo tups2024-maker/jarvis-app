@@ -309,6 +309,14 @@ function reorderWorkbookByShiftOrder(){
  if(!WB||!window.XLSX)return;
  WB.SheetNames.forEach(name=>{const a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});const project=String(a?.[0]?.[1]||name||'').trim();const sorted=reorderAOAByShift(a,project);WB.Sheets[name]=XLSX.utils.aoa_to_sheet(sorted)});
 }
+function snapshotWorkbookFormatting(){
+ if(!WB||!window.XLSX)return null;const snap={};
+ WB.SheetNames.forEach(name=>{const ws=WB.Sheets[name],cells={};Object.keys(ws||{}).forEach(addr=>{if(addr[0]==='!')return;const c=ws[addr];if(c?.s||c?.z)cells[addr]={s:c.s,z:c.z}});snap[name]={cells,cols:ws?.['!cols'],rows:ws?.['!rows'],merges:ws?.['!merges'],autofilter:ws?.['!autofilter'],freeze:ws?.['!freeze']}});
+ return snap;
+}
+function restoreWorkbookFormatting(snap){
+ if(!snap||!WB)return;WB.SheetNames.forEach(name=>{const ws=WB.Sheets[name],s=snap[name];if(!ws||!s)return;Object.entries(s.cells).forEach(([addr,fmt])=>{if(!ws[addr])return;if(fmt.s)ws[addr].s=fmt.s;if(fmt.z)ws[addr].z=fmt.z});if(s.cols)ws['!cols']=s.cols;if(s.rows)ws['!rows']=s.rows;if(s.merges)ws['!merges']=s.merges;if(s.autofilter)ws['!autofilter']=s.autofilter;if(s.freeze)ws['!freeze']=s.freeze});
+}
 function workbookAOA(){if(!WB)return [];const s=$('sheetSelect').value;return XLSX.utils.sheet_to_json(WB.Sheets[s],{header:1,defval:''})}
 function openWorkbookCellEditor(r,c){
  if(!WB||!WB_EDIT)return;
@@ -324,26 +332,28 @@ function openWorkbookCellEditor(r,c){
 function closeWorkbookCellEditor(){
  $('cellEditModal')?.classList.remove('open');$('cellEditModal')?.setAttribute('aria-hidden','true');WB_EDIT_TARGET=null;
 }
-function applyWorkbookCellEdit(value){
+async function applyWorkbookCellEdit(value){
  if(!WB||!WB_EDIT_TARGET)return;
  const {name,r,c}=WB_EDIT_TARGET,a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});
  while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');a[r][c]=value;rememberManualCell(name,a,r,c,value);
  WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);closeWorkbookCellEditor();renderWorkbook();
- $('workbookStatus').textContent=`✓ 行${r+1}・列${c+1}を変更しました。「JARVISに保存」で確定してください。`;
+ applyManualWorkbookOverrides();applyNoAutoPayRows();
+ const buf=XLSX.write(WB,{bookType:'xlsx',type:'array'});await saveWorkbookBytes(buf,WB_NAME);
+ $('workbookStatus').textContent=`✓ 行${r+1}・列${c+1}を反映し、JARVISに保存しました。`;
 }
 function renderWorkbook(){
  if(!$('workbookTable'))return;
  if(!WB){$('workbookTable').innerHTML='<tbody><tr><td>三島配送管理表を準備しています…</td></tr></tbody>';return}
  const name=$('sheetSelect').value||WB.SheetNames[0]; if(!name||!WB.Sheets[name]){$('workbookTable').innerHTML='<tbody><tr><td>表示できるシートがありません</td></tr></tbody>';return}
  let aoa=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''}); if(!aoa.length){aoa=[['案件名：',name],['請求先：',''],['走行日','DR','業務名','天引き金額','DR金額','フォロー金額','備考','実績','記入者']];WB.Sheets[name]=XLSX.utils.aoa_to_sheet(aoa)}
- const maxCols=Math.max(1,...aoa.map(r=>r.length)), headers=aoa[2]||[];
+ const maxCols=Math.max(1,...aoa.map(r=>r.length)), headers=aoa[2]||[],touchEdit=!!(window.matchMedia&&window.matchMedia('(pointer: coarse)').matches);
  const options=Array.from({length:maxCols},(_,c)=>[...new Set(aoa.slice(3).map(r=>String(r[c]??'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ja')));
  let h='<tbody>';
  aoa.slice(0,3).forEach((row,r)=>{h+='<tr>';for(let c=0;c<maxCols;c++){const v=row[c]??'';if(r===2){const opts=options[c].map(x=>`<option value="${esc(x)}" ${WB_FILTERS[c]===x?'selected':''}>${esc(x)}</option>`).join('');h+=`<td class="workbook-header-cell"><div class="wb-head-label">${esc(v||('列'+(c+1)))}</div><select class="wb-filter" data-c="${c}"><option value="">すべて</option>${opts}</select></td>`}else h+=`<td>${esc(v)}</td>`}h+='</tr>'});
  const visible=aoa.map((row,r)=>({row,r})).slice(3).filter(({row})=>Object.entries(WB_FILTERS).every(([c,val])=>!val||String(row[+c]??'').trim()===val));
- visible.slice(0,500).forEach(({row,r})=>{h+=`<tr class="${WB_SELECTED_ROW===r?'selected-row':''}">`;for(let c=0;c<maxCols;c++){const v=row[c]??'',selCol=WB_SELECTED_COL===c?' selected-col':'',selCell=WB_SELECTED_CELL===`${r}:${c}`?' selected-cell':'';if(WB_EDIT){h+=`<td class="${selCol}${selCell}" data-r="${r}" data-c="${c}"><input class="wb-cell-input" data-r="${r}" data-c="${c}" value="${esc(v)}"></td>`}else h+=`<td class="${selCol}${selCell}" data-r="${r}" data-c="${c}" tabindex="0">${esc(v)}</td>`}h+='</tr>'});h+='</tbody>';$('workbookTable').innerHTML=h;
+ visible.slice(0,500).forEach(({row,r})=>{h+=`<tr class="${WB_SELECTED_ROW===r?'selected-row':''}">`;for(let c=0;c<maxCols;c++){const v=row[c]??'',selCol=WB_SELECTED_COL===c?' selected-col':'',selCell=WB_SELECTED_CELL===`${r}:${c}`?' selected-cell':'';if(WB_EDIT&&!touchEdit){h+=`<td class="${selCol}${selCell}" data-r="${r}" data-c="${c}"><input class="wb-cell-input" data-r="${r}" data-c="${c}" value="${esc(v)}"></td>`}else h+=`<td class="${selCol}${selCell}" data-r="${r}" data-c="${c}" tabindex="0">${esc(v)}</td>`}h+='</tr>'});h+='</tbody>';$('workbookTable').innerHTML=h;
  document.querySelectorAll('#workbookTable .wb-filter').forEach(sel=>sel.addEventListener('change',()=>{const c=sel.dataset.c;if(sel.value)WB_FILTERS[c]=sel.value;else delete WB_FILTERS[c];renderWorkbook()}));
- if(WB_EDIT){document.querySelectorAll('#workbookTable .wb-cell-input').forEach(inp=>{const select=()=>{WB_SELECTED_ROW=+inp.dataset.r;WB_SELECTED_COL=+inp.dataset.c;WB_SELECTED_CELL=`${inp.dataset.r}:${inp.dataset.c}`};inp.addEventListener('focus',select);inp.addEventListener('click',select);const commit=()=>{select();const a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''}),r=+inp.dataset.r,c=+inp.dataset.c;while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');a[r][c]=inp.value;rememberManualCell(name,a,r,c,inp.value);WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);$('workbookStatus').textContent=`編集中：行${r+1}・列${c+1}`};inp.addEventListener('input',commit);inp.addEventListener('change',commit)})}else{document.querySelectorAll('#workbookTable td[data-r]').forEach(td=>td.addEventListener('click',()=>{WB_SELECTED_ROW=+td.dataset.r;WB_SELECTED_COL=+td.dataset.c;WB_SELECTED_CELL=`${td.dataset.r}:${td.dataset.c}`;renderWorkbook()}))}
+ if(WB_EDIT&&!touchEdit){document.querySelectorAll('#workbookTable .wb-cell-input').forEach(inp=>{const select=()=>{WB_SELECTED_ROW=+inp.dataset.r;WB_SELECTED_COL=+inp.dataset.c;WB_SELECTED_CELL=`${inp.dataset.r}:${inp.dataset.c}`};inp.addEventListener('focus',select);inp.addEventListener('click',select);const commit=()=>{select();const a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''}),r=+inp.dataset.r,c=+inp.dataset.c;while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');a[r][c]=inp.value;rememberManualCell(name,a,r,c,inp.value);WB.Sheets[name]=XLSX.utils.aoa_to_sheet(a);$('workbookStatus').textContent=`編集中：行${r+1}・列${c+1}`};inp.addEventListener('input',commit);inp.addEventListener('change',commit)})}else{document.querySelectorAll('#workbookTable td[data-r]').forEach(td=>td.addEventListener('click',()=>{if(WB_EDIT&&touchEdit){openWorkbookCellEditor(+td.dataset.r,+td.dataset.c);return}WB_SELECTED_ROW=+td.dataset.r;WB_SELECTED_COL=+td.dataset.c;WB_SELECTED_CELL=`${td.dataset.r}:${td.dataset.c}`;renderWorkbook()}))}
 }
 const REFERRAL_BY_DRIVER={
   '高橋利旭':'古本紹介','高橋':'古本紹介','髙橋和也':'高橋紹介','高橋和也':'高橋紹介',
@@ -610,6 +620,9 @@ function shiftBizEntries(rec){
     if(w.includes('お酒'))out.push(['2026年8月 三島お酒','お酒配送',normalizeDriverForOrder(rec.driver)===normalizeDriverForOrder('堀井 龍馬')?18150:17500]);
     if(u.includes('MX'))out.push(['2026年8月 三島','三島5h',8500]);
     if(u.includes('CX'))out.push(['2026年8月 三島','三島6h',8500]);
+    if(!out.length&&rec.project==='秋山製麺')out.push(['2026年8月 秋山製麺所','秋山製麺',9000]);
+    if(!out.length&&rec.project==='三島お酒')out.push(['2026年8月 三島お酒','お酒配送',normalizeDriverForOrder(rec.driver)===normalizeDriverForOrder('堀井 龍馬')?18150:17500]);
+    if(!out.length&&rec.project==='三島便')out.push(['2026年8月 三島','三島5h',8500]);
     if(!out.length&&(['○','〇',''].includes(w)||rec.project==='三島Amazon'))out.push(['2026年8月 三島','三島11h',(normalizeDriverForOrder(rec.driver)===normalizeDriverForOrder('久松')||normalizeDriverForOrder(rec.driver)===normalizeDriverForOrder('生駒 龍彦'))?17500:17000]);
     return out;
   }
@@ -676,9 +689,33 @@ async function initWorkbook(){
  }catch(e){console.error(e);$('workbookStatus').textContent='三島配送管理表の初期化に失敗しました：'+e.message;}
  const input=$('xlsxInput'); if(input) input.style.display='none';
 }
+async function downloadLatestWorkbook(){
+ const button=$('workbookDownloadBtn');
+ try{
+  if(button)button.disabled=true;
+  $('workbookStatus').textContent='最新シフトを配送管理表へ同期中…';
+  if(!workbookIsUsable()){
+   const ok=await loadBundledOriginalWorkbook(true);
+   if(!ok)throw new Error('配送管理表の原本を読み込めませんでした');
+  }
+  ensureTsurumiWorkbook();setupSheetSelect();
+  const formatting=snapshotWorkbookFormatting();
+  const n=await syncWorkbookFromShift();
+  applyManualWorkbookOverrides();applyNoAutoPayRows();reorderWorkbookByShiftOrder();
+  restoreWorkbookFormatting(formatting);
+  await persistMigratedWorkbook();
+  const filename=(WB_NAME||'配送管理表.xlsx').replace(/\.xlsx?$/i,'')+'_JARVIS完成版.xlsx';
+  XLSX.writeFile(WB,filename,{bookType:'xlsx',cellStyles:true,bookVBA:true});
+  renderWorkbook();
+  $('workbookStatus').textContent=`⬇ 最新シフト同期済みの配送管理表をダウンロードしました（更新 ${n} 件）`;
+ }catch(e){
+  console.error('delivery workbook download failed',e);
+  $('workbookStatus').textContent='ダウンロードに失敗しました：'+e.message;
+ }finally{if(button)button.disabled=false}
+}
  $('sheetSelect').addEventListener('change',()=>{WB_SELECTED_COL=null;WB_SELECTED_ROW=null;WB_SELECTED_CELL=null;renderWorkbook()});
  $('workbookSyncBtn')?.addEventListener('click',async()=>{if(!workbookIsUsable()){ $('workbookStatus').textContent='配送管理表の原本を復旧中…'; const ok=await loadBundledOriginalWorkbook(true); if(!ok){$('workbookStatus').textContent='配送管理表の原本を読み込めませんでした';return} ensureTsurumiWorkbook();setupSheetSelect(); } $('workbookStatus').textContent='シフト → 配送管理表を同期中…';const n=await syncWorkbookFromShift();applyNoAutoPayRows();await persistMigratedWorkbook();renderWorkbook();$('workbookStatus').textContent=`✓ シフトと配送管理表を同期しました（更新 ${n} 件）／4社のDR金額は空白・売上集計は維持`;});
- $('workbookEditBtn').addEventListener('click',()=>{WB_EDIT=!WB_EDIT;$('workbookEditBtn').textContent=WB_EDIT?'✓ 入力編集 OFF':'✎ 入力編集 ON';if(!WB_EDIT)closeWorkbookCellEditor();renderWorkbook();$('workbookStatus').textContent=WB_EDIT?'編集モードON：表の各セルに入力欄が表示されます。タップしてその場で書き換えてください。':'編集モードを終了しました。';});
+ $('workbookEditBtn').addEventListener('click',()=>{WB_EDIT=!WB_EDIT;$('workbookEditBtn').textContent=WB_EDIT?'✓ 入力編集 OFF':'✎ 入力編集 ON';if(!WB_EDIT)closeWorkbookCellEditor();renderWorkbook();const touch=!!(window.matchMedia&&window.matchMedia('(pointer: coarse)').matches);$('workbookStatus').textContent=WB_EDIT?(touch?'編集モードON：セルをタップすると編集画面が開きます。':'編集モードON：表の各セルに入力欄が表示されます。'):'編集モードを終了しました。';});
 
  $('workbookAddColBtn')?.addEventListener('click',()=>{if(!WB)return;const x=workbookSheetData();if(!x)return;const max=Math.max(0,...x.a.map(r=>r.length));const pos=WB_SELECTED_COL==null?max:WB_SELECTED_COL+1;x.a.forEach((r,i)=>{while(r.length<pos)r.push('');r.splice(pos,0,i===2?'新しい項目':'')});WB_SELECTED_COL=pos;setWorkbookAOA(x.name,x.a);$('workbookStatus').textContent='＋ 列を追加しました。3行目の項目名を直接入力して保存してください。';});
  $('workbookDeleteColBtn')?.addEventListener('click',()=>{if(!WB||WB_SELECTED_COL==null){$('workbookStatus').textContent='削除したい列を先にタップしてください。';return}const x=workbookSheetData();x.a.forEach(r=>{if(r.length>WB_SELECTED_COL)r.splice(WB_SELECTED_COL,1)});WB_SELECTED_COL=Math.max(0,WB_SELECTED_COL-1);setWorkbookAOA(x.name,x.a);$('workbookStatus').textContent='－ 選択した列を削除しました。保存すると確定します。';});
@@ -692,7 +729,7 @@ async function initWorkbook(){
  $('cellEditClose')?.addEventListener('click',closeWorkbookCellEditor);
  $('cellEditModal')?.addEventListener('click',e=>{if(e.target===$('cellEditModal'))closeWorkbookCellEditor()});
  $('workbookSaveBtn').addEventListener('click',async()=>{if(!WB)return;$('workbookStatus').textContent='保存するExcelがありません';applyManualWorkbookOverrides();applyNoAutoPayRows();const buf=XLSX.write(WB,{bookType:'xlsx',type:'array'});await saveWorkbookBytes(buf,WB_NAME);$('workbookStatus').textContent=`✓ 編集内容をJARVISに保存：${new Date().toLocaleTimeString('ja-JP')}`});
- $('workbookDownloadBtn').addEventListener('click',()=>{if(!WB){$('workbookStatus').textContent='ダウンロードするデータがありません';return}XLSX.writeFile(WB,WB_NAME.replace(/\.xlsx?$/i,'')+'_JARVIS編集版.xlsx');$('workbookStatus').textContent='⬇ スプレッドシートをダウンロードしました'});
+ $('workbookDownloadBtn').addEventListener('click',downloadLatestWorkbook);
  $('workbookClearFiltersBtn')?.addEventListener('click',()=>{WB_FILTERS={};renderWorkbook();$('workbookStatus').textContent='フィルターを解除しました';});
 function setupSheetSelect(){if(!WB)return;$('sheetSelect').innerHTML=WB.SheetNames.map(n=>`<option>${esc(n)}</option>`).join('');}
 
@@ -894,5 +931,4 @@ function v705FillSheet(tag,entries){const sn=v705FindTargetSheet(tag);if(!sn)ret
 async function v705GenerateFromShift(file){const ab=await file.arrayBuffer(),shift=XLSX.read(ab,{type:'array',cellDates:true});const entries=v705ParseMishimaShift(shift);await v705LoadOriginal();const counts={};counts['三島']=v705FillSheet('三島',entries.filter(e=>e.sheet==='三島'));counts['三島お酒']=v705FillSheet('三島お酒',entries.filter(e=>e.sheet==='三島お酒'));counts['秋山製麺所']=v705FillSheet('秋山製麺所',entries.filter(e=>e.sheet==='秋山製麺所'));V705_SHIFT_IMPORTED=true;setupSheetSelect();renderWorkbook();return{entries,counts}}
 function v705Download(){if(!WB)return;XLSX.writeFile(WB,WB_NAME,{cellStyles:true,bookVBA:true});}
 window.addEventListener('DOMContentLoaded',()=>{const inp=document.getElementById('shiftXlsxInput');if(inp)inp.addEventListener('change',async()=>{const f=inp.files?.[0];if(!f)return;try{$('workbookStatus').textContent='8月シフトを読み込み、原本書式へ自動集計中…';const x=await v705GenerateFromShift(f);$('workbookStatus').textContent=`✓ 8月分を原本へ反映：${x.entries.length}件。確認後「完成版をダウンロード」を押してください。`;const b=$('workbookDownloadBtn');if(b)b.textContent='⬇ 8月完成版をダウンロード';}catch(e){console.error(e);$('workbookStatus').textContent='読み込み失敗：'+e.message}});
- const dl=$('workbookDownloadBtn');if(dl)dl.addEventListener('click',e=>{if(V705_SHIFT_IMPORTED){e.stopImmediatePropagation();e.preventDefault();v705Download();$('workbookStatus').textContent='⬇ 元の書式を維持した8月完成版をダウンロードしました';}},true);
 }, {once:true});
