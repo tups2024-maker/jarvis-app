@@ -6,6 +6,7 @@
     var source=await response.text();
     source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.7 安定化版');
     source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.7 安定化版');
+    source=source.replace('https://jarvis-api.t-ups2024.workers.dev','https://script.google.com/macros/s/AKfycbzU-qyAOoAulVoaAB_p1O2F9i7s-4fe-PaSwvZZ5eco3_Rs0szSUfJjhGmknBHTDKupsg/exec');
     var patchTag='<script src="./workbook-hotfix.js?v=20260901-0900"></scr'+'ipt>';
     source=source.replace('</body>',patchTag+'</body>');
     document.open();
