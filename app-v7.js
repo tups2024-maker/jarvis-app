@@ -121,7 +121,7 @@ function cycleShift(date,d){
     if(idx>=0)ATT[idx]=nr; else ATT.push(nr);
   }
   markShiftDirty(date,d,shiftCellValue(getShiftRec(date,d)));
-  localStorage.setItem(ATT_KEY,JSON.stringify(ATT));renderShiftMatrix();renderDrivers();renderAreaDrivers();
+  localStorage.setItem(ATT_KEY,JSON.stringify(ATT));renderShiftMatrix();renderDrivers();renderAreaDrivers();syncWorkbookFromShift().catch(e=>console.warn('shift auto sync failed',e));
 }
 function editShiftCell(date,d){
   const old=getShiftRec(date,d);const cur=(old?.work&&!['〇','○'].includes(old.work))?old.work:(old?.status==='休み'?'休':old?.status==='欠車'?'×':old?.status==='研修'?'研修':old?.status==='出勤'?'○':'');
@@ -131,7 +131,7 @@ function editShiftCell(date,d){
   else{let status='出勤',work=x;if(x==='休'||x==='休み'){status='休み';work='休'}else if(x==='×'||x==='欠車'){status='欠車';work='×'}else if(x==='研修'){status='研修';work='研修'}else if(x==='○'||x==='〇'){status='出勤';work='○'}
     const area=old?.area||d.area,project=old?.project||AREA_PROJECTS[area]?.[0]||'';const nr={date,area,driver:d.name,project,status,work,source:'manual-v492'};const i=ATT.findIndex(a=>a.date===date&&normName(a.driver)===normName(d.name));if(i>=0)ATT[i]=nr;else ATT.push(nr)}
   markShiftDirty(date,d,shiftCellValue(getShiftRec(date,d)));
-  localStorage.setItem(ATT_KEY,JSON.stringify(ATT));renderShiftMatrix();renderAreaDrivers();render();
+  localStorage.setItem(ATT_KEY,JSON.stringify(ATT));renderShiftMatrix();renderAreaDrivers();render();syncWorkbookFromShift().catch(e=>console.warn('shift auto sync failed',e));
 }
 function renderShiftMatrix(){
   if(!$('shiftMatrix'))return;
