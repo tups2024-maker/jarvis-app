@@ -1,0 +1,147 @@
+name: JARVIS emergency workbook hotfix
+
+on:
+  push:
+    paths:
+      - '.github/workflows/jarvis-emergency-hotfix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Patch workbook editing without rebuilding sheets
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('app-v7.js')
+          s = path.read_text(encoding='utf-8')
+
+          helper_and_manual = r'''function setWorkbookCellDirect(sheetName,r,c,value){
+ const ws=WB?.Sheets?.[sheetName];if(!ws||!window.XLSX)return false;
+ const addr=XLSX.utils.encode_cell({r,c}),old=ws[addr]||{},next={...old};
+ delete next.f;delete next.w;
+ next.v=value==null?'':value;
+ next.t=typeof next.v==='number'?'n':'s';
+ ws[addr]=next;
+ let ref;
+ try{ref=ws['!ref']?XLSX.utils.decode_range(ws['!ref']):{s:{r,c},e:{r,c}}}catch{ref={s:{r,c},e:{r,c}}}
+ ref.s.r=Math.min(ref.s.r,r);ref.s.c=Math.min(ref.s.c,c);ref.e.r=Math.max(ref.e.r,r);ref.e.c=Math.max(ref.e.c,c);ws['!ref']=XLSX.utils.encode_range(ref);
+ return true;
+}
+function applyManualWorkbookOverrides(){
+ if(!WB||!window.XLSX)return 0; let n=0;
+ WB.SheetNames.forEach(sheet=>{const a=XLSX.utils.sheet_to_json(WB.Sheets[sheet],{header:1,defval:''});if(a.length<4)return;const h=a[2]||[];
+   for(let r=3;r<a.length;r++)for(let c=0;c<h.length;c++){const o=WB_MANUAL_OVERRIDES[wbManualKey(sheet,a[r],h[c])];if(o&&a[r][c]!==o.value){a[r][c]=o.value;setWorkbookCellDirect(sheet,r,c,o.value);n++}}
+ }); return n;
+}
+let SHIFT_EDIT=false;'''
+          s, n = re.subn(r"function applyManualWorkbookOverrides\(\)\{.*?\n\}\nlet SHIFT_EDIT=false;", helper_and_manual, s, count=1, flags=re.S)
+          assert n == 1, 'applyManualWorkbookOverrides patch failed'
+
+          auto_save = r'''function scheduleWorkbookAutoSave(sheetName,r,c,value){
+ WB_HAS_UNSAVED_CHANGES=true;
+ clearTimeout(WB_AUTO_SAVE_TIMER);
+ WB_AUTO_SAVE_TIMER=setTimeout(async()=>{WB_AUTO_SAVE_TIMER=null;try{const buf=XLSX.write(WB,{bookType:'xlsx',type:'array'});await saveWorkbookBytes(buf,WB_NAME);const range=XLSX.utils.encode_cell({r,c});await saveGoogleDeliveryRange(sheetName,range,[[value]]);WB_HAS_UNSAVED_CHANGES=false;if($('workbookStatus'))$('workbookStatus').textContent='✓ セルを反映しJARVISとGoogleへ自動保存しました'}catch(e){WB_HAS_UNSAVED_CHANGES=true;console.error('workbook auto save failed',e);if($('workbookStatus'))$('workbookStatus').textContent='Googleへの自動保存に失敗しました（JARVIS内データは保持）：'+(e?.message||e)}},450);
+}
+function snapshotWorkbookFormatting'''
+          s, n = re.subn(r"function scheduleWorkbookAutoSave\(sheetName,r,c,value\)\{.*?\n\}\nfunction snapshotWorkbookFormatting", auto_save, s, count=1, flags=re.S)
+          assert n == 1, 'scheduleWorkbookAutoSave patch failed'
+
+          apply_edit = r'''async function applyWorkbookCellEdit(value){
+ if(!WB||!WB_EDIT_TARGET){WB_CELL_EDIT_ACTION_BUSY=false;return}
+ const target={...WB_EDIT_TARGET};
+ closeWorkbookCellEditor();
+ try{
+  const {name,r,c}=target,a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});
+  WB_HAS_UNSAVED_CHANGES=true;
+  while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');a[r][c]=value;rememberManualCell(name,a,r,c,value);
+  setWorkbookCellDirect(name,r,c,value);renderWorkbook();
+  const buf=XLSX.write(WB,{bookType:'xlsx',type:'array'});await saveWorkbookBytes(buf,WB_NAME);
+  await saveGoogleDeliveryRange(name,XLSX.utils.encode_cell({r,c}),[[value]]);WB_HAS_UNSAVED_CHANGES=false;
+  if($('workbookStatus'))$('workbookStatus').textContent=`✓ 行${r+1}・列${c+1}をJARVISとGoogleへ保存しました。`;
+ }catch(e){
+  WB_HAS_UNSAVED_CHANGES=true;console.error('workbook cell save failed',e);
+  if($('workbookStatus'))$('workbookStatus').textContent='Googleへの保存に失敗しました（JARVIS内データは保持）：'+(e?.message||e);
+ }finally{WB_CELL_EDIT_ACTION_BUSY=false}
+}
+async function promptWorkbookCellEdit'''
+          s, n = re.subn(r"async function applyWorkbookCellEdit\(value\)\{.*?\n\}\nasync function promptWorkbookCellEdit", apply_edit, s, count=1, flags=re.S)
+          assert n == 1, 'applyWorkbookCellEdit patch failed'
+
+          prompt_edit = r'''async function promptWorkbookCellEdit(r,c){
+ if(!WB||WB_CELL_EDIT_ACTION_BUSY)return;
+ const name=$('sheetSelect').value||WB.SheetNames[0],oldSheet=WB.Sheets[name];
+ const a=XLSX.utils.sheet_to_json(oldSheet,{header:1,defval:''});
+ while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');
+ const oldValue=a[r][c]??'',next=window.prompt('セルを編集',String(oldValue));
+ if(next===null)return;
+ WB_CELL_EDIT_ACTION_BUSY=true;WB_HAS_UNSAVED_CHANGES=true;
+ const oldOverrides=JSON.stringify(WB_MANUAL_OVERRIDES),addr=XLSX.utils.encode_cell({r,c}),oldCell=oldSheet[addr]?JSON.parse(JSON.stringify(oldSheet[addr])):null;
+ try{
+  a[r][c]=next;rememberManualCell(name,a,r,c,next);setWorkbookCellDirect(name,r,c,next);renderWorkbook();
+  const buf=XLSX.write(WB,{bookType:'xlsx',type:'array'});await saveWorkbookBytes(buf,WB_NAME);
+  try{await saveGoogleDeliveryRange(name,addr,[[next]]);WB_HAS_UNSAVED_CHANGES=false;if($('workbookStatus'))$('workbookStatus').textContent='✓ セルを反映しJARVISとGoogleへ自動保存しました'}catch(remoteError){console.error('prompt google save failed',remoteError);if($('workbookStatus'))$('workbookStatus').textContent='Googleへの保存に失敗しました（JARVIS内データは保持）：'+(remoteError?.message||remoteError)}
+ }catch(e){
+  WB_HAS_UNSAVED_CHANGES=false;if(oldCell)oldSheet[addr]=oldCell;else delete oldSheet[addr];
+  try{WB_MANUAL_OVERRIDES=JSON.parse(oldOverrides);localStorage.setItem(WB_MANUAL_KEY,oldOverrides)}catch{}
+  renderWorkbook();console.error('prompt workbook cell save failed',e);
+  if($('workbookStatus'))$('workbookStatus').textContent='セルの保存に失敗したため元の値へ戻しました：'+(e?.message||e);
+ }finally{WB_CELL_EDIT_ACTION_BUSY=false}
+}
+function logWorkbookCellHitTest'''
+          s, n = re.subn(r"async function promptWorkbookCellEdit\(r,c\)\{.*?\n\}\nfunction logWorkbookCellHitTest", prompt_edit, s, count=1, flags=re.S)
+          assert n == 1, 'promptWorkbookCellEdit patch failed'
+
+          old_commit = r"const commit=\(\)=>\{select\(\);.*?scheduleWorkbookAutoSave\(name,r,c,inp\.value\)\};inp\.addEventListener\('input',commit\);"
+          new_commit = "const commit=()=>{select();const a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''}),r=+inp.dataset.r,c=+inp.dataset.c;while(a.length<=r)a.push([]);while(a[r].length<=c)a[r].push('');a[r][c]=inp.value;rememberManualCell(name,a,r,c,inp.value);setWorkbookCellDirect(name,r,c,inp.value);WB_HAS_UNSAVED_CHANGES=true;if($('workbookStatus'))$('workbookStatus').textContent=`編集中：行${r+1}・列${c+1}`;scheduleWorkbookAutoSave(name,r,c,inp.value)};inp.addEventListener('input',commit);"
+          s, n = re.subn(old_commit, new_commit, s, count=1, flags=re.S)
+          assert n == 1, 'desktop workbook commit patch failed'
+
+          half_and_no_pay = r'''function applyHalfActualRules(){
+  if(!WB||!window.XLSX)return 0;let changed=0;
+  WB.SheetNames.forEach(name=>{const a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});if(a.length<3)return;const h=a[2]||[],bizCol=h.findIndex(x=>String(x).trim()==='業務名'),actualCol=h.findIndex(x=>String(x).trim()==='実績');if(bizCol<0||actualCol<0)return;
+    for(let r=3;r<a.length;r++){const biz=String(a[r]?.[bizCol]||'').trim(),target=(biz==='三島5h'||biz==='三島6h'||biz==='鶴見PM')?0.5:null;if(target!==null&&Number(a[r]?.[actualCol])!==target){a[r][actualCol]=target;setWorkbookCellDirect(name,r,actualCol,target);changed++}}
+  });return changed;
+}
+function applyNoAutoPayRows(){
+  if(!WB||!window.XLSX)return 0;applyHalfActualRules();const groups=new Set(['カメレオン','福羅興業','sitycanvas','オーロラネクスト']);let changed=0;
+  WB.SheetNames.forEach(name=>{const a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});if(a.length<3)return;const h=a[2]||[],drCol=h.findIndex(x=>String(x).trim()==='DR'),payCol=h.findIndex(x=>String(x).trim()==='DR金額'),noteCol=h.findIndex(x=>String(x).trim().replace(/\s/g,'')==='備考');if(drCol<0||payCol<0)return;
+    for(let r=3;r<a.length;r++){const forced=forcedNoteForDriver(a[r]?.[drCol]),note=noteCol>=0?String(a[r]?.[noteCol]||'').trim():'';if(groups.has(forced)||groups.has(note)){if(a[r]?.[payCol]!==''&&a[r]?.[payCol]!=null){a[r][payCol]='';setWorkbookCellDirect(name,r,payCol,'');changed++}}}
+  });return changed;
+}
+function normalizeBlankMoneyDefaults(){
+  if(!WB||!window.XLSX)return 0;let changed=0;
+  WB.SheetNames.forEach(name=>{const a=XLSX.utils.sheet_to_json(WB.Sheets[name],{header:1,defval:''});if(a.length<3)return;const h=a[2]||[],cols=h.map((v,c)=>['天引き金額','フォロー金額'].includes(String(v).trim())?c:-1).filter(c=>c>=0);
+    for(let r=3;r<a.length;r++)for(const c of cols){const key=wbManualKey(name,a[r],h[c]);if((a[r]?.[c]===0||a[r]?.[c]==='0')&&!WB_MANUAL_OVERRIDES[key]){a[r][c]='';setWorkbookCellDirect(name,r,c,'');changed++}}
+  });return changed;
+}
+async function persistMigratedWorkbook'''
+          s, n = re.subn(r"function applyHalfActualRules\(\)\{.*?\nasync function persistMigratedWorkbook", half_and_no_pay, s, count=1, flags=re.S)
+          assert n == 1, 'no-auto-pay / blank-money patch failed'
+
+          path.write_text(s, encoding='utf-8')
+
+          html_path = Path('v7.html')
+          h = html_path.read_text(encoding='utf-8')
+          h = re.sub(r"const V='[^']+';", "const V='7.0.7-20260901-workbook-stable';", h, count=1)
+          h = h.replace('V7.0.6 統合運用版','V7.0.7 安定化版')
+          h = re.sub(r"app-v7\.js(?:\?v=[^\"']*)?", "app-v7.js?v=20260901-0900", h)
+          html_path.write_text(h, encoding='utf-8')
+          PY
+
+          node --check app-v7.js
+
+          git config user.name "JARVIS Hotfix"
+          git config user.email "actions@users.noreply.github.com"
+          git add app-v7.js v7.html
+          git diff --cached --check
+          git commit -m "Stabilize workbook cell save without sheet rebuild"
+          git push
