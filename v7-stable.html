@@ -6,7 +6,8 @@
     var source=await response.text();
     source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.7 安定化版');
     source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.7 安定化版');
-    source=source.replace('</body>','<script src="./workbook-hotfix.js?v=20260901-0900"><\\/script></body>');
+    var patchTag='<script src="./workbook-hotfix.js?v=20260901-0900"></scr'+'ipt>';
+    source=source.replace('</body>',patchTag+'</body>');
     document.open();
     document.write(source);
     document.close();
