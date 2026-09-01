@@ -6,7 +6,7 @@
     var source=await response.text();
     source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.7 安定化版');
     source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.7 安定化版');
-    var patchTag='<script src="./workbook-hotfix.js?v=20260901-1515"></scr'+'ipt><script src="./google-master-hotfix.js?v=20260901-1515"></scr'+'ipt>';
+    var patchTag='<script src="./workbook-hotfix.js?v=20260901-1515"></scr'+'ipt><script src="./google-master-hotfix.js?v=20260901-1515"></scr'+'ipt><script src="./jarvis-hide-logistics-columns.js?v=20260901-2230"></scr'+'ipt>';
     source=source.replace('</body>',patchTag+'</body>');
     document.open();
     document.write(source);
