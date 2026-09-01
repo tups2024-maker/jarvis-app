@@ -71,6 +71,28 @@
     return true;
   }
 
+  // Apps ScriptのDateがUTC文字列になると、8/1が「7/31 15:00」に見えるため
+  // Asia/Tokyo基準で必ず8月の日付表示へ戻す。
+  function normalizeAugustValues(values){
+    if(!Array.isArray(values)) return values;
+    return values.map((row,r)=>{
+      if(!Array.isArray(row)) return row;
+      const next=[...row];
+      if(r>=3 && typeof next[0]==='string' && /^2026-\d{2}-\d{2}T/.test(next[0])){
+        const d=new Date(next[0]);
+        if(!Number.isNaN(d.getTime())){
+          const parts=new Intl.DateTimeFormat('ja-JP',{
+            timeZone:'Asia/Tokyo',month:'numeric',day:'numeric'
+          }).formatToParts(d);
+          const m=Number(parts.find(x=>x.type==='month')?.value||0);
+          const day=Number(parts.find(x=>x.type==='day')?.value||0);
+          if(m===8 && day) next[0]=`8月${day}日`;
+        }
+      }
+      return next;
+    });
+  }
+
   function pruneWorkbookToAugust(){
     if(!WB||!Array.isArray(WB.SheetNames)||!WB.Sheets) return;
     const keep=new Set(EXPECTED_AUGUST_SHEETS.map(normalizeName));
@@ -112,7 +134,7 @@
       const sheets=extractSheets(result);
       if(!sheets.length) throw new Error('配送管理表データが応答にありません');
       validateAugustSheets(sheets);
-      sheets.forEach(s=>mergeGoogleDeliverySheet(s.sheetName||s.name,s.values));
+      sheets.forEach(s=>mergeGoogleDeliverySheet(s.sheetName||s.name,normalizeAugustValues(s.values)));
       pruneWorkbookToAugust();
       normalizeBlankMoneyDefaults();
       applyManualWorkbookOverrides();
