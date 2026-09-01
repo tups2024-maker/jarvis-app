@@ -9,25 +9,18 @@
   const DRIVER_STEP=1000;
   const COMPANY_STEP=1250;
 
-  function norm(v){
-    return String(v||'').replace(/\u3000/g,' ').replace(/\s+/g,' ').trim();
-  }
+  function norm(v){ return String(v||'').replace(/\u3000/g,' ').replace(/\s+/g,' ').trim(); }
   function isAkiyama(name){ return norm(name).includes(TARGET_NAME); }
+  function wbReady(){ return typeof WB!=='undefined' && WB && typeof XLSX!=='undefined' && XLSX && WB.Sheets; }
 
   function parseTimeToken(token){
     const t=String(token||'').trim();
     let m=t.match(/(\d{1,2})\s*[:：]\s*(\d{1,2})/);
-    if(m){
-      const h=Number(m[1]), min=Number(m[2]);
-      if(h>=0&&h<=23&&min>=0&&min<=59) return h*60+min;
-    }
+    if(m){ const h=Number(m[1]),min=Number(m[2]); if(h>=0&&h<=23&&min>=0&&min<=59) return h*60+min; }
     m=t.match(/(\d{1,2})\s*時\s*半/);
     if(m){ const h=Number(m[1]); if(h>=0&&h<=23) return h*60+30; }
     m=t.match(/(\d{1,2})\s*時\s*(\d{1,2})?\s*分?/);
-    if(m){
-      const h=Number(m[1]), min=m[2]==null?0:Number(m[2]);
-      if(h>=0&&h<=23&&min>=0&&min<=59) return h*60+min;
-    }
+    if(m){ const h=Number(m[1]),min=m[2]==null?0:Number(m[2]); if(h>=0&&h<=23&&min>=0&&min<=59) return h*60+min; }
     return null;
   }
 
@@ -56,7 +49,7 @@
   }
 
   function rowInfo(sheetName,rowIndex){
-    if(!window.WB||!window.XLSX||!WB.Sheets?.[sheetName]) return null;
+    if(!wbReady()||!WB.Sheets[sheetName]) return null;
     const aoa=XLSX.utils.sheet_to_json(WB.Sheets[sheetName],{header:1,defval:''});
     const h=aoa[2]||[];
     const noteCol=h.findIndex(x=>norm(x)==='備考');
@@ -68,9 +61,9 @@
 
   async function persistWorkbook(){
     try{
-      if(!window.WB||!window.XLSX||typeof window.saveWorkbookBytes!=='function') return;
+      if(!wbReady()||typeof saveWorkbookBytes!=='function') return;
       const buf=XLSX.write(WB,{bookType:'xlsx',type:'array'});
-      await saveWorkbookBytes(buf,window.WB_NAME||'delivery.xlsx');
+      await saveWorkbookBytes(buf,typeof WB_NAME!=='undefined'?WB_NAME:'delivery.xlsx');
     }catch(e){ console.warn('Akiyama local persist skipped',e); }
   }
 
@@ -79,28 +72,27 @@
     const info=rowInfo(sheetName,rowIndex);
     if(!info) return false;
     const note=info.aoa[rowIndex]?.[info.noteCol]??'';
-    const range=parseTimeRange(note);
-    const prices=calcPrices(range);
+    const prices=calcPrices(parseTimeRange(note));
     if(!prices) return false;
 
     const currentDr=Number(info.aoa[rowIndex]?.[info.drCol]);
     const currentCompany=Number(info.aoa[rowIndex]?.[info.companyCol]);
-    setWorkbookCellDirect(sheetName,rowIndex,info.drCol,prices.driver);
-    setWorkbookCellDirect(sheetName,rowIndex,info.companyCol,prices.company);
+    if(typeof setWorkbookCellDirect==='function'){
+      setWorkbookCellDirect(sheetName,rowIndex,info.drCol,prices.driver);
+      setWorkbookCellDirect(sheetName,rowIndex,info.companyCol,prices.company);
+    }
 
-    if(writeRemote && (currentDr!==prices.driver || currentCompany!==prices.company)){
+    if(writeRemote && typeof originalSave==='function' && (currentDr!==prices.driver || currentCompany!==prices.company)){
       const drAddr=XLSX.utils.encode_cell({r:rowIndex,c:info.drCol});
       const companyAddr=XLSX.utils.encode_cell({r:rowIndex,c:info.companyCol});
       if(currentDr!==prices.driver) await originalSave(sheetName,drAddr,[[prices.driver]]);
       if(currentCompany!==prices.company) await originalSave(sheetName,companyAddr,[[prices.company]]);
     }
-    await persistWorkbook();
-    try{renderWorkbook();}catch(_){}
     return true;
   }
 
   function isNoteRange(sheetName,range){
-    if(!isAkiyama(sheetName)||!window.WB||!window.XLSX||!WB.Sheets?.[sheetName]) return null;
+    if(!isAkiyama(sheetName)||!wbReady()||!WB.Sheets[sheetName]) return null;
     try{
       const cell=XLSX.utils.decode_cell(String(range||'').split(':')[0]);
       const info=rowInfo(sheetName,cell.r);
@@ -110,30 +102,43 @@
   }
 
   async function recalcAllFromGoogle(){
-    if(!window.WB||!window.XLSX||typeof window.saveGoogleDeliveryRange!=='function') return;
+    if(!wbReady()||typeof saveGoogleDeliveryRange!=='function') return false;
     const sheetName=(WB.SheetNames||[]).find(isAkiyama);
-    if(!sheetName) return;
+    if(!sheetName) return false;
     const aoa=XLSX.utils.sheet_to_json(WB.Sheets[sheetName],{header:1,defval:''});
-    const original=window.saveGoogleDeliveryRange.__akiyamaOriginal || window.saveGoogleDeliveryRange;
+    const original=saveGoogleDeliveryRange.__akiyamaOriginal || saveGoogleDeliveryRange;
+    let changed=false;
     for(let r=3;r<aoa.length;r++){
-      try{await applyPricing(sheetName,r,original,true);}catch(e){console.warn('Akiyama recalc row failed',r,e);}
+      try{
+        const ok=await applyPricing(sheetName,r,original,true);
+        changed=changed||ok;
+      }catch(e){ console.warn('Akiyama recalc row failed',r,e); }
     }
-    const status=document.getElementById('workbookStatus');
-    if(status) status.textContent='✓ 秋山製麺：開始・終了時刻を認識して料金まで自動同期しました';
+    if(changed){
+      await persistWorkbook();
+      try{ if(typeof renderWorkbook==='function') renderWorkbook(); }catch(_){}
+      const status=document.getElementById('workbookStatus');
+      if(status) status.textContent='✓ 秋山製麺：備考時間からDR金額・会社金額を自動反映しました';
+    }
+    return changed;
   }
 
   function install(){
-    if(typeof window.saveGoogleDeliveryRange!=='function'){
+    if(typeof saveGoogleDeliveryRange!=='function'){
       setTimeout(install,250);
       return;
     }
-    if(window.saveGoogleDeliveryRange.__akiyamaWrapped) return;
-    const original=window.saveGoogleDeliveryRange;
+    if(saveGoogleDeliveryRange.__akiyamaWrapped) return;
+    const original=saveGoogleDeliveryRange;
     const wrapped=async function(sheetName,range,values){
       const result=await original(sheetName,range,values);
       const row=isNoteRange(sheetName,range);
       if(row!=null){
-        try{await applyPricing(sheetName,row,original,true);}catch(e){
+        try{
+          await applyPricing(sheetName,row,original,true);
+          await persistWorkbook();
+          if(typeof renderWorkbook==='function') renderWorkbook();
+        }catch(e){
           console.error('Akiyama pricing save failed',e);
           const status=document.getElementById('workbookStatus');
           if(status) status.textContent='秋山製麺の料金自動計算に失敗しました：'+(e?.message||e);
@@ -143,10 +148,12 @@
     };
     wrapped.__akiyamaWrapped=true;
     wrapped.__akiyamaOriginal=original;
-    window.saveGoogleDeliveryRange=wrapped;
-    try{saveGoogleDeliveryRange=wrapped;}catch(_){}
+    try{ window.saveGoogleDeliveryRange=wrapped; }catch(_){}
+    try{ saveGoogleDeliveryRange=wrapped; }catch(_){}
+    setTimeout(recalcAllFromGoogle,1200);
   }
 
-  window.addEventListener('jarvis-delivery-synced',()=>{setTimeout(recalcAllFromGoogle,50);});
+  window.addEventListener('jarvis-delivery-synced',()=>{setTimeout(recalcAllFromGoogle,80);});
+  window.recalcAkiyamaPricing=recalcAllFromGoogle;
   install();
 })();
