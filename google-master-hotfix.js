@@ -89,9 +89,10 @@
       validateAugustSheets(sheets);
       sheets.forEach(s=>mergeGoogleDeliverySheet(s.sheetName||s.name,normalizeAugustValues(s.values)));
       pruneWorkbookToAugust();
-      normalizeBlankMoneyDefaults();
-      applyManualWorkbookOverrides();
-      applyNoAutoPayRows();
+
+      // Google Sheets を正本にするため、取得直後に古いローカル補正を重ねない。
+      // 以前ここで manual override / no-auto-pay を適用していたため、
+      // 同じ備考時間でも一部の行だけ旧金額へ戻る不整合が発生していた。
       await persistMigratedWorkbook();
       setupSheetSelect();
       renderWorkbook();
