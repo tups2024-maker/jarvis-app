@@ -7,24 +7,34 @@
       label:'2026年8月',
       sites:[
         {name:'鶴見',gid:1981245666,tags:['すべて','Amazon']},
-        {name:'中村区',gid:511952311,tags:['すべて','Amazon']},
-        {name:'一宮',gid:500026506,tags:['すべて','Amazon']},
-        {name:'静岡',gid:852874452,tags:['すべて','遠州トラック','ギオン']},
+        {name:'中村区',gid:511952311,tags:['すべて','ギオン']},
+        {name:'一宮',gid:500026506,tags:['すべて','ギオン']},
+        {name:'静岡',gid:852874452,tags:['すべて','ギオン']},
         {name:'三島',gid:208595120,tags:['すべて','Amazon','ギオン']},
         {name:'株式会社サカエ',label:'お酒',gid:605561015,tags:['すべて','お酒']},
         {name:'秋山製麺所',label:'秋山製麺',gid:1803015733,tags:['すべて','秋山製麺']}
+      ],
+      enshu:[
+        {name:'滋賀県野洲市',label:'野洲市 遠州トラック'},
+        {name:'静岡市駿河区',label:'駿河区 遠州トラック'},
+        {name:'富士市',label:'富士市 遠州トラック'}
       ]
     },
     '2026-09':{
       label:'2026年9月',
       sites:[
         {name:'鶴見',gid:107675747,tags:['すべて','Amazon']},
-        {name:'中村区',gid:1241751568,tags:['すべて','Amazon']},
-        {name:'一宮',gid:902048376,tags:['すべて','Amazon']},
-        {name:'静岡',gid:2051049705,tags:['すべて','遠州トラック','ギオン']},
+        {name:'中村区',gid:1241751568,tags:['すべて','ギオン']},
+        {name:'一宮',gid:902048376,tags:['すべて','ギオン']},
+        {name:'静岡',gid:2051049705,tags:['すべて','ギオン']},
         {name:'三島',gid:283632455,tags:['すべて','Amazon','ギオン']},
         {name:'株式会社サカエ',label:'お酒',gid:306319410,tags:['すべて','お酒']},
         {name:'秋山製麺所',label:'秋山製麺',gid:350367810,tags:['すべて','秋山製麺']}
+      ],
+      enshu:[
+        {name:'滋賀県野洲市',label:'野洲市 遠州トラック'},
+        {name:'静岡市駿河区',label:'駿河区 遠州トラック'},
+        {name:'富士市',label:'富士市 遠州トラック'}
       ]
     }
   };
@@ -49,11 +59,12 @@
       .jarvis-site-tab{white-space:nowrap;border:1px solid rgba(71,212,244,.38);background:rgba(6,38,51,.82);color:#a9dbe8;border-radius:999px;padding:8px 12px;font:inherit;font-weight:700;cursor:pointer}
       .jarvis-site-tab.active{background:rgba(0,165,205,.2);border-color:#66e9ff;color:#effdff;box-shadow:0 0 14px rgba(0,217,255,.16)}
       .jarvis-all-sites-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(126px,1fr));gap:8px}
-      .jarvis-site-btn{display:flex;flex-direction:column;gap:2px;align-items:center;justify-content:center;min-height:48px;padding:8px 10px;border:1px solid rgba(66,220,255,.44);border-radius:10px;background:linear-gradient(180deg,rgba(9,66,86,.82),rgba(4,35,49,.82));color:#e9fcff;text-decoration:none;font-weight:700;cursor:pointer;text-align:center}
-      .jarvis-site-btn small{font-size:10px;font-weight:500;color:#8fb9c8}
+      .jarvis-site-btn,.jarvis-site-card{display:flex;flex-direction:column;gap:2px;align-items:center;justify-content:center;min-height:48px;padding:8px 10px;border:1px solid rgba(66,220,255,.44);border-radius:10px;background:linear-gradient(180deg,rgba(9,66,86,.82),rgba(4,35,49,.82));color:#e9fcff;text-decoration:none;font-weight:700;text-align:center}
+      .jarvis-site-btn{cursor:pointer}.jarvis-site-card{opacity:.72}
+      .jarvis-site-btn small,.jarvis-site-card small{font-size:10px;font-weight:500;color:#8fb9c8}
       .jarvis-site-btn:hover{border-color:#7defff;box-shadow:0 0 16px rgba(0,217,255,.18)}
       .jarvis-site-empty{grid-column:1/-1;padding:14px;border:1px dashed rgba(95,225,255,.24);border-radius:10px;color:#90b8c5;text-align:center}
-      @media(max-width:640px){.jarvis-all-sites-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.jarvis-site-btn{font-size:13px}}
+      @media(max-width:640px){.jarvis-all-sites-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.jarvis-site-btn,.jarvis-site-card{font-size:13px}}
     `;
     document.head.appendChild(style);
   }
@@ -61,6 +72,17 @@
   function renderButtons(panel,key,tab){
     const grid=panel.querySelector('.jarvis-all-sites-grid');
     grid.innerHTML='';
+
+    if(tab==='遠州トラック'){
+      MONTHS[key].enshu.forEach(site=>{
+        const card=document.createElement('div');
+        card.className='jarvis-site-card';
+        card.innerHTML='<span>'+site.label+'</span><small>JARVIS内編集対応予定</small>';
+        grid.appendChild(card);
+      });
+      return;
+    }
+
     const sites=MONTHS[key].sites.filter(site=>site.tags.includes(tab));
     if(!sites.length){
       grid.innerHTML='<div class="jarvis-site-empty">この月は正本スプレッドシートに対象タブがありません</div>';
@@ -96,7 +118,7 @@
     panel.dataset.activeTab='すべて';
     panel.innerHTML=`
       <div class="jarvis-all-sites-head">
-        <div><b>全拠点 配送管理表</b><small>案件タブから正本の配送管理表を開けます</small></div>
+        <div><b>全拠点 配送管理表</b><small>案件別に配送管理表を整理しています</small></div>
         <select id="jarvisAllSitesMonth" aria-label="配送管理表の月">
           <option value="2026-09">2026年9月</option>
           <option value="2026-08">2026年8月</option>
@@ -118,11 +140,8 @@
     });
 
     const anchor=page.querySelector('.section-head, h2, h3');
-    if(anchor && anchor.parentNode){
-      anchor.parentNode.insertBefore(panel,anchor.nextSibling);
-    }else{
-      page.insertBefore(panel,page.firstChild);
-    }
+    if(anchor && anchor.parentNode) anchor.parentNode.insertBefore(panel,anchor.nextSibling);
+    else page.insertBefore(panel,page.firstChild);
 
     const select=panel.querySelector('#jarvisAllSitesMonth');
     const now=new Date();
