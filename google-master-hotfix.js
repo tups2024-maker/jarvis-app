@@ -2,14 +2,23 @@
 (function(){
   'use strict';
 
-  function gasBaseUrl(){
+  function apiBaseUrl(){
     return typeof GAS_API_URL==='string'?GAS_API_URL:'';
   }
 
+  function isWorkerBase(){
+    return /workers\.dev|t-ups2024\.work/i.test(apiBaseUrl());
+  }
+
   function gasActionUrl(action){
-    const base=gasBaseUrl();
+    const base=apiBaseUrl();
     if(!base) return '';
     return base+(base.includes('?')?'&':'?')+'action='+encodeURIComponent(action)+'&_='+Date.now();
+  }
+
+  function workerUrl(path){
+    const base=apiBaseUrl().replace(/\/$/,'');
+    return base+path;
   }
 
   async function readJson(response){
@@ -17,14 +26,14 @@
     let result;
     try{result=JSON.parse(text);}catch(_){
       const preview=text.slice(0,160).replace(/\s+/g,' ');
-      throw new Error('Google APIがJSONを返していません: '+preview);
+      throw new Error('APIがJSONを返していません: '+preview);
     }
-    if(!response.ok) throw new Error(result?.error||('Google API error '+response.status));
+    if(!response.ok) throw new Error(result?.error||('API error '+response.status));
     return result;
   }
 
   function ensureSuccess(result){
-    if(result?.success===false) throw new Error(result?.error||'Google APIでエラーが発生しました');
+    if(result?.success===false) throw new Error(result?.error||'APIでエラーが発生しました');
     return result;
   }
 
@@ -39,22 +48,32 @@
   }
 
   saveGoogleDeliveryRange=async function(sheetName,range,values){
-    if(!gasBaseUrl()) throw new Error('配送管理表APIが設定されていません');
-    const action='saveDeliveryData';
-    const response=await fetch(gasActionUrl(action),{
-      method:'POST',
-      headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify({action,sheetName,range,values})
-    });
+    if(!apiBaseUrl()) throw new Error('配送管理表APIが設定されていません');
+    let response;
+    if(isWorkerBase()){
+      response=await fetch(workerUrl('/delivery/save'),{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({sheetName,range,values})
+      });
+    }else{
+      const action='saveDeliveryData';
+      response=await fetch(gasActionUrl(action),{
+        method:'POST',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({action,sheetName,range,values})
+      });
+    }
     return ensureSuccess(await readJson(response));
   };
 
   fetchGoogleDelivery=async function(silent=false){
     if(workbookEditingOrDirty()||WB_GOOGLE_IMPORTING)return false;
-    if(!gasBaseUrl())return false;
+    if(!apiBaseUrl())return false;
     WB_GOOGLE_IMPORTING=true;
     try{
-      const response=await fetch(gasActionUrl('getDeliveryData'),{cache:'no-store'});
+      const url=isWorkerBase()?workerUrl('/delivery'):gasActionUrl('getDeliveryData');
+      const response=await fetch(url,{cache:'no-store'});
       const result=ensureSuccess(await readJson(response));
       const sheets=extractSheets(result);
       if(!sheets.length) throw new Error('配送管理表データが応答にありません');
@@ -65,11 +84,11 @@
       await persistMigratedWorkbook();
       setupSheetSelect();
       renderWorkbook();
-      if(!silent&&$('workbookStatus'))$('workbookStatus').textContent='✓ 元のGoogle配送管理表から最新データを取得しました';
+      if($('workbookStatus')) $('workbookStatus').textContent='✓ Google配送管理表と同期しました';
       return true;
     }catch(e){
       console.error('delivery fetch failed',e);
-      if($('workbookStatus'))$('workbookStatus').textContent='Google配送管理表の取得に失敗しました（JARVIS内データは保持）：'+(e?.message||e);
+      if($('workbookStatus')) $('workbookStatus').textContent='Google配送管理表の取得に失敗しました（JARVIS内データは保持）：'+(e?.message||e);
       return false;
     }finally{
       WB_GOOGLE_IMPORTING=false;
