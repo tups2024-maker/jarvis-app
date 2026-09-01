@@ -2,6 +2,19 @@
 (function(){
   'use strict';
 
+  const EXPECTED_AUGUST_SHEETS=[
+    '2026年8月 鶴見',
+    '2026年8月 中村区',
+    '2026年8月 一宮',
+    '2026年8月 静岡',
+    '2026年8月 三島',
+    '2026年8月 お酒',
+    '2026年8月 秋山製麺',
+    '2026年8月 遠州トラック 野洲市',
+    '2026年8月 遠州トラック 駿河区',
+    '2026年8月 遠州トラック 富士市'
+  ];
+
   function apiBaseUrl(){
     return typeof GAS_API_URL==='string'?GAS_API_URL:'';
   }
@@ -47,6 +60,27 @@
     return [];
   }
 
+  function normalizeName(v){
+    return String(v||'').replace(/\u3000/g,' ').replace(/\s+/g,' ').trim();
+  }
+
+  function validateAugustSheets(sheets){
+    const names=new Set(sheets.map(s=>normalizeName(s.sheetName||s.name)));
+    const missing=EXPECTED_AUGUST_SHEETS.filter(name=>!names.has(normalizeName(name)));
+    if(missing.length) throw new Error('8月の配送管理表が不足しています: '+missing.join(' / '));
+    return true;
+  }
+
+  function pruneWorkbookToAugust(){
+    if(!WB||!Array.isArray(WB.SheetNames)||!WB.Sheets) return;
+    const keep=new Set(EXPECTED_AUGUST_SHEETS.map(normalizeName));
+    WB.SheetNames=[...WB.SheetNames].filter(name=>keep.has(normalizeName(name)));
+    Object.keys(WB.Sheets).forEach(name=>{
+      if(!keep.has(normalizeName(name))) delete WB.Sheets[name];
+    });
+    WB_FILTERS={};
+  }
+
   saveGoogleDeliveryRange=async function(sheetName,range,values){
     if(!apiBaseUrl()) throw new Error('配送管理表APIが設定されていません');
     let response;
@@ -77,14 +111,16 @@
       const result=ensureSuccess(await readJson(response));
       const sheets=extractSheets(result);
       if(!sheets.length) throw new Error('配送管理表データが応答にありません');
+      validateAugustSheets(sheets);
       sheets.forEach(s=>mergeGoogleDeliverySheet(s.sheetName||s.name,s.values));
+      pruneWorkbookToAugust();
       normalizeBlankMoneyDefaults();
       applyManualWorkbookOverrides();
       applyNoAutoPayRows();
       await persistMigratedWorkbook();
       setupSheetSelect();
       renderWorkbook();
-      if($('workbookStatus')) $('workbookStatus').textContent='✓ Google配送管理表と同期しました';
+      if($('workbookStatus')) $('workbookStatus').textContent='✓ 2026年8月 全10配送管理表をGoogle正本と同期しました';
       return true;
     }catch(e){
       console.error('delivery fetch failed',e);
