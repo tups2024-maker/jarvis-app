@@ -4,8 +4,8 @@
   const TARGET_NAME='秋山製麺';
   const FULL_START=8*60;
   const FULL_END=12*60;
-  const DRIVER_FULL=9000;
-  const COMPANY_FULL=11000;
+  const DRIVER_FULL=9000;   // 税込
+  const COMPANY_FULL=10000; // 税別
   const DRIVER_STEP=1000;
   const COMPANY_STEP=1250;
 
@@ -118,7 +118,7 @@
       await persistWorkbook();
       try{ if(typeof renderWorkbook==='function') renderWorkbook(); }catch(_){}
       const status=document.getElementById('workbookStatus');
-      if(status) status.textContent='✓ 秋山製麺：備考時間からDR金額・会社金額を自動反映しました';
+      if(status) status.textContent='✓ 秋山製麺：備考時間からDR税込・会社税別を自動反映しました';
     }
     return changed;
   }
