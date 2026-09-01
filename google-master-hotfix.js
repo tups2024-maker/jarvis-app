@@ -1,14 +1,11 @@
-/* JARVIS V7.0.7 Google master sync hotfix */
+/* JARVIS V7.0.8 Google master sync hotfix */
 (function(){
   'use strict';
 
-  const EXPECTED_AUGUST_SHEETS=[
-    '2026年8月 鶴見','2026年8月 中村区','2026年8月 一宮','2026年8月 静岡','2026年8月 三島',
-    '2026年8月 お酒','2026年8月 秋山製麺','2026年8月 遠州トラック 野洲市',
-    '2026年8月 遠州トラック 駿河区','2026年8月 遠州トラック 富士市'
-  ];
+  const CORE_LOCATIONS=['鶴見','中村区','一宮','静岡','三島','株式会社サカエ','秋山製麺所'];
   const AUTO_REFRESH_MS=30000;
   let lastSyncAt=0;
+  let activeYearMonth='';
 
   function apiBaseUrl(){ return typeof GAS_API_URL==='string'?GAS_API_URL:''; }
   function isWorkerBase(){ return /workers\.dev|t-ups2024\.work/i.test(apiBaseUrl()); }
@@ -34,34 +31,84 @@
     return [];
   }
   function normalizeName(v){ return String(v||'').replace(/\u3000/g,' ').replace(/\s+/g,' ').trim(); }
-  function validateAugustSheets(sheets){
-    const names=new Set(sheets.map(s=>normalizeName(s.sheetName||s.name)));
-    const missing=EXPECTED_AUGUST_SHEETS.filter(name=>!names.has(normalizeName(name)));
-    if(missing.length) throw new Error('8月の配送管理表が不足しています: '+missing.join(' / '));
+  function tokyoNow(){
+    const parts=new Intl.DateTimeFormat('ja-JP',{timeZone:'Asia/Tokyo',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(new Date());
+    return {
+      year:Number(parts.find(x=>x.type==='year')?.value||0),
+      month:Number(parts.find(x=>x.type==='month')?.value||0),
+      day:Number(parts.find(x=>x.type==='day')?.value||0)
+    };
   }
-  function normalizeAugustValues(values){
+  function ymLabel(year,month){ return `${year}年${month}月`; }
+  function parseSheetYearMonth(name){
+    const m=normalizeName(name).match(/(20\d{2})年\s*(\d{1,2})月/);
+    return m?{year:Number(m[1]),month:Number(m[2]),label:ymLabel(Number(m[1]),Number(m[2]))}:null;
+  }
+  function chooseActiveYearMonth(sheets){
+    const now=tokyoNow();
+    const wanted=ymLabel(now.year,now.month);
+    const labels=[...new Set(sheets.map(s=>parseSheetYearMonth(s.sheetName||s.name)?.label).filter(Boolean))];
+    if(labels.includes(wanted)) return wanted;
+    if(labels.length){
+      return labels.sort((a,b)=>{
+        const pa=parseSheetYearMonth(a), pb=parseSheetYearMonth(b);
+        return (pb?.year*12+(pb?.month||0))-(pa?.year*12+(pa?.month||0));
+      })[0];
+    }
+    return wanted;
+  }
+  function selectedSheetsForMonth(sheets,label){
+    return sheets.filter(s=>parseSheetYearMonth(s.sheetName||s.name)?.label===label);
+  }
+  function validateMonthSheets(sheets,label){
+    if(!sheets.length) throw new Error(label+'の配送管理表が応答にありません');
+    const normalized=sheets.map(s=>normalizeName(s.sheetName||s.name));
+    const missingCore=CORE_LOCATIONS.filter(loc=>!normalized.some(name=>name.includes(loc)));
+    if(missingCore.length){
+      console.warn(label+'の主要配送管理表に未取得があります:',missingCore.join(' / '));
+    }
+  }
+  function normalizeMonthValues(values,label){
     if(!Array.isArray(values)) return values;
+    const ym=parseSheetYearMonth(label);
+    const targetMonth=ym?.month||tokyoNow().month;
     return values.map((row,r)=>{
       if(!Array.isArray(row)) return row;
       const next=[...row];
-      if(r>=3 && typeof next[0]==='string' && /^2026-\d{2}-\d{2}T/.test(next[0])){
+      if(r>=3 && typeof next[0]==='string' && /^20\d{2}-\d{2}-\d{2}T/.test(next[0])){
         const d=new Date(next[0]);
         if(!Number.isNaN(d.getTime())){
           const parts=new Intl.DateTimeFormat('ja-JP',{timeZone:'Asia/Tokyo',month:'numeric',day:'numeric'}).formatToParts(d);
           const m=Number(parts.find(x=>x.type==='month')?.value||0);
           const day=Number(parts.find(x=>x.type==='day')?.value||0);
-          if(m===8&&day) next[0]=`8月${day}日`;
+          if(m===targetMonth&&day) next[0]=`${targetMonth}月${day}日`;
         }
       }
       return next;
     });
   }
-  function pruneWorkbookToAugust(){
+  function pruneWorkbookToMonth(label){
     if(!WB||!Array.isArray(WB.SheetNames)||!WB.Sheets) return;
-    const keep=new Set(EXPECTED_AUGUST_SHEETS.map(normalizeName));
-    WB.SheetNames=[...WB.SheetNames].filter(name=>keep.has(normalizeName(name)));
-    Object.keys(WB.Sheets).forEach(name=>{if(!keep.has(normalizeName(name))) delete WB.Sheets[name];});
+    WB.SheetNames=[...WB.SheetNames].filter(name=>parseSheetYearMonth(name)?.label===label);
+    Object.keys(WB.Sheets).forEach(name=>{if(parseSheetYearMonth(name)?.label!==label) delete WB.Sheets[name];});
     WB_FILTERS={};
+  }
+  function updateMonthLabels(label){
+    activeYearMonth=label;
+    const m=parseSheetYearMonth(label);
+    if(!m) return;
+    const monthText=`${m.month}月`;
+    const replacements=[
+      ['cmdSales',monthText+'売上'],['cmdGross',monthText+'粗利'],['kpiSales',monthText+'累計売上']
+    ];
+    replacements.forEach(([id,text])=>{
+      const el=document.getElementById(id);
+      const parent=el?.parentElement;
+      const span=parent?.querySelector('span');
+      if(span) span.textContent=text;
+    });
+    document.querySelectorAll('[data-jarvis-active-month]').forEach(el=>el.textContent=label);
+    window.JARVIS_ACTIVE_YEARMONTH=label;
   }
 
   saveGoogleDeliveryRange=async function(sheetName,range,values){
@@ -84,21 +131,23 @@
       const url=isWorkerBase()?workerUrl('/delivery'):gasActionUrl('getDeliveryData');
       const response=await fetch(url,{cache:'no-store'});
       const result=ensureSuccess(await readJson(response));
-      const sheets=extractSheets(result);
-      if(!sheets.length) throw new Error('配送管理表データが応答にありません');
-      validateAugustSheets(sheets);
-      sheets.forEach(s=>mergeGoogleDeliverySheet(s.sheetName||s.name,normalizeAugustValues(s.values)));
-      pruneWorkbookToAugust();
+      const allSheets=extractSheets(result);
+      if(!allSheets.length) throw new Error('配送管理表データが応答にありません');
 
-      // Google Sheets を正本にするため、取得直後に古いローカル補正を重ねない。
-      // 以前ここで manual override / no-auto-pay を適用していたため、
-      // 同じ備考時間でも一部の行だけ旧金額へ戻る不整合が発生していた。
+      const label=chooseActiveYearMonth(allSheets);
+      const sheets=selectedSheetsForMonth(allSheets,label);
+      validateMonthSheets(sheets,label);
+      sheets.forEach(s=>mergeGoogleDeliverySheet(s.sheetName||s.name,normalizeMonthValues(s.values,label)));
+      pruneWorkbookToMonth(label);
+
+      // Google Sheets を正本にする。取得直後に古いローカル補正を重ねない。
       await persistMigratedWorkbook();
       setupSheetSelect();
       renderWorkbook();
+      updateMonthLabels(label);
       lastSyncAt=Date.now();
-      window.dispatchEvent(new CustomEvent('jarvis-delivery-synced',{detail:{at:lastSyncAt,sheets:sheets.length}}));
-      if($('workbookStatus')) $('workbookStatus').textContent='✓ 2026年8月 全10配送管理表をGoogle正本と同期しました';
+      window.dispatchEvent(new CustomEvent('jarvis-delivery-synced',{detail:{at:lastSyncAt,sheets:sheets.length,yearMonth:label}}));
+      if($('workbookStatus')) $('workbookStatus').textContent=`✓ ${label} ${sheets.length}配送管理表をGoogle正本と同期しました`;
       return true;
     }catch(e){
       console.error('delivery fetch failed',e);
@@ -114,6 +163,8 @@
   }
 
   document.addEventListener('DOMContentLoaded',()=>{
+    const now=tokyoNow();
+    updateMonthLabels(ymLabel(now.year,now.month));
     setTimeout(refreshIfSafe,1400);
     setInterval(refreshIfSafe,AUTO_REFRESH_MS);
   });
