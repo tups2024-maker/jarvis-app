@@ -34,28 +34,19 @@
     if(Array.isArray(data?.sheets)) return data.sheets;
     if(data?.sheets&&typeof data.sheets==='object') return Object.entries(data.sheets).map(([sheetName,v])=>({sheetName,values:Array.isArray(v)?v:v?.values}));
     if(data?.sheetName&&Array.isArray(data.values)) return [data];
+    if(Array.isArray(data?.values)) return [{sheetName:data.sheetName||'',values:data.values}];
     return [];
   }
 
   saveGoogleDeliveryRange=async function(sheetName,range,values){
     if(!gasBaseUrl()) throw new Error('配送管理表APIが設定されていません');
-    const actions=['delivery_save','saveDelivery','deliverySave','save_delivery'];
-    let lastError=null;
-    for(const action of actions){
-      try{
-        const response=await fetch(gasActionUrl(action),{
-          method:'POST',
-          headers:{'Content-Type':'text/plain;charset=utf-8'},
-          body:JSON.stringify({action,sheetName,range,values})
-        });
-        const result=ensureSuccess(await readJson(response));
-        if(result?.success===true || result?.saved===true || result?.updated===true || result?.range || result?.data) return result;
-        lastError=new Error('保存APIの応答形式を確認できません');
-      }catch(e){
-        lastError=e;
-      }
-    }
-    throw lastError||new Error('Google配送管理表の保存に失敗しました');
+    const action='saveDeliveryData';
+    const response=await fetch(gasActionUrl(action),{
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({action,sheetName,range,values})
+    });
+    return ensureSuccess(await readJson(response));
   };
 
   fetchGoogleDelivery=async function(silent=false){
@@ -63,21 +54,10 @@
     if(!gasBaseUrl())return false;
     WB_GOOGLE_IMPORTING=true;
     try{
-      const actions=['delivery','getDelivery','delivery_get'];
-      let sheets=[];
-      let lastError=null;
-      for(const action of actions){
-        try{
-          const response=await fetch(gasActionUrl(action),{cache:'no-store'});
-          const result=ensureSuccess(await readJson(response));
-          sheets=extractSheets(result);
-          if(sheets.length) break;
-          lastError=new Error('配送管理表データが応答にありません');
-        }catch(e){
-          lastError=e;
-        }
-      }
-      if(!sheets.length) throw lastError||new Error('Google配送管理表を取得できませんでした');
+      const response=await fetch(gasActionUrl('getDeliveryData'),{cache:'no-store'});
+      const result=ensureSuccess(await readJson(response));
+      const sheets=extractSheets(result);
+      if(!sheets.length) throw new Error('配送管理表データが応答にありません');
       sheets.forEach(s=>mergeGoogleDeliverySheet(s.sheetName||s.name,s.values));
       normalizeBlankMoneyDefaults();
       applyManualWorkbookOverrides();
