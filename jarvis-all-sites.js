@@ -1,27 +1,29 @@
 (function(){
   'use strict';
 
-  const MAIN_ID='1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI';
-  const ENSHU_ID='1hHAtTH_ZbqN2pBR357_96F9wewb8owy3bjmWa56TVxM';
+  const GION_ID='1Z76E_ANWTS2u3xCSZucOByTUs_-EsmOPHBj1HST84mc';
+  const ENSHU_ID='1z6cSUsEdu929JHRbqPjp-rjDbfSOuLVATKhf6hPJHoQ';
+  const OSAKE_ID='1LaXN4rSwiBIgmZDTENDbewpSDkXgFEkZj-YlcCPwMxw';
+  const AKIYAMA_ID='1AEuOHCVLXFU4cR0VKWBbn1O9Qmp8-H_PF1dt-MeahWk';
 
   const AUGUST={
     'ギオン':[
-      {label:'鶴見',sheet:'2026年8月 鶴見',spreadsheetId:MAIN_ID,gid:1981245666},
-      {label:'中村区',sheet:'2026年8月 中村区',spreadsheetId:MAIN_ID,gid:511952311},
-      {label:'一宮',sheet:'2026年8月 一宮',spreadsheetId:MAIN_ID,gid:500026506},
-      {label:'静岡',sheet:'2026年8月 静岡',spreadsheetId:MAIN_ID,gid:852874452},
-      {label:'三島',sheet:'2026年8月 三島',spreadsheetId:MAIN_ID,gid:208595120}
+      {label:'鶴見',sheet:'2026年8月 鶴見',spreadsheetId:GION_ID,gid:1981245666},
+      {label:'中村区',sheet:'2026年8月 中村区',spreadsheetId:GION_ID,gid:511952311},
+      {label:'一宮',sheet:'2026年8月 一宮',spreadsheetId:GION_ID,gid:500026506},
+      {label:'静岡',sheet:'2026年8月 静岡',spreadsheetId:GION_ID,gid:852874452},
+      {label:'三島',sheet:'2026年8月 三島',spreadsheetId:GION_ID,gid:208595120}
     ],
     '遠州トラック':[
-      {label:'滋賀県野洲市',sheet:'2026年8月 野洲市　遠州トラック ',spreadsheetId:ENSHU_ID,gid:225833391},
-      {label:'静岡市駿河区',sheet:'2026年8月 静岡 遠州トラック  ',spreadsheetId:ENSHU_ID,gid:2049835654},
-      {label:'富士市',sheet:'2026年8月 富士 遠州トラック ',spreadsheetId:ENSHU_ID,gid:255167677}
+      {label:'滋賀県野洲市',sheet:'2026年8月 遠州トラック 野洲市',spreadsheetId:ENSHU_ID,gid:225833391},
+      {label:'静岡市駿河区',sheet:'2026年8月 遠州トラック 駿河区',spreadsheetId:ENSHU_ID,gid:2049835654},
+      {label:'富士市',sheet:'2026年8月 遠州トラック 富士市',spreadsheetId:ENSHU_ID,gid:255167677}
     ],
     'お酒':[
-      {label:'お酒（株式会社サカエ）',sheet:'2026年8月 株式会社サカエ',spreadsheetId:MAIN_ID,gid:605561015}
+      {label:'お酒（株式会社サカエ）',sheet:'2026年8月 株式会社サカエ',spreadsheetId:OSAKE_ID,gid:605561015}
     ],
     '秋山製麺':[
-      {label:'秋山製麺',sheet:'2026年8月 秋山製麺所',spreadsheetId:MAIN_ID,gid:1803015733}
+      {label:'秋山製麺',sheet:'2026年8月 秋山製麺所',spreadsheetId:AKIYAMA_ID,gid:1803015733}
     ]
   };
 
@@ -74,7 +76,7 @@
     });
     const note=document.createElement('div');
     note.className='jarvis-sync-note';
-    note.textContent='表示対象は2026年8月のみ。分類は正本の請求先・案件に合わせて固定しています。';
+    note.textContent='表示対象は2026年8月のみ。分類は会社別の配送管理表へ分離し、日付と対象月が一致しないデータは同期対象外にします。';
     grid.appendChild(note);
   }
 
@@ -95,7 +97,7 @@
     panel.dataset.activeTab='すべて';
     panel.innerHTML=`
       <div class="jarvis-all-sites-head">
-        <div><b>2026年8月 全配送管理表</b><small>正本の分類に合わせて固定 / 9月は表示しません</small></div>
+        <div><b>2026年8月 全配送管理表</b><small>会社別正本 / 日付連動 / 9月は表示しません</small></div>
         <div class="jarvis-month-badge">2026年8月のみ</div>
       </div>
       <div class="jarvis-site-tabs"></div>
