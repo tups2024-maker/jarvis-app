@@ -6,7 +6,7 @@
     var source=await response.text();
     source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.8 安定化版');
     source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.8 安定化版');
-    var patchTag='<script src="./jarvis-date-sync.js?v=20260903-0135"></scr'+'ipt><script src="./workbook-hotfix.js?v=20260903-0135"></scr'+'ipt><script src="./google-master-hotfix.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-hide-logistics-columns.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-akiyama-pricing.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-all-sites.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-source-dashboard.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-current-month.js?v=20260903-0231"></scr'+'ipt><script src="./jarvis-voice-ai.js?v=20260903-1131"></scr'+'ipt>';
+    var patchTag='<script src="./jarvis-date-sync.js?v=20260903-0135"></scr'+'ipt><script src="./workbook-hotfix.js?v=20260903-0135"></scr'+'ipt><script src="./google-master-hotfix.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-hide-logistics-columns.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-akiyama-pricing.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-all-sites.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-source-dashboard.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-current-month.js?v=20260903-0231"></scr'+'ipt><script src="./jarvis-voice-ai.js?v=20260903-1131"></scr'+'ipt><script src="./jarvis-neon-ui.js?v=20260903-1551"></scr'+'ipt>';
     source=source.replace('</body>',patchTag+'</body>');
     document.open();
     document.write(source);
