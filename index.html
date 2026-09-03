@@ -1,69 +1,43 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#020711"><title>JARVIS V7.0.8 安定化版</title></head><body style="margin:0;background:#020711;color:#dff6ff;font-family:system-ui,sans-serif"><div id="boot" style="padding:24px">JARVIS V7.0.8 を起動しています…</div><script>
-(async function(){
-  try{
-    var response=await fetch('./v7.html?stable=20260903-0135',{cache:'no-store'});
-    if(!response.ok) throw new Error('v7.html '+response.status);
-    var source=await response.text();
-    source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.8 安定化版');
-    source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.8 安定化版');
-    var patchTag='<script src="./jarvis-date-sync.js?v=20260903-0135"></scr'+'ipt><script src="./workbook-hotfix.js?v=20260903-0135"></scr'+'ipt><script src="./google-master-hotfix.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-hide-logistics-columns.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-akiyama-pricing.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-all-sites.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-source-dashboard.js?v=20260903-0135"></scr'+'ipt><script src="./jarvis-current-month.js?v=20260903-0231"></scr'+'ipt><script src="./jarvis-source-current-month-fix.js?v=20260903-2027"></scr'+'ipt><script src="./jarvis-voice-ai.js?v=20260903-1740"></scr'+'ipt><script src="./jarvis-neon-ui.js?v=20260903-1551"></scr'+'ipt>';
-    source=source.replace('<script id="jarvis-dynamic-runtime">
-(()=>{
-  const SHEET_URL='https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit';
-  function refreshJarvisClock(){
-    const now=new Date(),m=now.getMonth()+1;
-    const setLabel=(id,text)=>{const el=document.getElementById(id);const span=el?.closest('article')?.querySelector('span');if(span)span.textContent=text};
-    setLabel('cmdSales',`${m}月売上`);setLabel('cmdGross',`${m}月粗利`);setLabel('kpiSales',`${m}月累計売上`);setLabel('kpiGross',`${m}月粗利`);
-    const hud=document.querySelector('.hud-topline span:last-child');if(hud)hud.textContent=`${now.getFullYear()}/${String(m).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')} / SECURE LINK`;
-    document.querySelectorAll('.command-quick-links').forEach(box=>{
-      if(box.querySelector('[data-google-delivery]'))return;
-      const b=document.createElement('button');b.type='button';b.dataset.googleDelivery='1';b.textContent='▤ Google配送管理表';b.addEventListener('click',()=>window.open(SHEET_URL,'_blank','noopener'));box.appendChild(b);
-    });
-    document.querySelectorAll('.msg.jarvis p').forEach(p=>{p.textContent=p.textContent.replace(/8月(?=(?:累計)?売上|粗利)/g,`${m}月`)});
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',refreshJarvisClock);else refreshJarvisClock();
-  setInterval(refreshJarvisClock,60000);
-})();
-</script></body>',patchTag+'<script id="jarvis-dynamic-runtime">
-(()=>{
-  const SHEET_URL='https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit';
-  function refreshJarvisClock(){
-    const now=new Date(),m=now.getMonth()+1;
-    const setLabel=(id,text)=>{const el=document.getElementById(id);const span=el?.closest('article')?.querySelector('span');if(span)span.textContent=text};
-    setLabel('cmdSales',`${m}月売上`);setLabel('cmdGross',`${m}月粗利`);setLabel('kpiSales',`${m}月累計売上`);setLabel('kpiGross',`${m}月粗利`);
-    const hud=document.querySelector('.hud-topline span:last-child');if(hud)hud.textContent=`${now.getFullYear()}/${String(m).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')} / SECURE LINK`;
-    document.querySelectorAll('.command-quick-links').forEach(box=>{
-      if(box.querySelector('[data-google-delivery]'))return;
-      const b=document.createElement('button');b.type='button';b.dataset.googleDelivery='1';b.textContent='▤ Google配送管理表';b.addEventListener('click',()=>window.open(SHEET_URL,'_blank','noopener'));box.appendChild(b);
-    });
-    document.querySelectorAll('.msg.jarvis p').forEach(p=>{p.textContent=p.textContent.replace(/8月(?=(?:累計)?売上|粗利)/g,`${m}月`)});
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',refreshJarvisClock);else refreshJarvisClock();
-  setInterval(refreshJarvisClock,60000);
-})();
-</script></body>');
-    document.open();
-    document.write(source);
-    document.close();
-  }catch(error){
-    document.getElementById('boot').textContent='JARVISの起動に失敗しました: '+error.message;
-  }
-})();
-</script><script id="jarvis-dynamic-runtime">
-(()=>{
-  const SHEET_URL='https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit';
-  function refreshJarvisClock(){
-    const now=new Date(),m=now.getMonth()+1;
-    const setLabel=(id,text)=>{const el=document.getElementById(id);const span=el?.closest('article')?.querySelector('span');if(span)span.textContent=text};
-    setLabel('cmdSales',`${m}月売上`);setLabel('cmdGross',`${m}月粗利`);setLabel('kpiSales',`${m}月累計売上`);setLabel('kpiGross',`${m}月粗利`);
-    const hud=document.querySelector('.hud-topline span:last-child');if(hud)hud.textContent=`${now.getFullYear()}/${String(m).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')} / SECURE LINK`;
-    document.querySelectorAll('.command-quick-links').forEach(box=>{
-      if(box.querySelector('[data-google-delivery]'))return;
-      const b=document.createElement('button');b.type='button';b.dataset.googleDelivery='1';b.textContent='▤ Google配送管理表';b.addEventListener('click',()=>window.open(SHEET_URL,'_blank','noopener'));box.appendChild(b);
-    });
-    document.querySelectorAll('.msg.jarvis p').forEach(p=>{p.textContent=p.textContent.replace(/8月(?=(?:累計)?売上|粗利)/g,`${m}月`)});
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',refreshJarvisClock);else refreshJarvisClock();
-  setInterval(refreshJarvisClock,60000);
-})();
-</script></body></html>
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#020711">
+  <title>JARVIS V7.0.8 安定化版</title>
+</head>
+<body style="margin:0;background:#020711;color:#dff6ff;font-family:system-ui,sans-serif">
+  <div id="boot" style="padding:24px">JARVIS V7.0.8 を起動しています…</div>
+  <script>
+  (async function(){
+    try{
+      const response=await fetch('./v7.html?stable=20260903-2238',{cache:'no-store'});
+      if(!response.ok) throw new Error('v7.html '+response.status);
+      let source=await response.text();
+      source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.8 安定化版');
+      source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.8 安定化版');
+      const patchTag=[
+        './jarvis-date-sync.js?v=20260903-0135',
+        './workbook-hotfix.js?v=20260903-0135',
+        './google-master-hotfix.js?v=20260903-0135',
+        './jarvis-hide-logistics-columns.js?v=20260903-0135',
+        './jarvis-akiyama-pricing.js?v=20260903-0135',
+        './jarvis-all-sites.js?v=20260903-2238',
+        './jarvis-source-dashboard.js?v=20260903-0135',
+        './jarvis-current-month.js?v=20260903-0231',
+        './jarvis-source-current-month-fix.js?v=20260903-2027',
+        './jarvis-voice-ai.js?v=20260903-1740',
+        './jarvis-neon-ui.js?v=20260903-1551'
+      ].map(src=>'<script src="'+src+'"><\/script>').join('');
+      source=source.replace('</body>',patchTag+'</body>');
+      document.open();
+      document.write(source);
+      document.close();
+    }catch(error){
+      console.error(error);
+      document.getElementById('boot').innerHTML='<b>JARVIS 起動エラー</b><br>'+String(error?.message||error);
+    }
+  })();
+  </script>
+</body>
+</html>
