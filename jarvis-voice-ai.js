@@ -47,23 +47,51 @@
     return false;
   }
 
+  function setInputValue(input,text){
+    if(!input) return;
+    input.focus?.();
+    input.value=text;
+    input.dispatchEvent(new Event('input',{bubbles:true}));
+    input.dispatchEvent(new Event('change',{bubbles:true}));
+  }
+
+  function findAiSend(ai){
+    if(!ai) return null;
+    const scopes=[ai.parentElement,ai.closest('form'),ai.closest('.ai-chat-input'),ai.closest('.chat-input'),ai.closest('.composer')].filter(Boolean);
+    for(const scope of scopes){
+      const buttons=[...scope.querySelectorAll('button')];
+      const found=buttons.find(b=>/send|送信|submit/i.test(`${b.id||''} ${b.className||''} ${norm(b.textContent)}`));
+      if(found) return found;
+    }
+    return document.getElementById('aiChatSend')||document.getElementById('aiSend')||null;
+  }
+
   function sendToJarvis(text){
     const t=norm(text);
     if(!t) return;
     pageCommand(t);
+
     const ai=document.getElementById('aiChatText');
-    const bridge=document.getElementById('voiceText');
-    const input=ai||bridge;
-    if(input){
-      input.value=t;
-      input.dispatchEvent(new Event('input',{bubbles:true}));
-      input.dispatchEvent(new Event('change',{bubbles:true}));
+    if(ai){
+      setInputValue(ai,t);
+      const aiSend=findAiSend(ai);
+      if(aiSend){
+        aiSend.click();
+      }else{
+        ai.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',code:'Enter',keyCode:13,which:13,bubbles:true,cancelable:true}));
+        ai.dispatchEvent(new KeyboardEvent('keyup',{key:'Enter',code:'Enter',keyCode:13,which:13,bubbles:true,cancelable:true}));
+      }
+      setStatus('JARVISが処理中…');
+      return;
     }
-    const send=[...document.querySelectorAll('button')].find(b=>
-      b.id==='voiceSend'||/送信|SEND/i.test(norm(b.textContent))
-    );
-    if(send){ send.click(); setStatus('JARVISが処理中…'); }
-    else setStatus('音声を文字入力しました');
+
+    const bridge=document.getElementById('voiceText');
+    if(bridge){
+      setInputValue(bridge,t);
+      const send=document.getElementById('voiceSend');
+      if(send){ send.click(); setStatus('JARVISが処理中…'); }
+      else setStatus('音声を文字入力しました');
+    }
   }
 
   function start(){
@@ -94,7 +122,7 @@
     recognition.onresult=e=>{
       const text=norm(e.results?.[e.results.length-1]?.[0]?.transcript);
       if(!text) return;
-      const wake=/^(はい[,、 ]*)?JARVIS|^(はい[,、 ]*)?ジャービス|^(はい[,、 ]*)?ジャービス/i.test(text);
+      const wake=/^(はい[,、 ]*)?(JARVIS|ジャービス)/i.test(text);
       if(wakeMode&&!wake){ setStatus('「はい、JARVIS」で呼び出してください'); return; }
       const cleaned=text.replace(/^(はい[,、 ]*)?(JARVIS|ジャービス)[,、 ]*/i,'').trim();
       if(!cleaned){ speak('はい。どうぞ。'); return; }
@@ -119,19 +147,24 @@
     }
   }
 
+  function speakLatest(container){
+    const selectors='.msg.jarvis,.jarvis,.assistant,.ai-assistant,[data-role="assistant"]';
+    const msgs=[...container.querySelectorAll(selectors)];
+    const latest=msgs[msgs.length-1];
+    const text=norm(latest?.innerText||latest?.textContent);
+    if(text&&text!=='JARVIS ONLINE'){
+      setStatus('JARVIS 応答完了');
+      speak(text);
+    }
+  }
+
   function observeChat(){
-    const log=document.getElementById('chatLog');
-    if(!log||log.dataset.jarvisVoiceObserved) return;
-    log.dataset.jarvisVoiceObserved='1';
-    new MutationObserver(()=>{
-      const msgs=[...log.querySelectorAll('.msg.jarvis,.jarvis,.assistant')];
-      const latest=msgs[msgs.length-1];
-      const text=norm(latest?.innerText||latest?.textContent);
-      if(text&&text!=='JARVIS ONLINE'){
-        setStatus('JARVIS 応答完了');
-        speak(text);
-      }
-    }).observe(log,{childList:true,subtree:true,characterData:true});
+    const containers=[...document.querySelectorAll('#chatLog,#aiChatLog,#aiChatMessages,.ai-chat-log,.ai-chat-messages')];
+    containers.forEach(log=>{
+      if(log.dataset.jarvisVoiceObserved) return;
+      log.dataset.jarvisVoiceObserved='1';
+      new MutationObserver(()=>speakLatest(log)).observe(log,{childList:true,subtree:true,characterData:true});
+    });
   }
 
   function boot(){ setupRecognition(); wireButtons(); observeChat(); }
