@@ -14,10 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Patch current-month behavior
+      - name: Patch current-month behavior and Google Sheets link
         shell: python
         run: |
           from pathlib import Path
+
+          changed = False
+
+          # app-v7.js: keep month-dependent text dynamic and remove Excel-first wording.
           p = Path('app-v7.js')
           s = p.read_text(encoding='utf-8')
           replacements = [
@@ -25,20 +29,53 @@ jobs:
               ("a.status==='出勤'&&a.date.startsWith('2026-08')", "a.status==='出勤'&&a.date.startsWith(isoLocal(new Date()).slice(0,7))"),
               ("else if(x==='○'||x==='〇'){status='出勤';work='○'}", "else if(['○','〇','A'].includes(String(x).toUpperCase())){status='出勤';work='○'}"),
               ("。8月粗利 ${yen(monthGross)}", "。${new Date().getMonth()+1}月粗利 ${yen(monthGross)}"),
+              ("r=`8月累計売上は${Math.round(s).toLocaleString()}円です。`", "r=`${new Date().getMonth()+1}月累計売上は${Math.round(s).toLocaleString()}円です。`"),
+              ("r=`8月粗利は${Math.round(g).toLocaleString()}円です。`", "r=`${new Date().getMonth()+1}月粗利は${Math.round(g).toLocaleString()}円です。`"),
+              ("r='配送管理表Excelを開きました。'", "r='Google配送管理表を開きました。'"),
           ]
-          changed = False
           for old, new in replacements:
               if old in s:
                   s = s.replace(old, new)
                   changed = True
-          if not changed:
-              raise SystemExit('No matching hotfix patterns found')
           p.write_text(s, encoding='utf-8')
+
+          # HTML: dynamic month/date labels and direct link to the accounting source of truth.
+          runtime = r'''<script id="jarvis-dynamic-runtime">
+          (()=>{
+            const SHEET_URL='https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit';
+            function refreshJarvisClock(){
+              const now=new Date(),m=now.getMonth()+1;
+              const setLabel=(id,text)=>{const el=document.getElementById(id);const span=el?.closest('article')?.querySelector('span');if(span)span.textContent=text};
+              setLabel('cmdSales',`${m}月売上`);setLabel('cmdGross',`${m}月粗利`);setLabel('kpiSales',`${m}月累計売上`);setLabel('kpiGross',`${m}月粗利`);
+              const hud=document.querySelector('.hud-topline span:last-child');if(hud)hud.textContent=`${now.getFullYear()}/${String(m).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')} / SECURE LINK`;
+              document.querySelectorAll('.command-quick-links').forEach(box=>{
+                if(box.querySelector('[data-google-delivery]'))return;
+                const b=document.createElement('button');b.type='button';b.dataset.googleDelivery='1';b.textContent='▤ Google配送管理表';b.addEventListener('click',()=>window.open(SHEET_URL,'_blank','noopener'));box.appendChild(b);
+              });
+              document.querySelectorAll('.msg.jarvis p').forEach(p=>{p.textContent=p.textContent.replace(/8月(?=(?:累計)?売上|粗利)/g,`${m}月`)});
+            }
+            if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',refreshJarvisClock);else refreshJarvisClock();
+            setInterval(refreshJarvisClock,60000);
+          })();
+          </script>'''
+
+          for name in ('v7.html','index.html'):
+              hp=Path(name)
+              if not hp.exists():
+                  continue
+              h=hp.read_text(encoding='utf-8')
+              if 'id="jarvis-dynamic-runtime"' not in h and '</body>' in h:
+                  h=h.replace('</body>',runtime+'</body>')
+                  hp.write_text(h,encoding='utf-8')
+                  changed=True
+
+          if not changed:
+              print('No new patch was necessary')
       - name: Commit patch
         run: |
           if git diff --quiet; then exit 0; fi
           git config user.name 'JARVIS Automation'
           git config user.email 'actions@users.noreply.github.com'
-          git add app-v7.js
-          git commit -m 'Make JARVIS shift month dynamic and accept A code'
+          git add app-v7.js v7.html index.html
+          git commit -m 'Make JARVIS month labels dynamic and link Google Sheets'
           git push
