@@ -8,47 +8,95 @@
     const o=Object.fromEntries(parts.map(p=>[p.type,p.value]));
     return {year:Number(o.year),month:Number(o.month),day:Number(o.day)};
   };
-  const targetLabel=()=>{const p=tokyoParts();return `${p.year}年${p.month}月`;};
-  const sheetYM=name=>{const m=norm(name).match(/(20\d{2})年\s*(\d{1,2})月/);return m?`${Number(m[1])}年${Number(m[2])}月`:'';};
-  const rowMonth=v=>{
+  const ymLabel=(y,m)=>`${y}年${m}月`;
+  const currentTarget=()=>{const p=tokyoParts();return {year:p.year,month:p.month,label:ymLabel(p.year,p.month)}};
+  const previousTarget=()=>{const p=tokyoParts();let y=p.year,m=p.month-1;if(m<1){m=12;y--;}return {year:y,month:m,label:ymLabel(y,m)}};
+  const sheetTarget=name=>{const m=norm(name).match(/(20\d{2})年\s*(\d{1,2})月/);return m?{year:Number(m[1]),month:Number(m[2]),label:ymLabel(Number(m[1]),Number(m[2]))}:null;};
+  const rowDate=v=>{
     const s=norm(v);
-    let m=s.match(/^(\d{1,2})月\s*(\d{1,2})日/); if(m) return Number(m[1]);
-    m=s.match(/^20\d{2}[-\/]([01]?\d)[-\/]/); if(m) return Number(m[1]);
+    let m=s.match(/^(\d{1,2})月\s*(\d{1,2})日/); if(m) return {month:Number(m[1]),day:Number(m[2])};
+    m=s.match(/^20\d{2}[-\/]([01]?\d)[-\/]([0-3]?\d)/); if(m) return {month:Number(m[1]),day:Number(m[2])};
     return null;
   };
   const errorText=v=>/^(#REF!|#VALUE!|#N\/A|#DIV\/0!|#NAME\?|#NUM!|#NULL!)$/i.test(norm(v));
+  const specialOwner=/カメレオン|福羅興業|sitycanvas|オーロラネクスト/i;
+  const isZero=v=>{const s=norm(v).replace(/[,￥¥円]/g,'');return s!==''&&Number(s)===0;};
+  const daysInMonth=(y,m)=>new Date(y,m,0).getDate();
+
+  function findHeader(values){
+    for(let i=0;i<Math.min(values.length,20);i++){
+      const row=(values[i]||[]).map(norm);
+      if(row.includes('走行日')&&row.some(x=>x==='DR'||x.includes('ドライバー'))) return {index:i,row};
+    }
+    return null;
+  }
+  function findCol(row,names){
+    for(const name of names){const i=row.findIndex(x=>x===name||x.includes(name));if(i>=0)return i;}
+    return -1;
+  }
+
+  function inspectSheet(sheet,target){
+    const name=norm(sheet.sheetName||sheet.name);
+    const values=Array.isArray(sheet.values)?sheet.values:[];
+    const issue={sheetName:name,yearMonth:target.label,staleRows:0,formulaErrors:0,duplicateRows:0,zeroBlankFields:0,specialDrAmountViolations:0,monthEndPresent:false};
+    values.forEach(row=>(Array.isArray(row)?row:[]).forEach(v=>{if(errorText(v))issue.formulaErrors++;}));
+
+    const h=findHeader(values);
+    if(!h) return issue;
+    const dateI=findCol(h.row,['走行日','日付']);
+    const drI=findCol(h.row,['DR','ドライバー']);
+    const workI=findCol(h.row,['業務名','案件名']);
+    const actualI=findCol(h.row,['実績','稼働実績']);
+    const drAmountI=findCol(h.row,['DR金額','ドライバー金額']);
+    const noteI=findCol(h.row,['備考','所属']);
+    const deductionCols=h.row.map((x,i)=>/天引|フォロー/.test(x)?i:-1).filter(i=>i>=0);
+    const seen=new Set();
+    const lastDay=daysInMonth(target.year,target.month);
+
+    for(let r=h.index+1;r<values.length;r++){
+      const row=values[r]||[];
+      const dr=drI>=0?norm(row[drI]):'';
+      const work=workI>=0?norm(row[workI]):'';
+      if(!dr&&!work) continue;
+      const d=dateI>=0?rowDate(row[dateI]):null;
+      if(d&&d.month!==target.month) issue.staleRows++;
+      if(d&&d.month===target.month&&d.day===lastDay) issue.monthEndPresent=true;
+
+      const actual=actualI>=0?norm(row[actualI]):'';
+      const key=[d?`${d.month}-${d.day}`:norm(row[dateI]),dr,work,actual].join('|');
+      if(seen.has(key)) issue.duplicateRows++; else seen.add(key);
+
+      deductionCols.forEach(i=>{if(isZero(row[i]))issue.zeroBlankFields++;});
+      const owner=noteI>=0?norm(row[noteI]):'';
+      if(specialOwner.test(owner)&&drAmountI>=0&&norm(row[drAmountI])!=='') issue.specialDrAmountViolations++;
+    }
+    return issue;
+  }
 
   function inspect(){
     const cache=Array.isArray(window.JARVIS_DELIVERY_SHEET_CACHE)?window.JARVIS_DELIVERY_SHEET_CACHE:[];
-    const label=targetLabel();
-    const expectedMonth=tokyoParts().month;
-    const current=cache.filter(s=>sheetYM(s.sheetName||s.name)===label);
-    const issues=[];
-
-    current.forEach(sheet=>{
-      const name=norm(sheet.sheetName||sheet.name);
-      const values=Array.isArray(sheet.values)?sheet.values:[];
-      let staleRows=0, formulaErrors=0;
-      values.forEach((row,idx)=>{
-        if(!Array.isArray(row)) return;
-        const m=rowMonth(row[0]);
-        const hasActual=norm(row[1])||norm(row[2]);
-        if(idx>=3&&m!==null&&m!==expectedMonth&&hasActual) staleRows++;
-        row.forEach(v=>{if(errorText(v)) formulaErrors++;});
-      });
-      if(staleRows||formulaErrors) issues.push({sheetName:name,staleRows,formulaErrors});
+    const targets=[previousTarget(),currentTarget()];
+    const reports=targets.map(target=>{
+      const sheets=cache.filter(s=>sheetTarget(s.sheetName||s.name)?.label===target.label);
+      const sheetIssues=sheets.map(s=>inspectSheet(s,target));
+      const blocking=sheetIssues.filter(x=>x.staleRows||x.formulaErrors||x.duplicateRows||x.zeroBlankFields||x.specialDrAmountViolations);
+      return {yearMonth:target.label,sheetCount:sheets.length,issues:blocking,details:sheetIssues,ok:sheets.length>0&&blocking.length===0};
     });
 
-    const report={yearMonth:label,checkedAt:new Date().toISOString(),sheetCount:current.length,issues,ok:issues.length===0};
+    const report={checkedAt:new Date().toISOString(),reports,ok:reports.every(r=>r.ok)};
     window.JARVIS_DELIVERY_DATA_QUALITY=report;
 
     const status=document.getElementById('workbookStatus');
-    if(status&&issues.length){
-      const stale=issues.reduce((n,x)=>n+x.staleRows,0);
-      const errors=issues.reduce((n,x)=>n+x.formulaErrors,0);
-      status.textContent=`⚠ ${label} 経理品質チェック: 前月残骸 ${stale}行 / 数式エラー ${errors}件。Google正本を要確認`;
+    const bad=reports.flatMap(r=>r.issues.map(x=>({...x,yearMonth:r.yearMonth})));
+    if(status&&bad.length){
+      const stale=bad.reduce((n,x)=>n+x.staleRows,0);
+      const errors=bad.reduce((n,x)=>n+x.formulaErrors,0);
+      const dup=bad.reduce((n,x)=>n+x.duplicateRows,0);
+      const zero=bad.reduce((n,x)=>n+x.zeroBlankFields,0);
+      const special=bad.reduce((n,x)=>n+x.specialDrAmountViolations,0);
+      status.textContent=`⚠ 経理品質: 月外実績 ${stale} / 数式エラー ${errors} / 重複 ${dup} / 天引き・フォロー0 ${zero} / 特殊DR金額 ${special}`;
     }
-    if(issues.length) console.warn('[JARVIS ACCOUNTING QUALITY]',report);
+    if(bad.length) console.warn('[JARVIS ACCOUNTING QUALITY]',report);
     window.dispatchEvent(new CustomEvent('jarvis-accounting-quality',{detail:report}));
     return report;
   }
