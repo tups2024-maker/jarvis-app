@@ -67,25 +67,37 @@
   }
   function col(row,names){for(const n of names){const i=row.findIndex(h=>h===n||h.includes(n));if(i>=0)return i}return -1}
 
+  function accumulateStats(out,name,values,targetYM){
+    if(sheetMonth(name)!==targetYM) return;
+    const h=findHeader(values); if(!h)return;
+    const di=col(h.row,['走行日','日付']), dri=col(h.row,['DR','ドライバー']), bi=col(h.row,['業務名','案件名']);
+    const dpi=col(h.row,['DR金額','ドライバー金額']); let si=col(h.row,['売上金額','請求金額','卸金額','会社金額']);
+    if(si<0) si=h.row.findIndex((x,i)=>x==='金額'&&i!==dpi);
+    const ai=col(h.row,['実績','稼働実績']);
+    for(let r=h.i+1;r<values.length;r++){
+      const row=values[r]||[]; if(di>=0&&dateYM(row[di])&&dateYM(row[di])!==targetYM)continue;
+      if(!norm(row[dri])&&!norm(row[bi]))continue;
+      const actual=ai>=0?money(row[ai]):1;
+      if(actual>0) out.active+=actual;
+      const sales=si>=0?money(row[si]):0, pay=dpi>=0?money(row[dpi]):0;
+      out.sales+=sales; out.gross+=sales-pay;
+    }
+  }
+
   function workbookStats(targetYM){
-    const wb=window.WB;
     const out={sales:0,gross:0,active:0};
+
+    // Google配送管理APIの全月履歴キャッシュを優先する。
+    // 画面用WBは現在月だけに絞られるため、前月比はこの履歴から計算する必要がある。
+    const cached=Array.isArray(window.JARVIS_DELIVERY_SHEET_CACHE)?window.JARVIS_DELIVERY_SHEET_CACHE:[];
+    if(cached.length){
+      cached.forEach(s=>accumulateStats(out,s.sheetName||s.name||'',Array.isArray(s.values)?s.values:[],targetYM));
+      return out;
+    }
+
+    const wb=window.WB;
     if(!wb?.SheetNames||!wb?.Sheets) return out;
-    wb.SheetNames.filter(n=>sheetMonth(n)===targetYM).forEach(name=>{
-      const values=sheetValues(wb.Sheets[name]); const h=findHeader(values); if(!h)return;
-      const di=col(h.row,['走行日','日付']), dri=col(h.row,['DR','ドライバー']), bi=col(h.row,['業務名','案件名']);
-      const dpi=col(h.row,['DR金額','ドライバー金額']); let si=col(h.row,['売上金額','請求金額','卸金額','会社金額']);
-      if(si<0) si=h.row.findIndex((x,i)=>x==='金額'&&i!==dpi);
-      const ai=col(h.row,['実績','稼働実績']);
-      for(let r=h.i+1;r<values.length;r++){
-        const row=values[r]||[]; if(di>=0&&dateYM(row[di])&&dateYM(row[di])!==targetYM)continue;
-        if(!norm(row[dri])&&!norm(row[bi]))continue;
-        const actual=ai>=0?money(row[ai]):1;
-        if(actual>0) out.active+=actual;
-        const sales=si>=0?money(row[si]):0, pay=dpi>=0?money(row[dpi]):0;
-        out.sales+=sales; out.gross+=sales-pay;
-      }
-    });
+    wb.SheetNames.forEach(name=>accumulateStats(out,name,sheetValues(wb.Sheets[name]),targetYM));
     return out;
   }
   function absenceCount(targetYM){
@@ -120,6 +132,7 @@
   function tick(){setShiftMonth();updateMonthLabels();renderDeltas()}
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(tick,600)); else setTimeout(tick,600);
   setInterval(tick,15000);
+  window.addEventListener('jarvis-delivery-synced',()=>setTimeout(tick,50));
   new MutationObserver(()=>{setShiftMonth();updateMonthLabels()}).observe(document.documentElement,{childList:true,subtree:true});
 
   window.JARVIS_MONTH_SYNC={currentYM,previousYM,refresh:tick,workbookStats};
