@@ -7,13 +7,25 @@
   let recognition=null;
   let listening=false;
   let wakeMode=false;
+  let awaitingCommand=false;
   let speaking=false;
   let restartTimer=null;
+  let commandTimer=null;
   let lastSpoken='';
 
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const setStatus=t=>{ const el=document.getElementById('voiceStatus')||document.getElementById('wakeStatus'); if(el) el.textContent=t; };
   const clearRestart=()=>{ if(restartTimer){ clearTimeout(restartTimer); restartTimer=null; } };
+  const clearCommandTimer=()=>{ if(commandTimer){ clearTimeout(commandTimer); commandTimer=null; } };
+  const armCommandWindow=()=>{
+    awaitingCommand=true;
+    clearCommandTimer();
+    commandTimer=setTimeout(()=>{
+      commandTimer=null;
+      awaitingCommand=false;
+      if(wakeMode) setStatus('「はい、JARVIS」を待っています');
+    },12000);
+  };
   const scheduleRestart=(delay=450)=>{
     clearRestart();
     if(!wakeMode||speaking) return;
@@ -35,7 +47,7 @@
       u.onstart=()=>{ speaking=true; setStatus('JARVISが応答しています…'); };
       const finish=()=>{
         speaking=false;
-        setStatus(wakeMode?'「はい、JARVIS」を待っています':'JARVIS 音声待機');
+        setStatus(awaitingCommand?'ご用件をどうぞ':(wakeMode?'「はい、JARVIS」を待っています':'JARVIS 音声待機'));
         scheduleRestart(600);
       };
       u.onend=finish;
@@ -92,6 +104,8 @@
   function sendToJarvis(text){
     const t=norm(text);
     if(!t) return;
+    awaitingCommand=false;
+    clearCommandTimer();
     pageCommand(t);
 
     const ai=document.getElementById('aiChatText');
@@ -125,6 +139,8 @@
   function stop(preserveWake=false){
     if(!recognition) return;
     clearRestart();
+    clearCommandTimer();
+    awaitingCommand=false;
     if(!preserveWake) wakeMode=false;
     try{ recognition.stop(); }catch(e){}
   }
@@ -138,7 +154,10 @@
     recognition.lang='ja-JP';
     recognition.interimResults=false;
     recognition.continuous=false;
-    recognition.onstart=()=>{ listening=true; setStatus(wakeMode?'「はい、JARVIS」を待っています':'音声を聞いています…'); };
+    recognition.onstart=()=>{
+      listening=true;
+      setStatus(awaitingCommand?'ご用件をどうぞ':(wakeMode?'「はい、JARVIS」を待っています':'音声を聞いています…'));
+    };
     recognition.onend=()=>{
       listening=false;
       if(wakeMode&&!speaking) scheduleRestart();
@@ -149,7 +168,9 @@
       const code=e.error||'error';
       if(code==='not-allowed'||code==='service-not-allowed'){
         wakeMode=false;
+        awaitingCommand=false;
         clearRestart();
+        clearCommandTimer();
         setStatus('マイク許可が必要です');
         const wake=document.getElementById('wakeBtn');
         if(wake) wake.textContent='○ 呼びかけ待機 OFF';
@@ -162,10 +183,26 @@
       const text=norm(e.results?.[e.results.length-1]?.[0]?.transcript);
       if(!text||speaking) return;
       const wake=/^(はい[,、 ]*)?(JARVIS|ジャービス)/i.test(text);
-      if(wakeMode&&!wake){ setStatus('「はい、JARVIS」で呼び出してください'); return; }
       const cleaned=text.replace(/^(はい[,、 ]*)?(JARVIS|ジャービス)[,、 ]*/i,'').trim();
-      if(!cleaned){ speak('はい。どうぞ。'); return; }
-      sendToJarvis(cleaned);
+
+      if(awaitingCommand&&!wake){
+        sendToJarvis(text);
+        return;
+      }
+      if(wakeMode&&!wake){
+        setStatus('「はい、JARVIS」で呼び出してください');
+        return;
+      }
+      if(wake&&!cleaned){
+        armCommandWindow();
+        speak('はい。どうぞ。');
+        return;
+      }
+      if(wake&&cleaned){
+        sendToJarvis(cleaned);
+        return;
+      }
+      sendToJarvis(text);
     };
   }
 
@@ -173,13 +210,15 @@
     const voice=document.getElementById('voiceBtn');
     if(voice&&!voice.dataset.jarvisVoiceBound){
       voice.dataset.jarvisVoiceBound='1';
-      voice.addEventListener('click',()=>{ wakeMode=false; start(); });
+      voice.addEventListener('click',()=>{ wakeMode=false; awaitingCommand=false; clearCommandTimer(); start(); });
     }
     const wake=document.getElementById('wakeBtn');
     if(wake&&!wake.dataset.jarvisVoiceBound){
       wake.dataset.jarvisVoiceBound='1';
       wake.addEventListener('click',()=>{
         wakeMode=!wakeMode;
+        awaitingCommand=false;
+        clearCommandTimer();
         wake.textContent=wakeMode?'● 呼びかけ待機 ON':'○ 呼びかけ待機 OFF';
         if(wakeMode) start(); else stop();
       });
