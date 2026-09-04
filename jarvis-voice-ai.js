@@ -7,22 +7,45 @@
   let recognition=null;
   let listening=false;
   let wakeMode=false;
+  let speaking=false;
+  let restartTimer=null;
   let lastSpoken='';
 
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const setStatus=t=>{ const el=document.getElementById('voiceStatus')||document.getElementById('wakeStatus'); if(el) el.textContent=t; };
+  const clearRestart=()=>{ if(restartTimer){ clearTimeout(restartTimer); restartTimer=null; } };
+  const scheduleRestart=(delay=450)=>{
+    clearRestart();
+    if(!wakeMode||speaking) return;
+    restartTimer=setTimeout(()=>{ restartTimer=null; start(); },delay);
+  };
 
   function speak(text){
     const t=norm(text);
     if(!t||!synth||t===lastSpoken) return;
     lastSpoken=t;
     try{
+      speaking=true;
+      clearRestart();
+      if(recognition&&listening){ try{ recognition.stop(); }catch(e){} }
       synth.cancel();
       const u=new SpeechSynthesisUtterance(t.slice(0,500));
       u.lang='ja-JP';
       u.rate=1.03;
+      u.onstart=()=>{ speaking=true; setStatus('JARVISが応答しています…'); };
+      const finish=()=>{
+        speaking=false;
+        setStatus(wakeMode?'「はい、JARVIS」を待っています':'JARVIS 音声待機');
+        scheduleRestart(600);
+      };
+      u.onend=finish;
+      u.onerror=finish;
       synth.speak(u);
-    }catch(e){ console.warn('[JARVIS VOICE] speech synthesis failed',e); }
+    }catch(e){
+      speaking=false;
+      console.warn('[JARVIS VOICE] speech synthesis failed',e);
+      scheduleRestart();
+    }
   }
 
   function pageCommand(text){
@@ -95,12 +118,14 @@
   }
 
   function start(){
-    if(!recognition||listening) return;
+    if(!recognition||listening||speaking) return;
+    clearRestart();
     try{ recognition.start(); }catch(e){}
   }
-  function stop(){
+  function stop(preserveWake=false){
     if(!recognition) return;
-    wakeMode=false;
+    clearRestart();
+    if(!preserveWake) wakeMode=false;
     try{ recognition.stop(); }catch(e){}
   }
 
@@ -113,15 +138,29 @@
     recognition.lang='ja-JP';
     recognition.interimResults=false;
     recognition.continuous=false;
-    recognition.onstart=()=>{ listening=true; setStatus('音声を聞いています…'); };
+    recognition.onstart=()=>{ listening=true; setStatus(wakeMode?'「はい、JARVIS」を待っています':'音声を聞いています…'); };
     recognition.onend=()=>{
       listening=false;
-      if(wakeMode) setTimeout(start,350); else setStatus('JARVIS 音声待機');
+      if(wakeMode&&!speaking) scheduleRestart();
+      else if(!speaking) setStatus('JARVIS 音声待機');
     };
-    recognition.onerror=e=>{ listening=false; setStatus(`音声認識: ${e.error||'error'}`); };
+    recognition.onerror=e=>{
+      listening=false;
+      const code=e.error||'error';
+      if(code==='not-allowed'||code==='service-not-allowed'){
+        wakeMode=false;
+        clearRestart();
+        setStatus('マイク許可が必要です');
+        const wake=document.getElementById('wakeBtn');
+        if(wake) wake.textContent='○ 呼びかけ待機 OFF';
+        return;
+      }
+      setStatus(`音声認識: ${code}`);
+      if(wakeMode&&!speaking&&code!=='aborted') scheduleRestart(800);
+    };
     recognition.onresult=e=>{
       const text=norm(e.results?.[e.results.length-1]?.[0]?.transcript);
-      if(!text) return;
+      if(!text||speaking) return;
       const wake=/^(はい[,、 ]*)?(JARVIS|ジャービス)/i.test(text);
       if(wakeMode&&!wake){ setStatus('「はい、JARVIS」で呼び出してください'); return; }
       const cleaned=text.replace(/^(はい[,、 ]*)?(JARVIS|ジャービス)[,、 ]*/i,'').trim();
