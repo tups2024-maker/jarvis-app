@@ -1,4 +1,4 @@
-/* JARVIS V7.0.8 Google master sync hotfix */
+/* JARVIS V7.0.9 Google master sync hotfix */
 (function(){
   'use strict';
 
@@ -133,6 +133,13 @@
       const result=ensureSuccess(await readJson(response));
       const allSheets=extractSheets(result);
       if(!allSheets.length) throw new Error('配送管理表データが応答にありません');
+
+      // 現在月だけを画面へ載せても、前月比較に必要な履歴は別キャッシュとして保持する。
+      window.JARVIS_DELIVERY_SHEET_CACHE=allSheets.map(s=>({
+        sheetName:s.sheetName||s.name||'',
+        values:Array.isArray(s.values)?s.values:[]
+      }));
+      window.JARVIS_DELIVERY_CACHE_AT=Date.now();
 
       const label=chooseActiveYearMonth(allSheets);
       const sheets=selectedSheetsForMonth(allSheets,label);
