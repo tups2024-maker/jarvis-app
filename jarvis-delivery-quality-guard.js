@@ -38,7 +38,7 @@
   function inspectSheet(sheet,target){
     const name=norm(sheet.sheetName||sheet.name);
     const values=Array.isArray(sheet.values)?sheet.values:[];
-    const issue={sheetName:name,yearMonth:target.label,staleRows:0,formulaErrors:0,duplicateRows:0,zeroBlankFields:0,specialDrAmountViolations:0,monthEndPresent:false};
+    const issue={sheetName:name,yearMonth:target.label,staleRows:0,formulaErrors:0,duplicateRows:0,zeroBlankFields:0,specialDrAmountViolations:0,monthEndPresent:false,dataRows:0};
     values.forEach(row=>(Array.isArray(row)?row:[]).forEach(v=>{if(errorText(v))issue.formulaErrors++;}));
 
     const h=findHeader(values);
@@ -46,7 +46,6 @@
     const dateI=findCol(h.row,['走行日','日付']);
     const drI=findCol(h.row,['DR','ドライバー']);
     const workI=findCol(h.row,['業務名','案件名']);
-    const actualI=findCol(h.row,['実績','稼働実績']);
     const drAmountI=findCol(h.row,['DR金額','ドライバー金額']);
     const noteI=findCol(h.row,['備考','所属']);
     const deductionCols=h.row.map((x,i)=>/天引|フォロー/.test(x)?i:-1).filter(i=>i>=0);
@@ -58,12 +57,13 @@
       const dr=drI>=0?norm(row[drI]):'';
       const work=workI>=0?norm(row[workI]):'';
       if(!dr&&!work) continue;
+      issue.dataRows++;
       const d=dateI>=0?rowDate(row[dateI]):null;
       if(d&&d.month!==target.month) issue.staleRows++;
       if(d&&d.month===target.month&&d.day===lastDay) issue.monthEndPresent=true;
 
-      const actual=actualI>=0?norm(row[actualI]):'';
-      const key=[d?`${d.month}-${d.day}`:norm(row[dateI]),dr,work,actual].join('|');
+      // Accounting duplicate rule: one date + driver + business row is unique regardless of an accidentally different actual/payment value.
+      const key=[d?`${d.month}-${d.day}`:norm(row[dateI]),dr,work].join('|');
       if(seen.has(key)) issue.duplicateRows++; else seen.add(key);
 
       deductionCols.forEach(i=>{if(isZero(row[i]))issue.zeroBlankFields++;});
@@ -79,7 +79,9 @@
     const reports=targets.map(target=>{
       const sheets=cache.filter(s=>sheetTarget(s.sheetName||s.name)?.label===target.label);
       const sheetIssues=sheets.map(s=>inspectSheet(s,target));
-      const blocking=sheetIssues.filter(x=>x.staleRows||x.formulaErrors||x.duplicateRows||x.zeroBlankFields||x.specialDrAmountViolations);
+      const isClosedMonth=target.label===previousTarget().label;
+      // Previous/closed month must reach the calendar month end whenever the tab has accounting rows.
+      const blocking=sheetIssues.filter(x=>x.staleRows||x.formulaErrors||x.duplicateRows||x.zeroBlankFields||x.specialDrAmountViolations||(isClosedMonth&&x.dataRows>0&&!x.monthEndPresent));
       return {yearMonth:target.label,sheetCount:sheets.length,issues:blocking,details:sheetIssues,ok:sheets.length>0&&blocking.length===0};
     });
 
@@ -94,7 +96,8 @@
       const dup=bad.reduce((n,x)=>n+x.duplicateRows,0);
       const zero=bad.reduce((n,x)=>n+x.zeroBlankFields,0);
       const special=bad.reduce((n,x)=>n+x.specialDrAmountViolations,0);
-      status.textContent=`⚠ 経理品質: 月外実績 ${stale} / 数式エラー ${errors} / 重複 ${dup} / 天引き・フォロー0 ${zero} / 特殊DR金額 ${special}`;
+      const monthEnd=bad.filter(x=>x.dataRows>0&&!x.monthEndPresent).length;
+      status.textContent=`⚠ 経理品質: 月外実績 ${stale} / 数式エラー ${errors} / 重複 ${dup} / 天引き・フォロー0 ${zero} / 特殊DR金額 ${special} / 月末未到達 ${monthEnd}タブ`;
     }
     if(bad.length) console.warn('[JARVIS ACCOUNTING QUALITY]',report);
     window.dispatchEvent(new CustomEvent('jarvis-accounting-quality',{detail:report}));
