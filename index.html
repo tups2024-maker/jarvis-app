@@ -4,25 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#020711">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="JARVIS">
-  <link rel="manifest" href="./manifest.json?v=20260905-1728">
+  <link rel="manifest" href="./manifest.json?v=20260905-1738">
   <link rel="icon" href="./jarvis-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./jarvis-icon.svg">
-  <title>JARVIS V7.0.12 全自動アプリ版</title>
+  <title>JARVIS V7.0.13 全自動アプリ版</title>
 </head>
 <body style="margin:0;background:#020711;color:#dff6ff;font-family:system-ui,sans-serif">
-  <div id="boot" style="padding:24px">JARVIS V7.0.12 を起動しています…</div>
+  <div id="boot" style="padding:24px">JARVIS V7.0.13 を起動しています…</div>
   <script>
   (async function(){
     try{
-      const stamp='20260905-1728';
+      const stamp='20260905-1738';
       const response=await fetch('./v7.html?auto='+stamp,{cache:'no-store'});
       if(!response.ok) throw new Error('v7.html '+response.status);
       let source=await response.text();
-      source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.12 全自動アプリ版');
-      source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.12 全自動アプリ版');
+      source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.13 全自動アプリ版');
+      source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.13 全自動アプリ版');
 
       const bootstrap=`<script>
       (()=>{
