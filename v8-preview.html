@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#020711">
+  <title>JARVIS V8 Preview</title>
+  <style>
+    :root{--bg:#020711;--panel:#061620;--panel2:#0a2230;--line:rgba(94,228,255,.2);--cyan:#79eeff;--text:#effcff;--muted:#8caebb;--green:#7df0bd;--warn:#ffd36e}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}button,a,input{font:inherit}
+    body{display:grid;grid-template-columns:250px 1fr;min-height:100dvh}.side{position:sticky;top:0;height:100dvh;padding:22px 16px;border-right:1px solid var(--line);background:linear-gradient(180deg,#06131e,#020711)}
+    .logo{margin-bottom:22px}.logo small{display:block;color:var(--cyan);letter-spacing:.2em;font-size:10px}.logo b{display:block;font-size:27px;letter-spacing:.12em;margin-top:4px}.nav{display:grid;gap:7px}.nav button{border:0;text-align:left;padding:12px 13px;border-radius:13px;background:transparent;color:#9fc5d0;cursor:pointer}.nav button.active,.nav button:hover{background:#0b2d3d;color:white}.nav i{display:inline-grid;width:24px;height:24px;place-items:center;margin-right:8px;color:var(--cyan);font-style:normal}
+    .sidefoot{position:absolute;left:16px;right:16px;bottom:18px;padding:12px;border:1px solid var(--line);border-radius:14px;color:var(--muted);font-size:11px;line-height:1.6}.main{padding:22px 26px 44px;min-width:0}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.top h1{margin:0;font-size:28px}.top small{color:var(--muted)}.badge{border:1px solid var(--line);border-radius:999px;padding:8px 11px;color:var(--cyan);font-size:11px}
+    .page{display:none}.page.active{display:block}.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);background:linear-gradient(180deg,var(--panel2),var(--panel));border-radius:18px;padding:16px;box-shadow:0 14px 40px rgba(0,0,0,.2)}.card h3{margin:0 0 8px;font-size:14px}.metric span{display:block;color:var(--muted);font-size:11px}.metric b{display:block;font-size:25px;margin-top:5px}.metric em{display:block;margin-top:4px;color:var(--green);font-size:11px;font-style:normal}.section-title{display:flex;align-items:end;justify-content:space-between;margin:20px 0 10px}.section-title h2{margin:0;font-size:19px}.section-title small{color:var(--muted)}
+    .module{cursor:pointer;transition:.15s}.module:hover{transform:translateY(-1px);border-color:rgba(121,238,255,.55)}.module .icon{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:#0a3344;color:var(--cyan);margin-bottom:12px}.module b{display:block;font-size:16px}.module small{display:block;color:var(--muted);margin-top:5px;line-height:1.5}.list{display:grid;gap:9px}.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:14px;background:#071923}.row .left b{display:block}.row .left small{color:var(--muted)}.chip{padding:6px 9px;border-radius:999px;background:#0b3141;color:#9ef4ff;font-size:11px;white-space:nowrap}.sheet{color:#dffbff;text-decoration:none}.sheet:hover{text-decoration:underline}.tabs{display:flex;gap:7px;overflow:auto;margin-bottom:12px}.tabs button{border:1px solid var(--line);background:#071923;color:#a7cad4;border-radius:999px;padding:8px 11px;white-space:nowrap}.tabs button.active{background:#0b3346;color:white;border-color:#5de6ff}
+    .sales-total{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:12px}.big{font-size:34px!important}.muted{color:var(--muted)}.table{overflow:auto;border:1px solid var(--line);border-radius:14px}.table table{width:100%;border-collapse:collapse;min-width:620px}.table th,.table td{text-align:left;padding:12px;border-bottom:1px solid var(--line);font-size:13px}.table th{color:#8fb4bf;font-weight:600;background:#061620}.table tr:last-child td{border-bottom:0}
+    .chat{display:grid;grid-template-rows:1fr auto;min-height:520px}.chatlog{overflow:auto;padding:8px;border-radius:14px;background:#031018}.msg{max-width:80%;padding:10px 12px;border-radius:14px;margin:8px 0;line-height:1.55;white-space:pre-wrap}.me{margin-left:auto;background:#0d3850}.ai{background:#08291f}.composer{display:flex;gap:8px;margin-top:10px}.composer input{flex:1;min-width:0;border:1px solid var(--line);border-radius:13px;background:#03131d;color:white;padding:14px}.composer button{border:0;border-radius:13px;background:#0d9dbb;color:white;font-weight:800;padding:0 18px}.mobilebar{display:none}
+    @media(max-width:980px){body{display:block}.side{display:none}.main{padding:16px 14px 92px}.grid4{grid-template-columns:repeat(2,1fr)}.grid3{grid-template-columns:1fr}.sales-total{grid-template-columns:1fr 1fr}.sales-total .card:first-child{grid-column:1/-1}.mobilebar{position:fixed;display:grid;grid-template-columns:repeat(5,1fr);left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));z-index:20;padding:7px;border:1px solid var(--line);border-radius:20px;background:rgba(3,18,28,.96);backdrop-filter:blur(14px)}.mobilebar button{border:0;background:transparent;color:#93b8c2;min-height:54px;border-radius:13px;font-size:10px}.mobilebar button b{display:block;font-size:17px;color:#e9fcff}.mobilebar button.active{background:#0b3146;color:var(--cyan)}}
+  </style>
+</head>
+<body>
+  <aside class="side">
+    <div class="logo"><small>T_EXPRESS OPERATING SYSTEM</small><b>JARVIS</b></div>
+    <nav class="nav">
+      <button class="active" data-page="home"><i>⌂</i>COMMAND CENTER</button>
+      <button data-page="shift"><i>▦</i>シフト</button>
+      <button data-page="delivery"><i>⇄</i>配送管理</button>
+      <button data-page="sales"><i>¥</i>売上・利益</button>
+      <button data-page="recruit"><i>人</i>求人管理</button>
+      <button data-page="drivers"><i>DR</i>ドライバー</button>
+      <button data-page="salescrm"><i>営</i>営業管理</button>
+      <button data-page="analysis"><i>AI</i>AI分析</button>
+      <button data-page="jarvis"><i>J</i>JARVIS AI</button>
+    </nav>
+    <div class="sidefoot">V8 PREVIEW<br>PC / iPhone 共通データ設計<br>Google Sheetsを正本として接続</div>
+  </aside>
+
+  <main class="main">
+    <div class="top"><div><h1 id="pageTitle">COMMAND CENTER</h1><small id="pageSub">会社全体の今日と今月を確認</small></div><div class="badge">2026年9月 / PREVIEW</div></div>
+
+    <section id="home" class="page active">
+      <div class="grid4">
+        <div class="card metric"><span>今日の稼働</span><b>—</b><em>シフト連携で自動表示</em></div>
+        <div class="card metric"><span>当月売上（税込）</span><b>—</b><em>全エリア合計</em></div>
+        <div class="card metric"><span>当月粗利</span><b>—</b><em>会社売上 − DR支払</em></div>
+        <div class="card metric"><span>欠車</span><b>—</b><em>当日実績から判定</em></div>
+      </div>
+      <div class="section-title"><h2>業務アプリ</h2><small>必要な仕事へ直接入る</small></div>
+      <div class="grid4">
+        <div class="card module" data-jump="shift"><div class="icon">▦</div><b>シフト管理</b><small>エリア別に9月シフト・今日の出勤・欠車を確認</small></div>
+        <div class="card module" data-jump="sales"><div class="icon">¥</div><b>売上管理</b><small>全社 → エリア → 案件 → DRへドリルダウン</small></div>
+        <div class="card module" data-jump="recruit"><div class="icon">人</div><b>求人管理</b><small>求人媒体別に応募・面接・採用・未対応を整理</small></div>
+        <div class="card module" data-jump="jarvis"><div class="icon">J</div><b>JARVIS AI</b><small>欠車・売上・求人・営業を自然文で相談</small></div>
+      </div>
+      <div class="section-title"><h2>JARVIS通知</h2><small>重要なものだけ表示</small></div>
+      <div class="card list">
+        <div class="row"><div class="left"><b>9月配送管理表</b><small>Google Sheetsを正本として運用</small></div><span class="chip">連携対象</span></div>
+        <div class="row"><div class="left"><b>売上表示</b><small>アプリ内は税込表示で統一</small></div><span class="chip">設定済</span></div>
+        <div class="row"><div class="left"><b>前月比</b><small>2026年8月との比較を表示</small></div><span class="chip">V8設計</span></div>
+      </div>
+    </section>
+
+    <section id="shift" class="page">
+      <div class="section-title"><h2>シフト管理</h2><small>エリアを選択 → 正本スプレッドシート</small></div>
+      <div class="tabs" id="shiftTabs"><button class="active">すべて</button><button>ギオン</button><button>遠州トラック</button><button>その他</button></div>
+      <div class="grid3">
+        <a class="card module sheet" target="_blank" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit#gid=283632455"><div class="icon">三</div><b>三島</b><small>Amazon / 三島便 / 9月実績</small></a>
+        <a class="card module sheet" target="_blank" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit#gid=2051049705"><div class="icon">静</div><b>静岡</b><small>ギオンAmazon / 9月実績</small></a>
+        <a class="card module sheet" target="_blank" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit#gid=902048376"><div class="icon">一</div><b>一宮</b><small>Amazon / 9月実績</small></a>
+        <a class="card module sheet" target="_blank" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit#gid=1241751568"><div class="icon">中</div><b>中村区</b><small>Amazon / 9月実績</small></a>
+        <a class="card module sheet" target="_blank" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit#gid=107675747"><div class="icon">鶴</div><b>鶴見</b><small>Amazon / 9月実績</small></a>
+        <a class="card module sheet" target="_blank" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit#gid=350367810"><div class="icon">麺</div><b>秋山製麺所</b><small>製麺 / 9月実績</small></a>
+        <a class="card module sheet" target="_blank" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit#gid=306319410"><div class="icon">酒</div><b>株式会社サカエ</b><small>お酒配送 / 9月実績</small></a>
+        <a class="card module sheet" target="_blank" href="https://docs.google.com/spreadsheets/d/1z6cSUsEdu929JHRbqPjp-rjDbfSOuLVATKhf6hPJHoQ/edit"><div class="icon">遠</div><b>遠州トラック</b><small>野洲 / 駿河区 / 富士</small></a>
+        <a class="card module sheet" target="_blank" href="https://docs.google.com/spreadsheets/d/1cc2b-7mvljP42SIIBZketcvyEb0TQSd9iwAm05OtVWs/edit"><div class="icon">原</div><b>2026年9月DAシフト</b><small>シフト正本</small></a>
+      </div>
+    </section>
+
+    <section id="delivery" class="page">
+      <div class="card"><div class="section-title" style="margin-top:0"><h2>配送管理</h2><small>エリア別実績を1画面で管理</small></div><div class="table"><table><thead><tr><th>エリア</th><th>案件</th><th>当月実績</th><th>欠車</th><th>正本</th></tr></thead><tbody>
+        <tr><td>三島</td><td>Amazon / 三島便</td><td>自動集計予定</td><td>自動判定</td><td><a class="sheet" target="_blank" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit#gid=283632455">開く</a></td></tr>
+        <tr><td>静岡</td><td>ギオンAmazon</td><td>自動集計予定</td><td>自動判定</td><td><a class="sheet" target="_blank" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit#gid=2051049705">開く</a></td></tr>
+        <tr><td>一宮</td><td>Amazon</td><td>自動集計予定</td><td>自動判定</td><td><a class="sheet" target="_blank" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit#gid=902048376">開く</a></td></tr>
+      </tbody></table></div></div>
+    </section>
+
+    <section id="sales" class="page">
+      <div class="sales-total"><div class="card metric"><span>全社売上（税込）</span><b class="big">—</b><em>全エリア自動合計</em></div><div class="card metric"><span>前月比</span><b>—</b><em>2026年8月比</em></div><div class="card metric"><span>粗利</span><b>—</b><em>税設定反映</em></div></div>
+      <div class="section-title"><h2>エリア別</h2><small>クリックで案件・DRまで詳細化</small></div>
+      <div class="grid3">
+        <div class="card metric"><span>三島</span><b>—</b><em>Amazon / 酒 / 製麺 / 三島便</em></div>
+        <div class="card metric"><span>静岡</span><b>—</b><em>ギオン / 遠州</em></div>
+        <div class="card metric"><span>一宮</span><b>—</b><em>Amazon</em></div>
+        <div class="card metric"><span>中村区</span><b>—</b><em>Amazon</em></div>
+        <div class="card metric"><span>鶴見</span><b>—</b><em>Amazon</em></div>
+        <div class="card metric"><span>遠州エリア</span><b>—</b><em>野洲 / 駿河 / 富士</em></div>
+      </div>
+    </section>
+
+    <section id="recruit" class="page">
+      <div class="grid4"><div class="card metric"><span>全応募</span><b>—</b><em>媒体横断</em></div><div class="card metric"><span>未対応</span><b>—</b><em>要対応</em></div><div class="card metric"><span>面接予定</span><b>—</b><em>今週</em></div><div class="card metric"><span>採用</span><b>—</b><em>当月</em></div></div>
+      <div class="section-title"><h2>求人媒体別</h2><small>応募者を自動仕分けする設計</small></div>
+      <div class="grid3">
+        <div class="card module"><div class="icon">I</div><b>Indeed</b><small>応募 / 面接 / 採用 / 未対応</small></div>
+        <div class="card module"><div class="icon">求</div><b>求人ボックス</b><small>応募 / 面接 / 採用 / 未対応</small></div>
+        <div class="card module"><div class="icon">他</div><b>その他媒体</b><small>媒体追加可能</small></div>
+      </div>
+      <div class="section-title"><h2>応募者管理</h2><small>候補者単位のステータス</small></div>
+      <div class="card"><div class="table"><table><thead><tr><th>応募者</th><th>媒体</th><th>希望案件</th><th>状態</th><th>次アクション</th></tr></thead><tbody><tr><td colspan="5" class="muted">求人データ連携後に自動表示</td></tr></tbody></table></div></div>
+    </section>
+
+    <section id="drivers" class="page"><div class="card"><h2>ドライバー台帳</h2><p class="muted">氏名 / 所属 / 紹介者 / 稼働エリア / 単価 / 稼働率 / 欠車履歴を1人ずつ管理する画面。</p></div></section>
+    <section id="salescrm" class="page"><div class="card"><h2>営業管理</h2><p class="muted">営業先 / メール送信 / 返信 / 電話 / 商談 / 契約の進捗を一覧化する画面。</p></div></section>
+    <section id="analysis" class="page"><div class="card"><h2>AI分析</h2><p class="muted">売上減少・欠車リスク・稼働率・求人効率・粗利低下をJARVISが自動検知する画面。</p></div></section>
+
+    <section id="jarvis" class="page">
+      <div class="card chat"><div id="chatlog" class="chatlog"><div class="msg ai">JARVISです。V8プレビューから直接会話できます。</div></div><div class="composer"><input id="chat" placeholder="例：今日の欠車を確認して" autocomplete="off"><button id="send">送信</button></div></div>
+    </section>
+  </main>
+
+  <nav class="mobilebar">
+    <button class="active" data-page="home"><b>⌂</b>ホーム</button><button data-page="shift"><b>▦</b>シフト</button><button data-page="sales"><b>¥</b>売上</button><button data-page="recruit"><b>人</b>求人</button><button data-page="jarvis"><b>J</b>AI</button>
+  </nav>
+
+  <script>
+    const pages=[...document.querySelectorAll('.page')],navs=[...document.querySelectorAll('[data-page]')];
+    const titles={home:['COMMAND CENTER','会社全体の今日と今月を確認'],shift:['シフト管理','エリア別にGoogle Sheets正本を確認'],delivery:['配送管理','実績・欠車・DRをエリア別に管理'],sales:['売上・利益','全社 → エリア → 案件 → DR'],recruit:['求人管理','求人サイト別に応募を整理'],drivers:['ドライバー','台帳・稼働率・所属を管理'],salescrm:['営業管理','営業先と進捗を管理'],analysis:['AI分析','経営リスクと改善ポイントを自動分析'],jarvis:['JARVIS AI','業務全体を自然文で操作']};
+    function show(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));navs.forEach(n=>n.classList.toggle('active',n.dataset.page===id));document.getElementById('pageTitle').textContent=titles[id]?.[0]||'JARVIS';document.getElementById('pageSub').textContent=titles[id]?.[1]||'';history.replaceState(null,'','#'+id);scrollTo(0,0)}
+    document.addEventListener('click',e=>{const n=e.target.closest('[data-page]');if(n){e.preventDefault();show(n.dataset.page)}const j=e.target.closest('[data-jump]');if(j){e.preventDefault();show(j.dataset.jump)}});
+    const initial=location.hash.slice(1);if(titles[initial])show(initial);
+    const log=document.getElementById('chatlog'),input=document.getElementById('chat'),send=document.getElementById('send');
+    function add(text,cls){const d=document.createElement('div');d.className='msg '+cls;d.textContent=text;log.appendChild(d);log.scrollTop=log.scrollHeight}
+    async function ask(){const message=input.value.trim();if(!message||send.disabled)return;add(message,'me');input.value='';send.disabled=true;send.textContent='…';try{const r=await fetch('https://jarvis-api.t-ups2024.workers.dev/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message})});const j=await r.json();add(j.reply||'回答を取得できませんでした','ai')}catch(e){add('通信エラーです。もう一度お試しください。','ai')}finally{send.disabled=false;send.textContent='送信'}}
+    send.addEventListener('click',ask);input.addEventListener('keydown',e=>{if(e.key==='Enter')ask()});
+  </script>
+</body>
+</html>
