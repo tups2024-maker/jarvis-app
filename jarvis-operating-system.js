@@ -2,35 +2,39 @@
 (function(){
   'use strict';
 
-  const POLICY_KEY='jarvis-operating-policy-v1';
+  const POLICY_KEY='jarvis-operating-policy-v2';
   const CHAT_KEY='jarvis-chat-memory-v1';
   const MAX_CHAT=120;
 
   const POLICY={
-    version:'1.0',
+    version:'2.0',
     updatedAt:'2026-09-05',
-    name:'JARVIS AI社長 運用ルール',
-    principle:'自動で収集・整理・分析・提案し、重要な実行と最終確認・承認は管理者が行う。',
+    name:'JARVIS 統括AI 運用ルール',
+    principle:'JARVIS統括担当が各AI部署を指揮し、データ取得・同期・検査・分析・下書き作成は自動化する。重要な外部送信・金銭確定・契約・不可逆操作は管理者承認を残す。',
     ownerApprovalRequired:true,
     departments:{
-      ceo:{label:'Jarvis社長',role:'全体統括・意思決定支援'},
-      shift:{label:'シフト・配送管理部',role:'ドライバー稼働・シフト・配車・欠車・穴埋め調整'},
-      sales:{label:'営業部',role:'新規案件・取引先開拓・営業文案・商談フォロー'},
-      jobs:{label:'求人部',role:'求人媒体・原稿・応募者・掲載状況管理'},
-      profit:{label:'収益部',role:'案件元・拠点・ドライバー別の売上・粗利・稼働率分析'}
+      ceo:{label:'JARVIS統括担当',role:'全体統括・部署間調整・優先順位管理'},
+      accounting:{label:'AI経理部',role:'シフトから配送管理表を照合し、売上・支払・粗利・経理提出品質を管理'},
+      assistant:{label:'AI秘書',role:'メール・カレンダー・Slackの確認、要対応整理、予定・連絡管理'},
+      shift:{label:'JARVIS運行担当',role:'ドライバー稼働・シフト・配車・欠車・穴埋め調整'},
+      sales:{label:'AI営業部',role:'新規案件・取引先開拓・営業文案・商談フォロー'},
+      jobs:{label:'AI求人部',role:'求人媒体・原稿・応募者・掲載状況管理'},
+      monetization:{label:'AI収益化部',role:'記事・SNS・サブスク・AI事業の企画、原稿、分析、改善'},
+      profit:{label:'AI収益分析部',role:'案件元・拠点・ドライバー別の売上・粗利・稼働率分析'}
     },
     operation:{
       automatic:[
-        'データ取得・同期','集計','異常検知','欠車リスク検知','候補者抽出','リマインド','分析','下書き作成','改善案作成','承認待ち一覧作成'
+        'データ取得・同期','集計','経理検査','数式エラー検知','前月差分分析','異常検知','欠車リスク検知','候補者抽出','リマインド','分析','下書き作成','記事原稿作成','求人原稿改善','営業文案作成','改善案作成','承認待ち一覧作成'
       ],
       approvalRequired:[
-        'シフト確定変更','配車確定','外部へのメール・メッセージ送信','求人掲載・再掲載','単価変更','請求・支払確定','契約・重要設定変更','データ削除'
+        'シフト確定変更','配車確定','外部へのメール・メッセージ送信','求人掲載・再掲載','公開投稿','単価変更','請求・支払確定','契約・重要設定変更','データ削除'
       ],
       neverAutomatic:[
         '契約締結','金銭条件の最終決定','重大な人事判断','取り返しのつかない削除や公開'
       ]
     },
-    responseRule:'結論 → 現状 → 次にやること。部署指定がなければ内容から自動判定し、複数部署案件はJarvis社長が統合する。'
+    priorities:['経理提出品質','シフト・配送同期','AI秘書','営業案件獲得','求人','AI収益化'],
+    responseRule:'結論 → 現状 → 次にやること。部署指定がなければ内容から自動判定し、複数部署案件はJARVIS統括担当が統合する。'
   };
 
   try{localStorage.setItem(POLICY_KEY,JSON.stringify(POLICY));}catch(e){}
@@ -40,12 +44,15 @@
 
   function route(text){
     const t=norm(text);
-    const scores={shift:0,sales:0,jobs:0,profit:0};
+    const scores={accounting:0,assistant:0,shift:0,sales:0,jobs:0,monetization:0,profit:0};
     const add=(key,re,w=1)=>{if(re.test(t))scores[key]+=w;};
-    add('shift',/シフト|配送|配車|稼働|欠車|休み|出勤|ドライバー|離脱|穴埋め|代走|三島|静岡|一宮|中村区|野洲|富士|駿河/,2);
-    add('sales',/営業|新規案件|案件獲得|取引先|商談|営業メール|提案|開拓|見込み/,2);
-    add('jobs',/求人|応募|応募者|採用|Indeed|求人ボックス|ジモティ|募集|面接/,2);
-    add('profit',/売上|粗利|収益|利益|原価|稼働率|単価|赤字|黒字|請求|支払/,2);
+    add('accounting',/経理|配送管理表|管理表|請求|支払|天引き|フォロー|備考|紹介者|提出|会計|数式エラー|REF|VALUE|N\/A|前月残骸|重複/,3);
+    add('assistant',/メール|Gmail|カレンダー|予定|Slack|スラック|秘書|返信|受信|会議|リマインド/,3);
+    add('shift',/シフト|配送|配車|稼働|欠車|休み|出勤|ドライバー|離脱|穴埋め|代走|三島|静岡|一宮|中村区|野洲|富士|駿河|鶴見/,2);
+    add('sales',/営業|新規案件|案件獲得|取引先|商談|営業メール|提案|開拓|見込み|一次受け/,2);
+    add('jobs',/求人|応募|応募者|採用|Indeed|求人ボックス|ジモティ|募集|面接|掲載/,2);
+    add('monetization',/AI収益化|収益化|記事|note|SNS|Instagram|Threads|サブスク|コンテンツ|投稿原稿/,3);
+    add('profit',/売上|粗利|収益|利益|原価|稼働率|単価|赤字|黒字|前月比|増減率/,2);
     const ordered=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
     if(!ordered[0][1]) return 'ceo';
     const top=ordered[0][1], tied=ordered.filter(x=>x[1]===top&&top>0);
@@ -54,10 +61,10 @@
 
   function approvalFor(text){
     const t=norm(text);
-    if(/送信|掲載|再掲載|確定|変更|削除|契約|承認|支払|請求|単価|保存して|反映して/.test(t)){
-      return {required:true,reason:'重要な実行操作のため管理者承認が必要'};
+    if(/外部.*送信|メール.*送信|Slack.*送信|掲載|公開|投稿して|契約|削除|単価.*変更|請求.*確定|支払.*確定|配車.*確定|シフト.*確定/.test(t)){
+      return {required:true,reason:'外部送信・公開・金銭確定・契約・不可逆操作を含むため管理者承認が必要'};
     }
-    return {required:false,reason:'情報取得・分析・提案・下書きは自動運用可能'};
+    return {required:false,reason:'取得・同期・検査・分析・内部データ整備・下書きは自動運用可能'};
   }
 
   window.JARVIS_ROUTE_DEPARTMENT=route;
@@ -82,7 +89,7 @@
     const badge=document.createElement('div');
     badge.id='jarvisAutoRouteBadge';
     badge.style.cssText='display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 8px;padding:8px 10px;border:1px solid rgba(76,220,255,.28);border-radius:10px;background:rgba(1,22,35,.72);color:#b9f5ff;font-size:11px;letter-spacing:.03em';
-    badge.innerHTML='<b>JARVIS AUTO ROUTE</b><span id="jarvisDeptBadge">Jarvis社長</span><span style="opacity:.72">重要操作は承認制</span>';
+    badge.innerHTML='<b>JARVIS AUTO ROUTE</b><span id="jarvisDeptBadge">JARVIS統括担当</span><span style="opacity:.72">各AI部署へ自動振分</span>';
     wrap.insertBefore(badge,log);
   }
 
