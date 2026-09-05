@@ -1,15 +1,17 @@
 {
-  "name": "JARVIS V7.0.12 全自動アプリ版",
+  "name": "JARVIS V7.0.13 全自動アプリ版",
   "short_name": "JARVIS",
   "id": "./",
   "start_url": "./?app=1",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
-  "orientation": "any",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
   "background_color": "#020711",
   "theme_color": "#020711",
-  "description": "配送・シフト・売上・AI会話を統合したJARVIS業務アプリ",
+  "description": "配送・シフト・税込売上・前月比・AI会話を統合したJARVIS業務アプリ",
+  "categories": ["business", "productivity"],
+  "lang": "ja",
   "icons": [
     {"src":"./jarvis-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
   ]
