@@ -8,87 +8,43 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="JARVIS">
-  <link rel="manifest" href="./manifest.json?v=20260905-1738">
+  <link rel="manifest" href="./manifest.json?v=20260905-1752">
   <link rel="icon" href="./jarvis-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./jarvis-icon.svg">
-  <title>JARVIS V7.0.13 全自動アプリ版</title>
+  <title>JARVIS V7.0.14 タップ修正版</title>
 </head>
 <body style="margin:0;background:#020711;color:#dff6ff;font-family:system-ui,sans-serif">
-  <div id="boot" style="padding:24px">JARVIS V7.0.13 を起動しています…</div>
+  <div id="boot" style="padding:24px">JARVIS V7.0.14 を起動しています…</div>
   <script>
   (async function(){
     try{
-      const stamp='20260905-1738';
+      const stamp='20260905-1752';
       const response=await fetch('./v7.html?auto='+stamp,{cache:'no-store'});
       if(!response.ok) throw new Error('v7.html '+response.status);
       let source=await response.text();
-      source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.13 全自動アプリ版');
-      source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.13 全自動アプリ版');
-
+      source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.14 タップ修正版');
+      source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.14 タップ修正版');
       const bootstrap=`<script>
       (()=>{
         const loaded=new Set();
-        const load=(src)=>new Promise(resolve=>{
-          if(loaded.has(src)){resolve();return;}
-          loaded.add(src);
-          const s=document.createElement('script');
-          s.src=src+(src.includes('?')?'&':'?')+'auto=${stamp}';
-          s.async=false;
-          s.onload=()=>resolve();
-          s.onerror=()=>{console.warn('[JARVIS] load failed',src);resolve();};
-          document.body.appendChild(s);
-        });
+        const load=(src)=>new Promise(resolve=>{if(loaded.has(src)){resolve();return;}loaded.add(src);const s=document.createElement('script');s.src=src+(src.includes('?')?'&':'?')+'auto=${stamp}';s.async=false;s.onload=()=>resolve();s.onerror=()=>resolve();document.body.appendChild(s);});
         const wait=ms=>new Promise(r=>setTimeout(r,ms));
         const idle=fn=>('requestIdleCallback' in window?requestIdleCallback(fn,{timeout:1500}):setTimeout(fn,250));
-
         async function boot(){
           await load('./jarvis-openai-chat.js');
           await load('./jarvis-app-shell.js');
-          await wait(250);
-          await load('./jarvis-operating-system.js');
-
-          await wait(450);
-          await load('./jarvis-date-sync.js');
-          await load('./jarvis-current-month.js');
-          await load('./jarvis-source-current-month-fix.js');
-          await load('./jarvis-all-sites.js');
-
-          await wait(650);
-          await load('./workbook-hotfix.js');
-          await load('./google-master-hotfix.js');
-          await load('./jarvis-month-history-fix.js');
-          await load('./jarvis-hide-logistics-columns.js');
-          await load('./jarvis-akiyama-pricing.js');
-
-          await wait(800);
-          await load('./jarvis-source-dashboard.js');
-          await load('./jarvis-tax-mom.js');
-          await load('./jarvis-accounting-links.js');
-          await load('./jarvis-delivery-quality-guard.js');
-
-          idle(async()=>{
-            await load('./jarvis-voice-ai.js');
-            await wait(350);
-            await load('./jarvis-neon-ui.js');
-            await wait(350);
-            await load('./jarvis-ops-hardening.js');
-            document.documentElement.dataset.jarvisFullAuto='ready';
-            window.dispatchEvent(new CustomEvent('jarvis-full-auto-ready'));
-          });
+          await wait(250); await load('./jarvis-operating-system.js');
+          await wait(450); await load('./jarvis-date-sync.js'); await load('./jarvis-current-month.js'); await load('./jarvis-source-current-month-fix.js'); await load('./jarvis-all-sites.js');
+          await wait(650); await load('./workbook-hotfix.js'); await load('./google-master-hotfix.js'); await load('./jarvis-month-history-fix.js'); await load('./jarvis-hide-logistics-columns.js'); await load('./jarvis-akiyama-pricing.js');
+          await wait(800); await load('./jarvis-source-dashboard.js'); await load('./jarvis-tax-mom.js'); await load('./jarvis-accounting-links.js'); await load('./jarvis-delivery-quality-guard.js');
+          idle(async()=>{await load('./jarvis-voice-ai.js');await wait(350);await load('./jarvis-neon-ui.js');await wait(350);await load('./jarvis-ops-hardening.js');document.documentElement.dataset.jarvisFullAuto='ready';window.dispatchEvent(new CustomEvent('jarvis-full-auto-ready'));});
         }
-
         if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
       })();
       <\/script>`;
-
       source=source.replace('</body>',bootstrap+'</body>');
-      document.open();
-      document.write(source);
-      document.close();
-    }catch(error){
-      console.error(error);
-      document.getElementById('boot').innerHTML='<b>JARVIS 起動エラー</b><br>'+String(error?.message||error);
-    }
+      document.open();document.write(source);document.close();
+    }catch(error){console.error(error);document.getElementById('boot').innerHTML='<b>JARVIS 起動エラー</b><br>'+String(error?.message||error);}
   })();
   </script>
 </body>
