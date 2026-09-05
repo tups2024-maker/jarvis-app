@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#020711">
+  <title>JARVIS Desktop Light</title>
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#020711;color:#eafcff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}body{padding:24px}.shell{max-width:1280px;margin:0 auto}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}.brand small{display:block;color:#70e8ff;letter-spacing:.18em}.brand h1{margin:4px 0 0;font-size:32px;letter-spacing:.08em}.badge{padding:8px 12px;border:1px solid rgba(87,226,255,.35);border-radius:999px;color:#9bf3ff;background:#061721}.grid{display:grid;grid-template-columns:220px 1fr;gap:16px}.nav,.panel{border:1px solid rgba(87,226,255,.22);background:linear-gradient(180deg,#061e2c,#03111a);border-radius:20px;box-shadow:0 18px 48px #0008}.nav{padding:12px;height:max-content;position:sticky;top:20px}.nav button{width:100%;min-height:54px;margin:5px 0;border:0;border-radius:13px;background:transparent;color:#a9d4de;font:inherit;font-weight:700;text-align:left;padding:0 14px;cursor:pointer}.nav button:hover,.nav button.active{background:#0a3145;color:#8ff3ff}.panel{padding:20px;min-height:620px}.page{display:none}.page.active{display:block}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{padding:16px;border:1px solid rgba(87,226,255,.18);border-radius:16px;background:#041823}.card span{display:block;color:#7f9faa;font-size:12px}.card b{display:block;margin-top:6px;font-size:20px}.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}.action{display:flex;align-items:center;justify-content:center;min-height:70px;border:1px solid rgba(87,226,255,.34);border-radius:16px;background:#072434;color:#f2fdff;text-decoration:none;font-weight:800;cursor:pointer}.action:hover{background:#0a3347}.notice{padding:14px;border-radius:14px;background:#061822;color:#9bc4cf;line-height:1.65}.chatlog{height:360px;overflow:auto;padding:10px;border-radius:14px;background:#021018}.msg{padding:10px 12px;border-radius:12px;margin:8px 0;white-space:pre-wrap;line-height:1.55}.me{background:#0b3550;margin-left:80px}.ai{background:#06251f;margin-right:80px}.row{display:flex;gap:10px;margin-top:10px}.row input{flex:1;padding:14px;border-radius:12px;border:1px solid rgba(89,228,255,.32);background:#03131d;color:#fff;font-size:16px}.row button{width:90px;border:0;border-radius:12px;background:#0b9fbd;color:#fff;font-weight:800;cursor:pointer}.status{margin-top:8px;color:#78e8fb;font-size:12px}@media(max-width:900px){body{padding:12px}.grid{grid-template-columns:1fr}.nav{position:static;display:grid;grid-template-columns:repeat(5,1fr)}.nav button{text-align:center;padding:0 4px}.cards{grid-template-columns:1fr}.actions{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="top"><div class="brand"><small>JARVIS DESKTOP LIGHT</small><h1>JARVIS</h1></div><div class="badge">PC安定版</div></div>
+    <div class="grid">
+      <aside class="nav">
+        <button class="active" data-go="home">ホーム</button>
+        <button data-go="shift">シフト</button>
+        <button data-go="delivery">配送管理</button>
+        <button data-go="sales">売上・前月比</button>
+        <button data-go="ai">JARVIS AI</button>
+      </aside>
+      <main class="panel">
+        <section id="home" class="page active">
+          <h2>COMMAND CENTER</h2>
+          <div class="cards">
+            <div class="card"><span>対象月</span><b>2026年9月</b></div>
+            <div class="card"><span>売上表示</span><b>税込</b></div>
+            <div class="card"><span>比較</span><b>2026年8月比</b></div>
+          </div>
+          <div class="actions">
+            <button class="action" data-go="shift">9月シフトを見る</button>
+            <button class="action" data-go="delivery">配送管理を見る</button>
+            <button class="action" data-go="sales">売上・前月比を見る</button>
+            <button class="action" data-go="ai">JARVISに相談</button>
+          </div>
+          <p class="notice" style="margin-top:16px">PCでも重い旧画面を読み込まず、操作できる安定版です。必要な機能はこの画面に順次統合します。</p>
+        </section>
+        <section id="shift" class="page"><h2>2026年9月 シフト</h2><p class="notice">「2026年9月DAシフト」を正本として使用します。</p><a class="action" href="https://docs.google.com/spreadsheets/d/1cc2b-7mvljP42SIIBZketcvyEb0TQSd9iwAm05OtVWs/edit" target="_blank" rel="noopener">Googleシフト表を開く</a></section>
+        <section id="delivery" class="page"><h2>配送管理</h2><p class="notice">2026年9月の配送管理表・JARVIS連携9月を正本として確認します。</p><a class="action" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit" target="_blank" rel="noopener">配送管理表を開く</a></section>
+        <section id="sales" class="page"><h2>売上・前月比</h2><div class="cards"><div class="card"><span>表示</span><b>税込</b></div><div class="card"><span>比較対象</span><b>2026年8月</b></div><div class="card"><span>基準</span><b>Google正本</b></div></div><p class="notice" style="margin-top:16px">売上は税込表示、前月比は2026年8月との比較で統一します。</p><a class="action" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit" target="_blank" rel="noopener">売上元データを開く</a></section>
+        <section id="ai" class="page"><h2>JARVIS AI</h2><div id="chatlog" class="chatlog"><div class="msg ai">JARVISです。PC安定版から直接会話できます。</div></div><div class="row"><input id="chat" placeholder="JARVISに入力" autocomplete="off"><button id="send" type="button">送信</button></div><div id="status" class="status">READY</div></section>
+      </main>
+    </div>
+  </div>
+  <script>
+    const pages=[...document.querySelectorAll('.page')],nav=[...document.querySelectorAll('.nav button')];
+    function show(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));nav.forEach(b=>b.classList.toggle('active',b.dataset.go===id));history.replaceState(null,'','#'+id);window.scrollTo(0,0)}
+    document.addEventListener('click',e=>{const t=e.target.closest('[data-go]');if(!t)return;e.preventDefault();show(t.dataset.go)});
+    const hash=location.hash.slice(1);if(pages.some(p=>p.id===hash))show(hash);
+    const log=document.getElementById('chatlog'),input=document.getElementById('chat'),send=document.getElementById('send'),status=document.getElementById('status');
+    function add(text,cls){const d=document.createElement('div');d.className='msg '+cls;d.textContent=text;log.appendChild(d);log.scrollTop=log.scrollHeight}
+    async function go(){const message=input.value.trim();if(!message||send.disabled)return;add(message,'me');input.value='';send.disabled=true;status.textContent='送信中…';try{const r=await fetch('https://jarvis-api.t-ups2024.workers.dev/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message})});const j=await r.json();add(j.reply||'回答を取得できませんでした','ai');status.textContent='READY'}catch(e){add('通信エラーです。もう一度お試しください。','ai');status.textContent='ERROR'}finally{send.disabled=false}}
+    send.addEventListener('click',go);input.addEventListener('keydown',e=>{if(e.key==='Enter')go()});
+  </script>
+</body>
+</html>
