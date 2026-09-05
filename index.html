@@ -8,22 +8,36 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="JARVIS">
-  <link rel="manifest" href="./manifest.json?v=20260905-1805">
+  <link rel="manifest" href="./manifest.json?v=20260905-1750">
   <link rel="icon" href="./jarvis-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./jarvis-icon.svg">
-  <title>JARVIS V7.0.15 iPhoneタップ救済版</title>
+  <title>JARVIS V7.0.16 PC/モバイル自動切替版</title>
+  <script>
+    (()=>{
+      const q=new URLSearchParams(location.search);
+      const forceDesktop=q.get('desktop')==='1';
+      const forceMobile=q.get('mobile')==='1';
+      const ua=navigator.userAgent||'';
+      const isiPhone=/iPhone|iPod/.test(ua);
+      const isiPad=/iPad/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+      const small=matchMedia('(max-width:900px)').matches;
+      if(!forceDesktop&&(forceMobile||isiPhone||isiPad||small)){
+        location.replace('./mobile.html?v=20260905-1750');
+      }
+    })();
+  </script>
 </head>
 <body style="margin:0;background:#020711;color:#dff6ff;font-family:system-ui,sans-serif">
-  <div id="boot" style="padding:24px">JARVIS V7.0.15 を起動しています…</div>
+  <div id="boot" style="padding:24px">JARVIS PC版を起動しています…</div>
   <script>
   (async function(){
     try{
-      const stamp='20260905-1805';
+      const stamp='20260905-1750';
       const response=await fetch('./v7.html?auto='+stamp,{cache:'no-store'});
       if(!response.ok) throw new Error('v7.html '+response.status);
       let source=await response.text();
-      source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.15 iPhoneタップ救済版');
-      source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.15 iPhoneタップ救済版');
+      source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.16 PCフル版');
+      source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.16 PCフル版');
       const bootstrap=`<script>
       (()=>{
         const loaded=new Set();
@@ -32,7 +46,6 @@
         const idle=fn=>('requestIdleCallback' in window?requestIdleCallback(fn,{timeout:1500}):setTimeout(fn,250));
         async function boot(){
           await load('./jarvis-openai-chat.js');
-          await load('./jarvis-app-shell.js');
           await wait(250); await load('./jarvis-operating-system.js');
           await wait(450); await load('./jarvis-date-sync.js'); await load('./jarvis-current-month.js'); await load('./jarvis-source-current-month-fix.js'); await load('./jarvis-all-sites.js');
           await wait(650); await load('./workbook-hotfix.js'); await load('./google-master-hotfix.js'); await load('./jarvis-month-history-fix.js'); await load('./jarvis-hide-logistics-columns.js'); await load('./jarvis-akiyama-pricing.js');
