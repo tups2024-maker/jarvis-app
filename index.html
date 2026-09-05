@@ -2,21 +2,27 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#020711">
-  <title>JARVIS V7.0.11 全自動安定版</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="JARVIS">
+  <link rel="manifest" href="./manifest.json?v=20260905-1728">
+  <link rel="icon" href="./jarvis-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./jarvis-icon.svg">
+  <title>JARVIS V7.0.12 全自動アプリ版</title>
 </head>
 <body style="margin:0;background:#020711;color:#dff6ff;font-family:system-ui,sans-serif">
-  <div id="boot" style="padding:24px">JARVIS V7.0.11 を起動しています…</div>
+  <div id="boot" style="padding:24px">JARVIS V7.0.12 を起動しています…</div>
   <script>
   (async function(){
     try{
-      const stamp='20260905-1715';
+      const stamp='20260905-1728';
       const response=await fetch('./v7.html?auto='+stamp,{cache:'no-store'});
       if(!response.ok) throw new Error('v7.html '+response.status);
       let source=await response.text();
-      source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.11 全自動安定版');
-      source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.11 全自動安定版');
+      source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.12 全自動アプリ版');
+      source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.12 全自動アプリ版');
 
       const bootstrap=`<script>
       (()=>{
@@ -35,38 +41,35 @@
         const idle=fn=>('requestIdleCallback' in window?requestIdleCallback(fn,{timeout:1500}):setTimeout(fn,250));
 
         async function boot(){
-          // 1. 会話と基本統括
           await load('./jarvis-openai-chat.js');
-          await wait(300);
+          await load('./jarvis-app-shell.js');
+          await wait(250);
           await load('./jarvis-operating-system.js');
 
-          // 2. 日付・月・拠点など軽量な基盤
-          await wait(500);
+          await wait(450);
           await load('./jarvis-date-sync.js');
           await load('./jarvis-current-month.js');
           await load('./jarvis-source-current-month-fix.js');
           await load('./jarvis-all-sites.js');
 
-          // 3. シフト・配送管理
-          await wait(700);
+          await wait(650);
           await load('./workbook-hotfix.js');
           await load('./google-master-hotfix.js');
           await load('./jarvis-month-history-fix.js');
           await load('./jarvis-hide-logistics-columns.js');
           await load('./jarvis-akiyama-pricing.js');
 
-          // 4. 売上・粗利・経理品質
-          await wait(900);
+          await wait(800);
           await load('./jarvis-source-dashboard.js');
+          await load('./jarvis-tax-mom.js');
           await load('./jarvis-accounting-links.js');
           await load('./jarvis-delivery-quality-guard.js');
 
-          // 5. 音声・UI・補強はアイドル時に最後に追加
           idle(async()=>{
             await load('./jarvis-voice-ai.js');
-            await wait(400);
+            await wait(350);
             await load('./jarvis-neon-ui.js');
-            await wait(400);
+            await wait(350);
             await load('./jarvis-ops-hardening.js');
             document.documentElement.dataset.jarvisFullAuto='ready';
             window.dispatchEvent(new CustomEvent('jarvis-full-auto-ready'));
