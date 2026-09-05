@@ -2,52 +2,61 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
   <meta name="theme-color" content="#020711">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="JARVIS">
-  <title>JARVIS Mobile Safe</title>
+  <title>JARVIS Mobile V1</title>
   <style>
-    *{box-sizing:border-box}html,body{margin:0;background:#020711;color:#e8fbff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100%;-webkit-tap-highlight-color:transparent}body{padding:calc(18px + env(safe-area-inset-top)) 16px calc(92px + env(safe-area-inset-bottom))}.wrap{max-width:720px;margin:0 auto}.hero{padding:18px;border:1px solid rgba(92,228,255,.28);border-radius:22px;background:linear-gradient(180deg,#062131,#03111d);box-shadow:0 18px 50px #0008}.eyebrow{font-size:11px;letter-spacing:.22em;color:#72e8ff}.title{font-size:34px;font-weight:800;margin:8px 0}.sub{color:#8fb7c4;line-height:1.6;font-size:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.btn{display:flex;align-items:center;justify-content:center;min-height:58px;border:1px solid rgba(84,224,255,.36);border-radius:16px;background:#072434;color:#effcff;text-decoration:none;font-weight:800;font-size:15px;touch-action:manipulation}.btn:active{transform:scale(.98);background:#0b3348}.btn.full{grid-column:1/-1}.card{margin-top:14px;padding:16px;border:1px solid rgba(92,228,255,.2);border-radius:18px;background:#041722}.chatlog{min-height:150px;max-height:340px;overflow:auto;padding:8px;border-radius:14px;background:#021018}.msg{padding:10px 12px;border-radius:12px;margin:8px 0;line-height:1.55;white-space:pre-wrap}.me{background:#0b3550;margin-left:34px}.ai{background:#06251f;margin-right:34px}.row{display:flex;gap:8px;margin-top:10px}.row input{flex:1;min-width:0;padding:14px;border-radius:13px;border:1px solid rgba(89,228,255,.32);background:#03131d;color:#fff;font-size:16px}.row button{width:64px;border:0;border-radius:13px;background:#0b9fbd;color:#fff;font-weight:800;font-size:16px;touch-action:manipulation}.status{font-size:12px;color:#74dff5;margin-top:8px}.dock{position:fixed;left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:7px;border:1px solid rgba(80,225,255,.26);border-radius:18px;background:#03131ef2;backdrop-filter:blur(14px);z-index:9999}.dock a{min-height:52px;display:flex;align-items:center;justify-content:center;border-radius:12px;color:#c9f8ff;text-decoration:none;font-size:12px;font-weight:700}.dock a:active{background:#0b3146}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#020711;color:#e9fbff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}body{padding:calc(14px + env(safe-area-inset-top)) 14px calc(94px + env(safe-area-inset-bottom));overflow-x:hidden}.wrap{max-width:760px;margin:0 auto}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.brand b{display:block;font-size:24px;letter-spacing:.14em}.brand small{color:#67e8ff;letter-spacing:.12em}.pill{padding:7px 10px;border:1px solid #2b6f80;border-radius:999px;color:#8ef2ff;font-size:11px}.hero,.card{border:1px solid rgba(82,224,255,.24);background:linear-gradient(180deg,#062131,#03111d);border-radius:20px;box-shadow:0 18px 48px #0008}.hero{padding:18px}.hero h1{font-size:34px;margin:4px 0 8px}.hero p{margin:0;color:#95b9c4;line-height:1.65;font-size:14px}.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.quick a,.quick button,.dock button{appearance:none;-webkit-appearance:none;border:none}.quick a,.quick button{min-height:62px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid rgba(87,227,255,.34);border-radius:16px;background:#072434;color:#f1fdff;text-decoration:none;font-weight:800;font-size:15px;touch-action:manipulation}.quick a:active,.quick button:active,.dock button:active{transform:scale(.97);background:#0a3347}.full{grid-column:1/-1}.section{display:none;margin-top:14px}.section.active{display:block}.card{padding:16px}.card h2{margin:0 0 10px;font-size:20px}.meta{color:#7dcfe0;font-size:12px;margin-bottom:10px}.notice{padding:12px;border-radius:14px;background:#061a25;color:#9cc8d4;font-size:13px;line-height:1.6}.metric{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.metric div{padding:12px;border:1px solid rgba(80,220,255,.18);border-radius:13px;background:#03131e}.metric span{display:block;color:#7f9faa;font-size:11px}.metric b{display:block;margin-top:4px;font-size:16px}.chatlog{min-height:180px;max-height:42vh;overflow:auto;padding:8px;border-radius:14px;background:#021018}.msg{padding:10px 12px;border-radius:12px;margin:8px 0;line-height:1.55;white-space:pre-wrap}.me{background:#0b3550;margin-left:32px}.ai{background:#06251f;margin-right:32px}.row{display:flex;gap:8px;margin-top:10px}.row input{flex:1;min-width:0;padding:14px;border-radius:13px;border:1px solid rgba(89,228,255,.32);background:#03131d;color:#fff;font-size:16px}.row button{width:70px;border:0;border-radius:13px;background:#0b9fbd;color:#fff;font-weight:800;font-size:15px}.status{font-size:12px;color:#74dff5;margin-top:8px}.dock{position:fixed;left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));z-index:20;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px;border:1px solid rgba(80,225,255,.26);border-radius:20px;background:#03131ef2;backdrop-filter:blur(14px)}.dock button{min-height:54px;border-radius:13px;background:transparent;color:#9fcbd6;font-size:10px;font-weight:700;touch-action:manipulation}.dock button b{display:block;color:#e9fcff;font-size:18px;margin-bottom:2px}.dock button.active{background:#0b3146;color:#77edff}.linkbtn{display:block;margin-top:10px;padding:13px;border:1px solid rgba(85,225,255,.3);border-radius:13px;color:#dffaff;text-decoration:none;text-align:center;font-weight:800;background:#072434}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <section class="hero">
-      <div class="eyebrow">JARVIS MOBILE SAFE MODE</div>
-      <div class="title">JARVIS</div>
-      <div class="sub">iPhoneで確実に押せる専用画面です。複雑な旧UIを読み込まず、タップとAI会話を優先しています。</div>
-      <div class="grid">
-        <a class="btn" href="https://docs.google.com/spreadsheets/d/1cc2b-7mvljP42SIIBZketcvyEb0TQSd9iwAm05OtVWs/edit" target="_blank" rel="noopener">9月シフト</a>
-        <a class="btn" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit" target="_blank" rel="noopener">配送管理</a>
-        <a class="btn full" href="./?v=20260905-1805">旧JARVISを開く</a>
+    <div class="top"><div class="brand"><small>JARVIS MOBILE</small><b>JARVIS</b></div><div class="pill">LIGHT APP</div></div>
+
+    <section id="home" class="section active">
+      <div class="hero">
+        <h1>JARVIS</h1>
+        <p>iPhone専用の軽量版です。重いPC機能を読み込まず、シフト・配送管理・売上確認・AI会話を優先します。</p>
+        <div class="quick">
+          <button type="button" data-go="shift">9月シフト</button>
+          <button type="button" data-go="delivery">配送管理</button>
+          <button type="button" data-go="sales">売上・前月比</button>
+          <button type="button" data-go="ai">JARVIS AI</button>
+          <a class="full" href="./?desktop=1&v=20260905-1750">PCフル版を開く</a>
+        </div>
       </div>
     </section>
 
-    <section class="card">
-      <strong>JARVIS AI</strong>
-      <div id="chatlog" class="chatlog"><div class="msg ai">JARVISです。ここではiPhoneから直接AI会話できます。</div></div>
-      <div class="row">
-        <input id="chat" type="text" placeholder="JARVISに入力" autocomplete="off">
-        <button id="send" type="button">送信</button>
-      </div>
-      <div id="status" class="status">READY</div>
-    </section>
+    <section id="shift" class="section"><div class="card"><h2>9月シフト</h2><div class="meta">2026年9月 / Google Sheets正本</div><div class="notice">2026年9月DAシフトを正本として使用します。iPhoneではここから直接Google Sheetsを開く方式にして、JARVIS本体を重くしません。</div><a class="linkbtn" href="https://docs.google.com/spreadsheets/d/1cc2b-7mvljP42SIIBZketcvyEb0TQSd9iwAm05OtVWs/edit" target="_blank" rel="noopener">2026年9月シフトを開く</a></div></section>
+
+    <section id="delivery" class="section"><div class="card"><h2>配送管理</h2><div class="meta">2026年9月 配送管理表 実運用版</div><div class="notice">9月の配送実績・DR金額・案件別管理は配送管理表を正本にします。JARVIS連携9月の内容もここから確認できます。</div><a class="linkbtn" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit" target="_blank" rel="noopener">配送管理表を開く</a></div></section>
+
+    <section id="sales" class="section"><div class="card"><h2>売上・前月比</h2><div class="meta">税込表示 / 2026年8月比較</div><div class="metric"><div><span>売上表示</span><b>税込</b></div><div><span>比較基準</span><b>前月比</b></div></div><div class="notice" style="margin-top:10px">会社側売上は税込表示で統一し、2026年8月との前月比をJARVISで確認する設計です。詳細数値は配送管理表の正本データを基準にします。</div><a class="linkbtn" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit" target="_blank" rel="noopener">売上の元データを開く</a></div></section>
+
+    <section id="ai" class="section"><div class="card"><h2>JARVIS AI</h2><div id="chatlog" class="chatlog"><div class="msg ai">JARVISです。iPhone軽量版から直接会話できます。</div></div><div class="row"><input id="chat" type="text" placeholder="JARVISに入力" autocomplete="off"><button id="send" type="button">送信</button></div><div id="status" class="status">READY</div></div></section>
   </div>
 
-  <nav class="dock">
-    <a href="./mobile.html">ホーム</a>
-    <a href="https://docs.google.com/spreadsheets/d/1cc2b-7mvljP42SIIBZketcvyEb0TQSd9iwAm05OtVWs/edit" target="_blank" rel="noopener">シフト</a>
-    <a href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit" target="_blank" rel="noopener">配送</a>
-    <a href="#chat">AI</a>
+  <nav class="dock" aria-label="JARVIS mobile navigation">
+    <button type="button" class="active" data-go="home"><b>⌂</b>ホーム</button>
+    <button type="button" data-go="shift"><b>▦</b>シフト</button>
+    <button type="button" data-go="delivery"><b>⇄</b>配送</button>
+    <button type="button" data-go="sales"><b>¥</b>売上</button>
+    <button type="button" data-go="ai"><b>J</b>AI</button>
   </nav>
 
   <script>
+    const sections=[...document.querySelectorAll('.section')],navButtons=[...document.querySelectorAll('.dock button')];
+    function show(id){sections.forEach(s=>s.classList.toggle('active',s.id===id));navButtons.forEach(b=>b.classList.toggle('active',b.dataset.go===id));history.replaceState(null,'','#'+id);window.scrollTo(0,0);if(id==='ai')setTimeout(()=>document.getElementById('chat')?.focus(),120)}
+    document.addEventListener('click',e=>{const t=e.target.closest('[data-go]');if(!t)return;e.preventDefault();show(t.dataset.go)});
+    const initial=location.hash.replace('#','');if(sections.some(s=>s.id===initial))show(initial);
+
     const log=document.getElementById('chatlog'),input=document.getElementById('chat'),send=document.getElementById('send'),status=document.getElementById('status');
     function add(text,cls){const d=document.createElement('div');d.className='msg '+cls;d.textContent=text;log.appendChild(d);log.scrollTop=log.scrollHeight;}
-    async function go(){const message=input.value.trim();if(!message)return;add(message,'me');input.value='';status.textContent='送信中…';send.disabled=true;try{const r=await fetch('https://jarvis-api.t-ups2024.workers.dev/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message})});const j=await r.json();add(j.reply||'回答を取得できませんでした','ai');status.textContent='READY';}catch(e){add('通信エラーです。少し待って再度お試しください。','ai');status.textContent='ERROR';}finally{send.disabled=false;}}
-    send.addEventListener('click',go);send.addEventListener('touchend',e=>{e.preventDefault();go()},{passive:false});input.addEventListener('keydown',e=>{if(e.key==='Enter')go()});
+    async function go(){const message=input.value.trim();if(!message||send.disabled)return;add(message,'me');input.value='';status.textContent='送信中…';send.disabled=true;try{const r=await fetch('https://jarvis-api.t-ups2024.workers.dev/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message})});const j=await r.json();add(j.reply||'回答を取得できませんでした','ai');status.textContent='READY';}catch(e){add('通信エラーです。もう一度お試しください。','ai');status.textContent='ERROR';}finally{send.disabled=false;}}
+    send.addEventListener('click',go);input.addEventListener('keydown',e=>{if(e.key==='Enter')go()});
   </script>
 </body>
 </html>
