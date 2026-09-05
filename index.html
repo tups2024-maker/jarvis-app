@@ -4,18 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#020711">
-  <title>JARVIS V7.0.9 運用強化版</title>
+  <title>JARVIS V7.0.10 統括自動化版</title>
 </head>
 <body style="margin:0;background:#020711;color:#dff6ff;font-family:system-ui,sans-serif">
-  <div id="boot" style="padding:24px">JARVIS V7.0.9 を起動しています…</div>
+  <div id="boot" style="padding:24px">JARVIS V7.0.10 を起動しています…</div>
   <script>
   (async function(){
     try{
       const response=await fetch('./v7.html?stable=20260904-0031',{cache:'no-store'});
       if(!response.ok) throw new Error('v7.html '+response.status);
       let source=await response.text();
-      source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.9 運用強化版');
-      source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.9 運用強化版');
+      source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.10 統括自動化版');
+      source=source.replace(/v7\.0\.6 統合運用版/g,'v7.0.10 統括自動化版');
       const patchTag=[
         './jarvis-date-sync.js?v=20260903-0135',
         './workbook-hotfix.js?v=20260903-0135',
@@ -28,7 +28,7 @@
         './jarvis-current-month.js?v=20260904-1825',
         './jarvis-source-current-month-fix.js?v=20260903-2027',
         './jarvis-voice-ai.js?v=20260904-2006',
-        './jarvis-operating-system.js?v=20260905-1300',
+        './jarvis-operating-system.js?v=20260905-1348',
         './jarvis-openai-chat.js?v=20260905-1320',
         './jarvis-accounting-links.js?v=20260904-2216',
         './jarvis-delivery-quality-guard.js?v=20260905-0840',
