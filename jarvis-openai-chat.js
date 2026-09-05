@@ -1,4 +1,4 @@
-/* JARVIS generated-AI bridge. Uses server-side /chat when available and falls back to the existing local JARVIS bridge. */
+/* JARVIS generated-AI bridge. Uses server-side /api/chat when available and falls back to the existing local JARVIS bridge. */
 (function(){
   'use strict';
 
@@ -29,7 +29,7 @@
 
   function legacyFallback(text){
     const main=document.getElementById('voiceText'), btn=document.getElementById('voiceSend');
-    if(!main||!btn){addRow('jarvis','生成AIサーバーの設定が未完了です。OPENAI_API_KEY をWorker側へ登録すると自由会話が有効になります。','LOCAL');return;}
+    if(!main||!btn){addRow('jarvis','生成AIサーバーに接続できませんでした。少し時間をおいて再度お試しください。','LOCAL');return;}
     const chat=document.getElementById('chatLog');
     const before=chat?.querySelectorAll('.msg.jarvis p').length||0;
     main.value=text; btn.click();
@@ -51,7 +51,7 @@
     const approval=window.JARVIS_APPROVAL_CHECK?.(text)||{required:false};
     try{
       const previousResponseId=localStorage.getItem(RESPONSE_KEY)||null;
-      const r=await fetch(API_BASE+'/chat',{
+      const r=await fetch(API_BASE+'/api/chat',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
