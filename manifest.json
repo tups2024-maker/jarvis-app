@@ -1,1 +1,16 @@
-{"name":"JARVIS V7 Googleスプレッド連携版","short_name":"JARVIS 7","start_url":"./v7.html","display":"standalone","background_color":"#020711","theme_color":"#020711"}
+{
+  "name": "JARVIS V7.0.12 全自動アプリ版",
+  "short_name": "JARVIS",
+  "id": "./",
+  "start_url": "./?app=1",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#020711",
+  "theme_color": "#020711",
+  "description": "配送・シフト・売上・AI会話を統合したJARVIS業務アプリ",
+  "icons": [
+    {"src":"./jarvis-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
