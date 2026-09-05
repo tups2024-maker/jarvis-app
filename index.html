@@ -11,7 +11,7 @@
   <script>
   (async function(){
     try{
-      const response=await fetch('./v7.html?safe=20260905-1650',{cache:'no-store'});
+      const response=await fetch('./v7.html?safe=20260905-1702',{cache:'no-store'});
       if(!response.ok) throw new Error('v7.html '+response.status);
       let source=await response.text();
       source=source.replace(/V7\.0\.6 統合運用版/g,'V7.0.10 統括自動化版');
@@ -20,8 +20,8 @@
       // 安定性優先: まず本体 + OpenAIチャットのみ起動。
       // 追加パッチは応答停止の原因切り分け後に段階的に戻す。
       const patchTag=[
-        './jarvis-openai-chat.js?v=20260905-1650'
-      ].map(src=>'<script src="'+src+'"><\\/script>').join('');
+        './jarvis-openai-chat.js?v=20260905-1702'
+      ].map(src=>'<script src="'+src+'"><\/script>').join('');
 
       source=source.replace('</body>',patchTag+'</body>');
       document.open();
