@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="JARVIS">
-  <link rel="manifest" href="./manifest.json?v=20260905-1750">
+  <link rel="manifest" href="./manifest.json?v=20260905-1800">
   <link rel="icon" href="./jarvis-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./jarvis-icon.svg">
   <title>JARVIS V7.0.16 PC/モバイル自動切替版</title>
@@ -22,7 +22,7 @@
       const isiPad=/iPad/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
       const small=matchMedia('(max-width:900px)').matches;
       if(!forceDesktop&&(forceMobile||isiPhone||isiPad||small)){
-        location.replace('./mobile.html?v=20260905-1750');
+        location.replace('./mobile.html?v=20260905-1800');
       }
     })();
   </script>
@@ -32,7 +32,7 @@
   <script>
   (async function(){
     try{
-      const stamp='20260905-1750';
+      const stamp='20260905-1800';
       const response=await fetch('./v7.html?auto='+stamp,{cache:'no-store'});
       if(!response.ok) throw new Error('v7.html '+response.status);
       let source=await response.text();
