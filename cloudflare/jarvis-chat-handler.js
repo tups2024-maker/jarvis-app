@@ -1,8 +1,10 @@
 /*
- * JARVIS /chat handler for Cloudflare Workers.
+ * JARVIS /api/chat handler for Cloudflare Workers.
  * Add OPENAI_API_KEY as a Worker Secret. Never expose it to the browser or GitHub.
  * This module is intentionally isolated so it can be merged into the existing jarvis-api Worker without replacing /shift or /delivery routes.
  */
+
+export const JARVIS_CHAT_PATH = '/api/chat';
 
 const JARVIS_INSTRUCTIONS = `
 あなたは軽貨物運送事業を統括するAI「JARVIS」です。
@@ -60,7 +62,11 @@ function cors(origin) {
 function json(data, status = 200, origin = '') {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json; charset=utf-8', ...cors(origin) }
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'X-JARVIS-Chat-Route': JARVIS_CHAT_PATH,
+      ...cors(origin)
+    }
   });
 }
 
@@ -136,12 +142,12 @@ export async function handleJarvisChat(request, env) {
 /*
 Existing Worker integration example:
 
-import { handleJarvisChat } from './jarvis-chat-handler.js';
+import { handleJarvisChat, JARVIS_CHAT_PATH } from './jarvis-chat-handler.js';
 
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    if (url.pathname === '/chat') return handleJarvisChat(request, env);
+    if (url.pathname === JARVIS_CHAT_PATH) return handleJarvisChat(request, env);
     // existing /shift, /shift/save, /delivery, /delivery/save routes continue here
   }
 }
