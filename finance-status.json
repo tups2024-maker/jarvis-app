@@ -1,7 +1,7 @@
 {
   "enabled": true,
   "scope": "全社・9/11まで確認済み実績",
-  "sourceSheet": "配送管理表 実運用版 / 遠州トラック / 2026年9月DAシフト",
+  "sourceSheet": "配送管理表 実運用版 / 遠州トラック / 2026年9月DAシフト / 鶴見DSシフト",
   "actualsCutoff": "2026-09-11",
   "unknownHandling": "未確認として除外",
   "surchargePolicy": {
@@ -20,7 +20,7 @@
   "unknownRevenueRate": 1,
   "unknownDriverCost": 33,
   "latestActualDate": "2026-09-11",
-  "updatedAt": "2026-09-11 11:24 JST",
+  "updatedAt": "2026-09-11 11:32 JST",
   "rateRules": [
     {"site":"一宮","business":"一宮CX","month":"2026-09","baseRate":18000,"surcharge":1464,"fullDayWholesale":19464,"wholesaleRate":9732,"taxBasis":"税別","rateBasis":"CX 0.5実績1回あたり＝(本体18,000円＋9月サーチャージ1,464円)÷2","driverPayment":9360,"status":"9月 卸・DR確定"},
     {"site":"一宮","business":"一宮MX","month":"2026-09","baseRate":18000,"surcharge":1464,"fullDayWholesale":19464,"wholesaleRate":9732,"taxBasis":"税別","rateBasis":"MX 0.5実績1回あたり＝(本体18,000円＋9月サーチャージ1,464円)÷2","driverPayment":9360,"status":"9月 卸・DR確定"}
@@ -32,13 +32,25 @@
     {"site":"富士","revenue":0,"driverCost":0,"grossProfit":0,"status":"9月から稼働なし","note":"ユーザー確認済み。2026年9月以降は稼働なしとして0実績管理"},
     {"site":"一宮","revenue":9732,"driverCost":9360,"grossProfit":372,"status":"9/3 CX 0.5 確定","note":"9/3 島田真一 / 一宮CX 0.5。本体18,000円＋9月サーチャージ1,464円＝19,464円、半日卸9,732円。DR支払9,360円"},
     {"site":"中村区","revenue":0,"driverCost":0,"grossProfit":0,"status":"9月から稼働なし","note":"ユーザー確認済み。2026年9月以降は稼働なしとして0実績管理"},
-    {"site":"鶴見","revenue":null,"driverCost":null,"grossProfit":null,"status":"3名のみ9月シフト確認待ち","targetDrivers":["佐藤 剛","大山 加奈子","秋葉 貴大"],"note":"鶴見は佐藤剛・大山加奈子・秋葉貴大の3名のみ対象。鶴見シフト正本 1kfKxe39e9GHaIEGJV-THWVfulp6TqGVv4oL_P89wa04 / gid=1753314214 は特定済みだが、現在の接続では403 PERMISSION_DENIEDのため9月実績を未計上。その他ドライバーは今回対象外。"}
+    {"site":"鶴見","revenue":null,"driverCost":null,"grossProfit":null,"actualCount":10,"status":"9/11まで3名の稼働実績確認済み・金額未確定","targetDrivers":["佐藤 剛","大山 加奈子","秋葉 貴大"],"note":"鶴見DSシフト 2026年9月(鶴見区) gid=954430544 を確認。9/1〜9/11で佐藤剛4稼働、大山加奈子4稼働、秋葉貴大2稼働。勤務区分（4h/5.5h/12h）と当月金額がシフト表だけでは確定できないため売上・DR・粗利は未計上。"}
   ],
   "confirmedActuals": [
     {"date":"2026-09-03","site":"一宮","driver":"島田 真一","business":"一宮CX","actual":0.5,"baseRate":18000,"surcharge":1464,"fullDayWholesale":19464,"revenueRate":9732,"taxBasis":"税別","revenue":9732,"driverPayment":9360,"driverCost":9360,"grossProfit":372,"financeStatus":"9月 卸・DR確定"}
   ],
-  "approvalQueue": [
-    {"id":"2026-09-tsurumi-three-drivers","type":"シフト表確認","date":"2026-09","site":"鶴見","drivers":["佐藤 剛","大山 加奈子","秋葉 貴大"],"question":"鶴見シフト正本は特定済みですが、現在の接続権限では403で読めません。この3名のみ9月実績確認対象として保留します。"}
+  "pendingActuals": [
+    {"date":"2026-09-01","site":"鶴見","driver":"佐藤 剛","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
+    {"date":"2026-09-02","site":"鶴見","driver":"佐藤 剛","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
+    {"date":"2026-09-07","site":"鶴見","driver":"佐藤 剛","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
+    {"date":"2026-09-10","site":"鶴見","driver":"佐藤 剛","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
+    {"date":"2026-09-01","site":"鶴見","driver":"大山 加奈子","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
+    {"date":"2026-09-02","site":"鶴見","driver":"大山 加奈子","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
+    {"date":"2026-09-03","site":"鶴見","driver":"大山 加奈子","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
+    {"date":"2026-09-06","site":"鶴見","driver":"大山 加奈子","actual":1,"shiftMark":"18:30","financeStatus":"稼働実績確認済み・金額未確定"},
+    {"date":"2026-09-05","site":"鶴見","driver":"秋葉 貴大","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
+    {"date":"2026-09-11","site":"鶴見","driver":"秋葉 貴大","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"}
   ],
-  "note": "富士市・中村区は2026年9月から稼働なしで確定。一宮9月の卸は本体18,000円＋サーチャージ1,464円＝19,464円（税別）。CX/MX 0.5は半額9,732円。サーチャージは全拠点で毎月確認。鶴見は佐藤剛・大山加奈子・秋葉貴大の3名のみ確認対象で、シフト正本の権限不足により未計上。"
+  "approvalQueue": [
+    {"id":"2026-09-tsurumi-rate-classification","type":"金額区分確認","date":"2026-09-01〜2026-09-11","site":"鶴見","drivers":["佐藤 剛","大山 加奈子","秋葉 貴大"],"question":"3名の稼働実績10件は反映済みです。シフト表の20:00/18:30を鶴見4h・5.5h・12hのどの勤務区分として計算するか、9月の卸単価・DR単価と合わせて確認が必要です。"}
+  ],
+  "note": "富士市・中村区は2026年9月から稼働なしで確定。鶴見は佐藤剛・大山加奈子・秋葉貴大の3名のみ対象とし、9/11まで合計10稼働をシフト正本から反映済み。金額は勤務区分と9月単価が確定するまで推測計上しない。サーチャージは全拠点で毎月確認する。"
 }
