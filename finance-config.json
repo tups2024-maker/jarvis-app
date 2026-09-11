@@ -1,0 +1,15 @@
+{
+  "version": "2026-09-11",
+  "source": {
+    "spreadsheetId": "1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI",
+    "spreadsheetName": "2026年9月 配送管理表 実運用版",
+    "summarySheet": "JARVIS売上利益",
+    "summaryRange": "A3:B11"
+  },
+  "status": "mishima-pilot",
+  "rules": {
+    "neverInferUnknownRates": true,
+    "excludeFutureDatesFromActuals": true,
+    "grossProfitRequiresConfirmedRevenueAndDriverCost": true
+  }
+}
