@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='V7.2.0';
+  const VERSION='V7.2.1';
   const CALL_API='https://jarvis-api.t-ups2024.workers.dev/api/realtime/call';
   const CONNECT_TIMEOUT_MS=15000;
   let pc=null,dc=null,stream=null,audio=null,connecting=false,connected=false,lastError='';
@@ -41,7 +41,7 @@
   function addTranscript(text,cls){const log=document.getElementById('chatlog');if(!log||!text)return;const d=document.createElement('div');d.className='msg '+cls;d.textContent=text;log.appendChild(d);log.scrollTop=log.scrollHeight}
   function applySpec(){
     if(!dc||dc.readyState!=='open'||typeof window.upsSpecPrompt!=='function')return;
-    try{dc.send(JSON.stringify({type:'session.update',session:{instructions:window.upsSpecPrompt()}}))}catch(e){console.warn('spec update failed',e)}
+    try{dc.send(JSON.stringify({type:'session.update',session:{type:'realtime',instructions:window.upsSpecPrompt()}}))}catch(e){console.warn('spec update failed',e)}
   }
   function onEvent(raw){let e;try{e=JSON.parse(raw.data)}catch{return}
     const type=e.type||'';
