@@ -1,5 +1,5 @@
 (() => {
-  const VERSION='V7.0.21';
+  const VERSION='V7.0.22';
   const isNum=n=>n!==null&&n!==''&&Number.isFinite(Number(n));
   const fmtYen=n=>isNum(n)?new Intl.NumberFormat('ja-JP',{style:'currency',currency:'JPY',maximumFractionDigits:0}).format(Number(n)):'—';
   const fmtPct=n=>isNum(n)?`${(Number(n)*100).toFixed(1)}%`:'—';
@@ -57,7 +57,7 @@
     return `<div class="jf-approval"><h4>⚠ 承認待ち ${q.length}件</h4>${q.map(x=>`<div class="jf-approval-item"><b>${esc(x.date||'')} ${esc(x.site||'')} ${esc(x.business||'')}</b><br>${esc(x.question||'')}</div>`).join('')}</div>`;
   }
 
-  function executiveDashboard(d,withLink=false){
+  function executiveDashboard(d){
     const margin=isNum(d.confirmedGrossMargin)?Number(d.confirmedGrossMargin):0;
     const ring=Math.min(100,Math.max(0,margin*100));
     return `<div class="jf-shell">
@@ -73,26 +73,25 @@
         <div class="jf-panel"><div class="jf-panel-title"><b>利益コンディション</b><span>CONFIRMED</span></div><div class="jf-ring-wrap"><div class="jf-ring" style="--p:${ring}"><div class="jf-ring-inner"><b>${fmtPct(margin)}</b><span>粗利率</span></div></div></div><div class="jf-mini-grid"><div class="jf-mini"><span>承認待ち</span><b class="${(d.approvalQueue||[]).length?'jf-warning':'jf-positive'}">${(d.approvalQueue||[]).length}件</b></div><div class="jf-mini"><span>未確認</span><b>${Number(d.unknownCount||0)}件</b></div></div></div>
       </div>
       ${approvalPanel(d)}
-      <div class="jf-footer"><span>${VERSION} / 更新 ${esc(d.updatedAt||'—')} / 未確認・未連携は確定利益に含めません。</span>${withLink?'<a class="jf-link" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit#gid=539293015" target="_blank" rel="noopener">売上利益シートを開く</a>':''}</div>
+      <div class="jf-footer"><span>${VERSION} / 更新 ${esc(d.updatedAt||'—')} / 未確認・未連携は確定利益に含めません。</span></div>
     </div>`;
   }
 
   function renderHome(d){
     const home=document.getElementById('home');if(!home||document.getElementById('jarvis-finance-home'))return;
     const target=home.querySelector('.core-wrap,.corebox')||home.firstElementChild;
-    const wrap=document.createElement('div');wrap.id='jarvis-finance-home';wrap.className='jf-wrap';wrap.innerHTML=executiveDashboard(d,false);
+    const wrap=document.createElement('div');wrap.id='jarvis-finance-home';wrap.className='jf-wrap';wrap.innerHTML=executiveDashboard(d);
     target?.parentNode?target.parentNode.insertBefore(wrap,target):home.appendChild(wrap);
   }
 
-  function renderSales(d){
-    const sales=document.getElementById('sales');if(!sales||document.getElementById('jarvis-finance-sales'))return;
-    const wrap=document.createElement('div');wrap.id='jarvis-finance-sales';wrap.className='jf-wrap';wrap.innerHTML=executiveDashboard(d,true);
-    const old=sales.querySelector('.notice.alert');if(old){old.textContent='配送実績から売上・利益を更新。未確定事項だけ承認待ちに表示します。';old.parentNode.insertBefore(wrap,old)}else sales.appendChild(wrap);
+  function removeDuplicateDashboard(){
+    const duplicate=document.getElementById('jarvis-finance-sales');
+    if(duplicate) duplicate.remove();
   }
 
   async function load(){
-    setVersion();injectStyles();
-    try{const r=await fetch(`./finance-status.json?v=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);const d=await r.json();if(!d||d.enabled===false)return;renderHome(d);renderSales(d)}catch(e){console.warn('JARVIS finance dashboard load failed',e)}
+    setVersion();injectStyles();removeDuplicateDashboard();
+    try{const r=await fetch(`./finance-status.json?v=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);const d=await r.json();if(!d||d.enabled===false)return;renderHome(d);removeDuplicateDashboard()}catch(e){console.warn('JARVIS finance dashboard load failed',e)}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
 })();
