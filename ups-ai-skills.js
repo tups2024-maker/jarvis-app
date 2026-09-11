@@ -48,7 +48,9 @@
     const draft=/(文案|下書き|作って|考えて|分析|調べて|比較|候補|整理|改善)/;
     return direct.test(t)&&!draft.test(t);
   }
+  const basePrompt=typeof window.upsSpecPrompt==='function'?window.upsSpecPrompt:null;
   window.upsSkillsPrompt=prompt;
+  window.upsSpecPrompt=()=>`${basePrompt?basePrompt():''}${basePrompt?'\n\n':''}${prompt()}`;
   window.upsSkillsRefresh=refresh;
   window.upsSkillsApprovalNeeded=approvalNeeded;
   window.upsSkills={version:VERSION,list:SKILLS.map(x=>({id:x[0],name:x[1],description:x[2]}))};
