@@ -1,0 +1,8 @@
+{
+  "enabled": true,
+  "scope": "三島先行",
+  "sourceSheet": "JARVIS売上利益",
+  "actualsCutoff": "TODAY",
+  "unknownHandling": "未確認として除外",
+  "note": "JARVISトップ画面への直接表示は既存UI/API実装確認後に接続する"
+}
