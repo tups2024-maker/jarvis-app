@@ -1,7 +1,7 @@
 {
   "enabled": true,
   "scope": "全社・9/11まで確認済み実績",
-  "sourceSheet": "配送管理表 実運用版 / 遠州トラック",
+  "sourceSheet": "配送管理表 実運用版 / 遠州トラック / 2026年9月DAシフト",
   "actualsCutoff": "2026-09-11",
   "unknownHandling": "未確認として除外",
   "todayRevenue": 161584,
@@ -11,19 +11,25 @@
   "confirmedGrossProfit": 109216,
   "confirmedGrossMargin": 0.08020468291479281,
   "confirmedRevenueForMargin": 1361716,
-  "unknownCount": 35,
-  "unknownRevenueRate": 1,
+  "unknownCount": 36,
+  "unknownRevenueRate": 2,
   "unknownDriverCost": 34,
   "latestActualDate": "2026-09-11",
-  "updatedAt": "2026-09-11 10:55 JST",
+  "updatedAt": "2026-09-11 11:00 JST",
   "siteBreakdown": [
     {"site":"三島","revenue":1345000,"driverCost":746500,"grossProfit":59900,"status":"9/11まで・一部DR未確認","note":"秋山製麺・お酒配送を含む。粗利は両方確定分のみ"},
     {"site":"静岡","revenue":450664,"driverCost":331000,"grossProfit":22716,"status":"9/11まで・一部DR未確認","note":"GION 309,544円＋遠州 141,120円。粗利は両方確定分のみ"},
     {"site":"野洲","revenue":201600,"driverCost":175000,"grossProfit":26600,"status":"9/11まで確認済み","note":"10稼働 × 卸20,160円 / DR17,500円"},
     {"site":"富士","revenue":null,"driverCost":null,"grossProfit":null,"status":"実績未入力","note":"2026年9月 富士 遠州トラックのタブは存在するが実績行なし"},
-    {"site":"一宮","revenue":null,"driverCost":null,"grossProfit":null,"status":"実績未反映","note":"実運用版の2026年9月 一宮タブはヘッダーのみ"},
+    {"site":"一宮","revenue":null,"driverCost":null,"grossProfit":null,"status":"実績0.5確定・金額未確認","note":"9/3 島田真一 / 一宮CX / 実績0.5。売上単価・DR単価は未確認のため金額計上しない"},
     {"site":"中村区","revenue":null,"driverCost":null,"grossProfit":null,"status":"実績未反映","note":"実運用版の2026年9月 中村区タブはヘッダーのみ"},
     {"site":"鶴見","revenue":null,"driverCost":null,"grossProfit":null,"status":"実績未反映","note":"実運用版の2026年9月 鶴見タブはヘッダーのみ"}
   ],
-  "note": "月全体予定を実績に混ぜないよう修正。9/11までの確認済み売上は1,997,264円。未確認DR金額・未反映拠点は粗利に確定計上しない。"
+  "confirmedActuals": [
+    {"date":"2026-09-03","site":"一宮","driver":"島田 真一","business":"一宮CX","actual":0.5,"revenueRate":null,"driverRate":null,"financeStatus":"単価未確認"}
+  ],
+  "approvalQueue": [
+    {"id":"2026-09-03-ichinomiya-cx-shimada","type":"単価確認","date":"2026-09-03","site":"一宮","driver":"島田 真一","business":"一宮CX","actual":0.5,"question":"一宮CX 0.5の売上単価・DR単価を確認してください。"}
+  ],
+  "note": "月全体予定を実績に混ぜない。9/11までの確認済み売上は1,997,264円。9/3 一宮CX 0.5は実績確定済みだが単価未確認のため金額計上していない。"
 }
