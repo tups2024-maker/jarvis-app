@@ -1,30 +1,36 @@
 /*
- * JARVIS /api/chat handler for Cloudflare Workers.
+ * UP's AI /api/chat handler for Cloudflare Workers.
  * Add OPENAI_API_KEY as a Worker Secret. Never expose it to the browser or GitHub.
- * This module is intentionally isolated so it can be merged into the existing jarvis-api Worker without replacing /shift or /delivery routes.
  */
 
 export const JARVIS_CHAT_PATH = '/api/chat';
 
 const JARVIS_INSTRUCTIONS = `
-あなたは軽貨物運送事業を統括するAI「JARVIS」です。
+あなたはUP's専用AI秘書「アップズ君」です。
+
+【会話スタイル】
+- 普通の人との会話のように、相手の発話へ直接答える。
+- 毎回「承知しました」「軽貨物配送事業の運営支援を〜」「状況をお知らせください」などの定型自己紹介を付けない。
+- 音声会話では特に短く自然に答え、必要なら次のターンで詳しくする。
+- 相手の直前の文脈を引き継ぎ、「じゃあ三島は？」「昨日と比べて？」のような省略質問にも自然に対応する。
+- 結論を先にするが、機械的な箇条書き口調に固定しない。
 
 【基本方針】
-- 結論 → 現状 → 次にやること、の順で簡潔に答える。
 - ユーザーが部署を指定しない場合は内容から自動判定する。
-- 複数部署に関係する場合はJARVIS統括担当として統合して判断する。
+- 複数部署に関係する場合はアップズ君が統合して判断する。
 - データが提供されている場合は、そのデータを優先し、推測と事実を分ける。
+- 数字・単価・サーチャージ・稼働実績は推測しない。未確認は未確認のまま扱う。
 - 最優先は経理提出品質。シフトと配送管理表の整合、金額、数式エラー、重複、前月残骸、手入力保護を優先確認する。
 
 【部署】
-1. JARVIS統括担当: 全体統括・部署間調整・優先順位管理
-2. AI経理部: シフト→配送管理表の照合、売上・支払・粗利・経理提出品質
+1. アップズ君 / AI社長室: 全体統括・部署間調整・優先順位管理
+2. Aさん / AI経理部: シフト→配送管理表の照合、売上・支払・粗利・経理提出品質
 3. AI秘書: Gmail・カレンダー・Slackの確認、要対応整理、予定・連絡管理
-4. JARVIS運行担当: ドライバー稼働、シフト、配車、欠車、穴埋め
-5. AI営業部: 新規案件、営業先、営業文案、商談フォロー
-6. AI求人部: Indeed・求人ボックス・ジモティ等の求人原稿、応募者、掲載状況
-7. AI収益化部: 記事、note、SNS、サブスク、AI事業の企画・原稿・改善
-8. AI収益分析部: 案件・拠点・ドライバー別の売上、粗利、稼働率、単価分析
+4. Bさん / 配送管理部: ドライバー稼働、シフト、配車、欠車、穴埋め
+5. Cさん / AI営業部: 新規案件、営業先、営業文案、商談フォロー
+6. Dさん / AI採用部: 求人原稿、応募者、掲載状況
+7. Eさん / AI事業部: 記事、note、SNS、サブスク、AI事業の企画・原稿・改善
+8. Fさん / AI分析部: 案件・拠点・ドライバー別の売上、粗利、稼働率、単価分析
 
 【自動運用してよいこと】
 データ取得・同期、集計、経理検査、数式エラー検知、前月差分分析、異常検知、欠車リスク検知、候補者抽出、リマインド、分析、下書き、記事原稿、求人原稿改善、営業文案、改善案、承認待ち一覧の作成。
@@ -38,14 +44,14 @@ const JARVIS_INSTRUCTIONS = `
 `;
 
 const DEPARTMENTS = {
-  ceo: 'JARVIS統括担当',
-  accounting: 'AI経理部',
+  ceo: 'アップズ君 / AI社長室',
+  accounting: 'Aさん / AI経理部',
   assistant: 'AI秘書',
-  shift: 'JARVIS運行担当',
-  sales: 'AI営業部',
-  jobs: 'AI求人部',
-  monetization: 'AI収益化部',
-  profit: 'AI収益分析部'
+  shift: 'Bさん / 配送管理部',
+  sales: 'Cさん / AI営業部',
+  jobs: 'Dさん / AI採用部',
+  monetization: 'Eさん / AI事業部',
+  profit: 'Fさん / AI分析部'
 };
 
 function cors(origin) {
@@ -98,14 +104,15 @@ export async function handleJarvisChat(request, env) {
   const department = DEPARTMENTS[body?.department] ? body.department : 'ceo';
   const departmentLabel = DEPARTMENTS[department];
   const approvalRequired = !!body?.approvalRequired;
+  const voiceMode = body?.mode === 'voice';
 
-  const instructions = `${JARVIS_INSTRUCTIONS}\n\n【今回の担当】${departmentLabel}\n【承認判定】${approvalRequired ? 'この依頼は外部送信・公開・金銭確定・契約・不可逆操作を含む可能性があるため、承認待ちとして提案まで行う。' : '取得・同期・検査・分析・内部整備・下書きの範囲で自動対応可能。'}`;
+  const instructions = `${JARVIS_INSTRUCTIONS}\n\n【今回の担当】${departmentLabel}\n【会話モード】${voiceMode ? '音声。原則1〜3文で自然に返し、相手が続けて話しやすい余白を残す。' : '文字チャット。必要に応じて少し詳しく答えてよい。'}\n【承認判定】${approvalRequired ? 'この依頼は外部送信・公開・金銭確定・契約・不可逆操作を含む可能性があるため、承認待ちとして提案まで行う。' : '取得・同期・検査・分析・内部整備・下書きの範囲で自動対応可能。'}`;
 
   const payload = {
     model: env.OPENAI_MODEL || 'gpt-5.6-terra',
     instructions,
     input: message,
-    max_output_tokens: 1800
+    max_output_tokens: voiceMode ? 700 : 1800
   };
 
   const previousResponseId = String(body?.previousResponseId || '').trim();
@@ -129,25 +136,19 @@ export async function handleJarvisChat(request, env) {
   const reply = extractOutputText(data);
   if (!reply) return json({ success: false, error: 'Empty AI response' }, 502, origin);
 
-  return json({
-    success: true,
-    reply,
-    responseId: data.id || null,
-    department,
-    departmentLabel,
-    approvalRequired
-  }, 200, origin);
+  return json({ success: true, reply, responseId: data.id || null, department, departmentLabel, approvalRequired }, 200, origin);
 }
 
 /*
 Existing Worker integration example:
-
 import { handleJarvisChat, JARVIS_CHAT_PATH } from './jarvis-chat-handler.js';
+import { handleUpsLiveCall, UPS_LIVE_PATH } from './ups-live-handler.js';
 
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === JARVIS_CHAT_PATH) return handleJarvisChat(request, env);
+    if (url.pathname === UPS_LIVE_PATH) return handleUpsLiveCall(request, env);
     // existing /shift, /shift/save, /delivery, /delivery/save routes continue here
   }
 }
