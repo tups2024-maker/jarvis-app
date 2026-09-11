@@ -1,12 +1,13 @@
 (()=>{
-  const VERSION='V7.1.0';
+  const VERSION='V7.1.2';
   const CALL_API='https://jarvis-api.t-ups2024.workers.dev/api/realtime/call';
+  const CONNECT_TIMEOUT_MS=15000;
   let pc=null,dc=null,stream=null,audio=null,connecting=false,connected=false;
 
   function emit(name,detail){window.dispatchEvent(new CustomEvent(name,{detail}))}
   function setStatus(t){const s=document.getElementById('status');if(s)s.textContent=t}
   function setCore(state,label){emit('ups-live-state',{state,label});const c=document.querySelector('#aiOffice .aio-core');if(c){c.classList.toggle('busy',state==='connecting'||state==='speaking');const sm=c.querySelector('small');if(sm)sm.textContent=label||'LIVE'}}
-  function cleanup(){connected=false;connecting=false;try{dc&&dc.close()}catch{}try{pc&&pc.close()}catch{}try{stream&&stream.getTracks().forEach(t=>t.stop())}catch{}dc=pc=stream=null;if(audio){try{audio.srcObject=null;audio.remove()}catch{}audio=null}setStatus('UP’s AI READY');setCore('idle','TAP / VOICE');emit('ups-live-disconnected',null)}
+  function cleanup(label='TAP / VOICE'){connected=false;connecting=false;try{dc&&dc.close()}catch{}try{pc&&pc.close()}catch{}try{stream&&stream.getTracks().forEach(t=>t.stop())}catch{}dc=pc=stream=null;if(audio){try{audio.srcObject=null;audio.remove()}catch{}audio=null}setStatus('UP’s AI READY');setCore('idle',label);emit('ups-live-disconnected',null)}
   function addTranscript(text,cls){const log=document.getElementById('chatlog');if(!log||!text)return;const d=document.createElement('div');d.className='msg '+cls;d.textContent=text;log.appendChild(d);log.scrollTop=log.scrollHeight}
   function onEvent(raw){let e;try{e=JSON.parse(raw.data)}catch{return}
     const type=e.type||'';
@@ -22,23 +23,37 @@
   async function start(){
     if(connected)return true;
     if(connecting)return false;
-    if(!navigator.mediaDevices?.getUserMedia||!window.RTCPeerConnection){return false}
+    if(!navigator.mediaDevices?.getUserMedia||!window.RTCPeerConnection){setCore('error','VOICE UNSUPPORTED');return false}
     connecting=true;setStatus('アップズ君 LIVE 接続中…');setCore('connecting','CONNECTING');
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),CONNECT_TIMEOUT_MS);
     try{
       pc=new RTCPeerConnection();
       audio=document.createElement('audio');audio.autoplay=true;audio.playsInline=true;audio.style.display='none';document.body.appendChild(audio);
       pc.ontrack=e=>{audio.srcObject=e.streams[0]||new MediaStream([e.track]);audio.play().catch(()=>{})};
-      pc.onconnectionstatechange=()=>{if(['failed','closed','disconnected'].includes(pc.connectionState))cleanup()};
+      pc.onconnectionstatechange=()=>{if(['failed','closed','disconnected'].includes(pc.connectionState))cleanup('CONNECTION LOST')};
       stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true},video:false});
       stream.getTracks().forEach(t=>pc.addTrack(t,stream));
-      dc=pc.createDataChannel('oai-events');dc.onmessage=onEvent;dc.onopen=()=>{connected=true;connecting=false;setStatus('アップズ君 LIVE');setCore('listening','LIVE / LISTENING')};dc.onclose=cleanup;
+      dc=pc.createDataChannel('oai-events');dc.onmessage=onEvent;dc.onopen=()=>{connected=true;connecting=false;clearTimeout(timeout);setStatus('アップズ君 LIVE');setCore('listening','LIVE / LISTENING')};dc.onclose=()=>cleanup('TAP / VOICE');
       const offer=await pc.createOffer();await pc.setLocalDescription(offer);
-      const r=await fetch(CALL_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sdp:offer.sdp,version:VERSION})});
-      if(!r.ok)throw new Error('realtime '+r.status);
-      const answer=await r.text();if(!answer||!answer.startsWith('v='))throw new Error('invalid SDP');
+      const r=await fetch(CALL_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sdp:offer.sdp,version:VERSION}),signal:controller.signal});
+      const answer=await r.text();
+      if(!r.ok)throw new Error(`Worker ${r.status}: ${answer.slice(0,160)}`);
+      if(!answer||!answer.startsWith('v='))throw new Error(`Invalid SDP: ${answer.slice(0,120)}`);
       await pc.setRemoteDescription({type:'answer',sdp:answer});
       return true;
-    }catch(e){console.warn('UPs LIVE unavailable, fallback to legacy voice',e);cleanup();emit('ups-live-unavailable',{error:String(e)});return false}
+    }catch(e){
+      clearTimeout(timeout);
+      const msg=e?.name==='AbortError'?'接続タイムアウト':String(e?.message||e);
+      console.warn('UPs LIVE unavailable',e);
+      connected=false;connecting=false;
+      try{dc&&dc.close()}catch{}try{pc&&pc.close()}catch{}try{stream&&stream.getTracks().forEach(t=>t.stop())}catch{}
+      dc=pc=stream=null;
+      setStatus(`LIVE ERROR: ${msg}`);
+      setCore('error',e?.name==='AbortError'?'TIMEOUT':'LIVE ERROR');
+      emit('ups-live-unavailable',{error:msg});
+      return false;
+    }
   }
-  window.upsLiveStart=start;window.upsLiveStop=cleanup;window.upsLiveConnected=()=>connected;
+  window.upsLiveStart=start;window.upsLiveStop=()=>cleanup();window.upsLiveConnected=()=>connected;
 })();
