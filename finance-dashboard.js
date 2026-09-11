@@ -1,9 +1,9 @@
 (() => {
-  const VERSION='V7.0.20';
+  const VERSION='V7.0.21';
   const isNum=n=>n!==null&&n!==''&&Number.isFinite(Number(n));
   const fmtYen=n=>isNum(n)?new Intl.NumberFormat('ja-JP',{style:'currency',currency:'JPY',maximumFractionDigits:0}).format(Number(n)):'—';
   const fmtPct=n=>isNum(n)?`${(Number(n)*100).toFixed(1)}%`:'—';
-  const card=(label,value,sub,extra='')=>`<div class="jf-card ${extra}"><span>${label}</span><b>${value}</b>${sub?`<small>${sub}</small>`:''}</div>`;
+  const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
   function setVersion(){
     document.title=`JARVIS ${VERSION}`;
@@ -16,34 +16,78 @@
   function injectStyles(){
     if(document.getElementById('jarvis-finance-style'))return;
     const s=document.createElement('style');s.id='jarvis-finance-style';
-    s.textContent=`.jf-wrap{margin:14px 0}.jf-title{font-size:12px;color:#6fe7fb;letter-spacing:.08em;margin:0 0 8px}.jf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.jf-card{border:1px solid rgba(87,226,255,.24);background:linear-gradient(180deg,#061e2c,#03111a);border-radius:14px;padding:12px}.jf-card span{display:block;color:#82a4ae;font-size:11px}.jf-card b{display:block;margin-top:5px;font-size:18px;color:#eafcff}.jf-card small{display:block;margin-top:5px;color:#789aa5;font-size:10px;line-height:1.35}.jf-warn{border-color:#8c6436;background:#21170c}.jf-warn b{color:#ffd9a3}.jf-ok b{color:#78f0b6}.jf-note{margin-top:8px;padding:10px 12px;border-radius:12px;background:#061822;color:#9bc4cf;font-size:11px;line-height:1.5}.jf-link{display:inline-flex;margin-top:9px;min-height:44px;padding:0 13px;align-items:center;justify-content:center;border:1px solid rgba(87,227,255,.33);border-radius:12px;background:#072434;color:#f2fdff;text-decoration:none;font-weight:800;font-size:12px}.jf-table{width:100%;border-collapse:collapse;margin-top:10px}.jf-table th,.jf-table td{padding:8px;border-bottom:1px solid #17404c;text-align:left;font-size:11px}.jf-table th{color:#7fdff0}.jf-status{white-space:nowrap}.jf-approval{margin-top:12px;border:1px solid #8c6436;background:#21170c;border-radius:14px;padding:12px}.jf-approval h4{margin:0 0 8px;color:#ffd9a3;font-size:13px}.jf-approval-item{padding:8px 0;border-top:1px solid #5b4529;font-size:11px;line-height:1.5}.jf-approval-item:first-of-type{border-top:0}.jf-muted{color:#7c9da6}@media(max-width:900px){.jf-grid{grid-template-columns:1fr 1fr}.jf-card b{font-size:15px}.jf-table{display:block;overflow-x:auto;white-space:nowrap}}`;
+    s.textContent=`
+    .jf-wrap{margin:16px 0 22px;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:#eafcff}
+    .jf-shell{position:relative;overflow:hidden;border:1px solid rgba(91,225,255,.20);border-radius:24px;padding:18px;background:radial-gradient(circle at 85% 0%,rgba(28,197,255,.14),transparent 32%),linear-gradient(155deg,rgba(6,25,39,.97),rgba(2,8,16,.99));box-shadow:0 20px 60px rgba(0,0,0,.35),inset 0 1px rgba(255,255,255,.03)}
+    .jf-shell:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(rgba(92,223,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(92,223,255,.025) 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(to bottom,#000,transparent 75%)}
+    .jf-head{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:15px}
+    .jf-eyebrow{font-size:10px;letter-spacing:.22em;color:#63e9ff;text-transform:uppercase;font-weight:800}
+    .jf-head h2{margin:4px 0 2px;font-size:22px;letter-spacing:.02em;color:#f1fdff}.jf-head p{margin:0;color:#7197a4;font-size:11px}
+    .jf-live{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(85,240,177,.28);border-radius:999px;padding:7px 10px;background:rgba(18,80,57,.20);font-size:10px;font-weight:800;color:#79f4b5;white-space:nowrap}.jf-live:before{content:"";width:7px;height:7px;border-radius:50%;background:#60f0ad;box-shadow:0 0 14px #60f0ad}
+    .jf-kpis{position:relative;display:grid;grid-template-columns:1.25fr repeat(3,1fr);gap:10px}.jf-kpi{min-height:108px;border:1px solid rgba(90,219,246,.14);border-radius:17px;padding:14px;background:linear-gradient(180deg,rgba(8,31,45,.86),rgba(5,17,27,.86));box-shadow:inset 0 1px rgba(255,255,255,.025)}
+    .jf-kpi.primary{background:radial-gradient(circle at 100% 0%,rgba(0,220,255,.18),transparent 45%),linear-gradient(180deg,#082838,#05131f);border-color:rgba(90,225,255,.32)}
+    .jf-label{font-size:10px;color:#7598a4;letter-spacing:.08em}.jf-value{display:block;margin-top:7px;font-size:25px;font-weight:900;letter-spacing:-.03em;color:#f3fdff}.jf-kpi.primary .jf-value{font-size:31px;color:#8cf3ff;text-shadow:0 0 22px rgba(71,224,255,.20)}
+    .jf-sub{display:block;margin-top:7px;color:#63838e;font-size:9.5px;line-height:1.4}.jf-positive{color:#78f0b6!important}.jf-warning{color:#ffd598!important}
+    .jf-middle{position:relative;display:grid;grid-template-columns:minmax(0,1.65fr) minmax(240px,.75fr);gap:12px;margin-top:12px}
+    .jf-panel{border:1px solid rgba(91,225,255,.14);border-radius:18px;background:rgba(4,17,27,.78);padding:14px;min-width:0}.jf-panel-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.jf-panel-title b{font-size:12px;letter-spacing:.05em}.jf-panel-title span{font-size:9px;color:#638692}
+    .jf-site{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid rgba(104,206,229,.08)}.jf-site:first-child{border-top:0}.jf-site-name{font-size:11px;font-weight:800}.jf-track{height:7px;border-radius:999px;background:#0c2833;overflow:hidden}.jf-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#16bce0,#75f0ff);box-shadow:0 0 12px rgba(45,214,246,.24)}.jf-site-money{text-align:right;font-size:10px;font-weight:800;color:#c9f7ff}.jf-site-status{grid-column:2/4;font-size:8.8px;color:#668994;margin-top:-5px}
+    .jf-ring-wrap{display:flex;align-items:center;justify-content:center;min-height:144px}.jf-ring{--p:0;position:relative;width:122px;height:122px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#5cecff calc(var(--p)*1%),#0b2a36 0);box-shadow:0 0 28px rgba(49,220,250,.08)}.jf-ring:after{content:"";position:absolute;width:91px;height:91px;border-radius:50%;background:#06151f;border:1px solid rgba(97,218,242,.11)}.jf-ring-inner{position:relative;z-index:1;text-align:center}.jf-ring-inner b{display:block;font-size:24px}.jf-ring-inner span{font-size:9px;color:#6d94a0}
+    .jf-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.jf-mini{border:1px solid rgba(90,220,246,.11);border-radius:13px;padding:10px;background:#061923}.jf-mini span{display:block;font-size:9px;color:#6b909b}.jf-mini b{display:block;margin-top:4px;font-size:15px}
+    .jf-approval{position:relative;margin-top:12px;border:1px solid rgba(255,181,87,.30);background:linear-gradient(180deg,rgba(70,43,13,.54),rgba(31,21,10,.66));border-radius:16px;padding:12px}.jf-approval.ok{border-color:rgba(84,239,177,.22);background:rgba(13,56,42,.28)}.jf-approval h4{margin:0 0 8px;color:#ffd59b;font-size:12px}.jf-approval.ok h4{color:#7cf2b8}.jf-approval-item{padding:8px 0;border-top:1px solid rgba(255,199,116,.12);font-size:10px;line-height:1.5}.jf-approval-item:first-of-type{border-top:0}
+    .jf-footer{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:11px;color:#5d7e89;font-size:9px}.jf-link{display:inline-flex;min-height:38px;padding:0 12px;align-items:center;justify-content:center;border:1px solid rgba(86,225,255,.28);border-radius:11px;background:#082431;color:#eefdff;text-decoration:none;font-weight:800;font-size:10px}
+    @media(max-width:1000px){.jf-kpis{grid-template-columns:1fr 1fr}.jf-middle{grid-template-columns:1fr}.jf-kpi.primary .jf-value{font-size:25px}}
+    @media(max-width:620px){.jf-shell{padding:13px;border-radius:20px}.jf-head h2{font-size:18px}.jf-kpis{grid-template-columns:1fr 1fr;gap:8px}.jf-kpi{min-height:92px;padding:11px}.jf-value{font-size:18px}.jf-kpi.primary .jf-value{font-size:21px}.jf-head{align-items:center}.jf-live{padding:6px 8px}.jf-site{grid-template-columns:58px 1fr auto}.jf-footer{align-items:flex-start;flex-direction:column}.jf-link{width:100%;box-sizing:border-box}}
+    `;
     document.head.appendChild(s);
   }
 
-  function breakdownTable(d){
-    const rows=(d.siteBreakdown||[]).map(x=>`<tr><td>${x.site}</td><td>${fmtYen(x.revenue)}</td><td>${fmtYen(x.driverCost)}</td><td>${fmtYen(x.grossProfit)}</td><td class="jf-status">${x.status||'—'}</td></tr>`).join('');
-    return rows?`<table class="jf-table"><thead><tr><th>拠点</th><th>売上</th><th>DR支払</th><th>粗利</th><th>状態</th></tr></thead><tbody>${rows}</tbody></table>`:'';
+  function sitePerformance(d){
+    const rows=(d.siteBreakdown||[]).filter(x=>isNum(x.revenue));
+    const max=Math.max(1,...rows.map(x=>Number(x.revenue)||0));
+    if(!rows.length)return '<div class="jf-sub">拠点データなし</div>';
+    return rows.map(x=>{
+      const pct=Math.max(2,Math.round((Number(x.revenue||0)/max)*100));
+      return `<div class="jf-site"><div class="jf-site-name">${esc(x.site)}</div><div class="jf-track"><div class="jf-fill" style="width:${pct}%"></div></div><div class="jf-site-money">${fmtYen(x.revenue)}</div><div class="jf-site-status">${esc(x.status||'')}</div></div>`;
+    }).join('');
   }
 
   function approvalPanel(d){
     const q=d.approvalQueue||[];
-    if(!q.length)return '';
-    return `<div class="jf-approval"><h4>承認待ち ${q.length}件</h4>${q.map(x=>`<div class="jf-approval-item"><b>${x.date||''} ${x.site||''} ${x.business||''}</b><br>${x.driver||''} / 実績 ${x.actual??'—'}<br>${x.question||''}</div>`).join('')}</div>`;
+    if(!q.length)return '<div class="jf-approval ok"><h4>✓ 承認待ち 0件</h4><div class="jf-sub">現在、確認が必要な項目はありません。</div></div>';
+    return `<div class="jf-approval"><h4>⚠ 承認待ち ${q.length}件</h4>${q.map(x=>`<div class="jf-approval-item"><b>${esc(x.date||'')} ${esc(x.site||'')} ${esc(x.business||'')}</b><br>${esc(x.question||'')}</div>`).join('')}</div>`;
+  }
+
+  function executiveDashboard(d,withLink=false){
+    const margin=isNum(d.confirmedGrossMargin)?Number(d.confirmedGrossMargin):0;
+    const ring=Math.min(100,Math.max(0,margin*100));
+    return `<div class="jf-shell">
+      <div class="jf-head"><div><div class="jf-eyebrow">JARVIS EXECUTIVE CONTROL</div><h2>経営ダッシュボード</h2><p>${esc(d.scope||'確認済み実績')} / 最新実績 ${esc(d.latestActualDate||'—')}</p></div><div class="jf-live">LIVE DATA</div></div>
+      <div class="jf-kpis">
+        <div class="jf-kpi primary"><span class="jf-label">MONTHLY REVENUE</span><b class="jf-value">${fmtYen(d.monthRevenue)}</b><span class="jf-sub">今月売上・確認済み全拠点</span></div>
+        <div class="jf-kpi"><span class="jf-label">GROSS PROFIT</span><b class="jf-value jf-positive">${fmtYen(d.confirmedGrossProfit)}</b><span class="jf-sub">両方確定分のみ</span></div>
+        <div class="jf-kpi"><span class="jf-label">DR PAYMENT</span><b class="jf-value">${fmtYen(d.monthDriverCost)}</b><span class="jf-sub">登録済み支払額</span></div>
+        <div class="jf-kpi"><span class="jf-label">TODAY REVENUE</span><b class="jf-value">${fmtYen(d.todayRevenue)}</b><span class="jf-sub">${esc(d.todayRevenueScope||'日次確認済み分')}</span></div>
+      </div>
+      <div class="jf-middle">
+        <div class="jf-panel"><div class="jf-panel-title"><b>拠点別パフォーマンス</b><span>売上規模</span></div>${sitePerformance(d)}</div>
+        <div class="jf-panel"><div class="jf-panel-title"><b>利益コンディション</b><span>CONFIRMED</span></div><div class="jf-ring-wrap"><div class="jf-ring" style="--p:${ring}"><div class="jf-ring-inner"><b>${fmtPct(margin)}</b><span>粗利率</span></div></div></div><div class="jf-mini-grid"><div class="jf-mini"><span>承認待ち</span><b class="${(d.approvalQueue||[]).length?'jf-warning':'jf-positive'}">${(d.approvalQueue||[]).length}件</b></div><div class="jf-mini"><span>未確認</span><b>${Number(d.unknownCount||0)}件</b></div></div></div>
+      </div>
+      ${approvalPanel(d)}
+      <div class="jf-footer"><span>${VERSION} / 更新 ${esc(d.updatedAt||'—')} / 未確認・未連携は確定利益に含めません。</span>${withLink?'<a class="jf-link" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit#gid=539293015" target="_blank" rel="noopener">売上利益シートを開く</a>':''}</div>
+    </div>`;
   }
 
   function renderHome(d){
     const home=document.getElementById('home');if(!home||document.getElementById('jarvis-finance-home'))return;
     const target=home.querySelector('.core-wrap,.corebox')||home.firstElementChild;
-    const wrap=document.createElement('div');wrap.id='jarvis-finance-home';wrap.className='jf-wrap';
-    wrap.innerHTML=`<div class="jf-title">AI経理部 / 売上・利益（${d.scope||'確認済み分'}）</div><div class="jf-grid">${card('今日の売上',fmtYen(d.todayRevenue),d.todayRevenueScope||'日次連携済み分のみ','jf-ok')}${card('今月売上',fmtYen(d.monthRevenue),'確認済み拠点の合計')}${card('DR支払',fmtYen(d.monthDriverCost),'確認済み・登録済み分')}${card('確定粗利',fmtYen(d.confirmedGrossProfit),'確認できた分のみ')}${card('粗利率',fmtPct(d.confirmedGrossMargin),'未連携拠点があるため未確定')}${card('承認待ち',`${(d.approvalQueue||[]).length}件`,'必要なものだけ確認',((d.approvalQueue||[]).length>0)?'jf-warn':'jf-ok')}</div>${breakdownTable(d)}${approvalPanel(d)}<div class="jf-note">${VERSION} ／ 最新実績日: ${d.latestActualDate||'—'} ／ 未確認・未連携は全社利益に確定計上していません。</div>`;
+    const wrap=document.createElement('div');wrap.id='jarvis-finance-home';wrap.className='jf-wrap';wrap.innerHTML=executiveDashboard(d,false);
     target?.parentNode?target.parentNode.insertBefore(wrap,target):home.appendChild(wrap);
   }
 
   function renderSales(d){
     const sales=document.getElementById('sales');if(!sales||document.getElementById('jarvis-finance-sales'))return;
-    const wrap=document.createElement('div');wrap.id='jarvis-finance-sales';wrap.className='jf-wrap';
-    wrap.innerHTML=`<div class="jf-title">JARVIS売上利益 / ${VERSION}</div><div class="jf-grid">${card('今日売上',fmtYen(d.todayRevenue),d.todayRevenueScope||'日次連携済み分')}${card('今月売上',fmtYen(d.monthRevenue),'確認済み拠点合計')}${card('DR支払',fmtYen(d.monthDriverCost),'確認済み・登録済み分')}${card('確定粗利',fmtYen(d.confirmedGrossProfit),'未確認分は除外','jf-ok')}${card('粗利率',fmtPct(d.confirmedGrossMargin),'全社率は未確定')}${card('承認待ち',`${(d.approvalQueue||[]).length}件`,'最後にここだけ確認',((d.approvalQueue||[]).length>0)?'jf-warn':'jf-ok')}</div>${breakdownTable(d)}${approvalPanel(d)}<div class="jf-note">対象: ${d.scope||'確認済み分'} ／ 更新: ${d.updatedAt||'—'}。承認不要な処理は自動で進め、未確定だけここに残します。</div><a class="jf-link" href="https://docs.google.com/spreadsheets/d/1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI/edit#gid=539293015" target="_blank" rel="noopener">JARVIS売上利益シートを開く</a>`;
-    const old=sales.querySelector('.notice.alert');if(old){old.textContent='配送実績から売上・利益集計を自動更新。未確定事項だけ承認待ちに表示します。';old.parentNode.insertBefore(wrap,old)}else sales.appendChild(wrap);
+    const wrap=document.createElement('div');wrap.id='jarvis-finance-sales';wrap.className='jf-wrap';wrap.innerHTML=executiveDashboard(d,true);
+    const old=sales.querySelector('.notice.alert');if(old){old.textContent='配送実績から売上・利益を更新。未確定事項だけ承認待ちに表示します。';old.parentNode.insertBefore(wrap,old)}else sales.appendChild(wrap);
   }
 
   async function load(){
