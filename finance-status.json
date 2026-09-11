@@ -11,19 +11,21 @@
   },
   "todayRevenue": 161584,
   "todayRevenueScope": "三島＋静岡GION＋野洲の確認済み分",
-  "monthRevenue": 2006996,
-  "monthDriverCost": 1261860,
-  "confirmedGrossProfit": 109588,
-  "confirmedGrossMargin": 0.07991338481290024,
-  "confirmedRevenueForMargin": 1371448,
+  "monthRevenue": 2096350,
+  "monthDriverCost": 1341860,
+  "confirmedGrossProfit": 118942,
+  "confirmedGrossMargin": 0.0814223967382301,
+  "confirmedRevenueForMargin": 1460802,
   "unknownCount": 34,
   "unknownRevenueRate": 1,
   "unknownDriverCost": 33,
   "latestActualDate": "2026-09-11",
-  "updatedAt": "2026-09-11 11:32 JST",
+  "updatedAt": "2026-09-11 11:45 JST",
   "rateRules": [
     {"site":"一宮","business":"一宮CX","month":"2026-09","baseRate":18000,"surcharge":1464,"fullDayWholesale":19464,"wholesaleRate":9732,"taxBasis":"税別","rateBasis":"CX 0.5実績1回あたり＝(本体18,000円＋9月サーチャージ1,464円)÷2","driverPayment":9360,"status":"9月 卸・DR確定"},
-    {"site":"一宮","business":"一宮MX","month":"2026-09","baseRate":18000,"surcharge":1464,"fullDayWholesale":19464,"wholesaleRate":9732,"taxBasis":"税別","rateBasis":"MX 0.5実績1回あたり＝(本体18,000円＋9月サーチャージ1,464円)÷2","driverPayment":9360,"status":"9月 卸・DR確定"}
+    {"site":"一宮","business":"一宮MX","month":"2026-09","baseRate":18000,"surcharge":1464,"fullDayWholesale":19464,"wholesaleRate":9732,"taxBasis":"税別","rateBasis":"MX 0.5実績1回あたり＝(本体18,000円＋9月サーチャージ1,464円)÷2","driverPayment":9360,"status":"9月 卸・DR確定"},
+    {"site":"鶴見","business":"鶴見4h","effectiveFrom":"2026-08-09","baseRate":8000,"surcharge":312,"wholesaleRate":8312,"taxBasis":"税別","driverPayment":7500,"status":"確定"},
+    {"site":"鶴見","business":"鶴見5.5h","effectiveFrom":"2026-08-09","baseRate":11000,"surcharge":429,"wholesaleRate":11429,"taxBasis":"税別","driverPayment":10000,"status":"確定"}
   ],
   "siteBreakdown": [
     {"site":"三島","revenue":1345000,"driverCost":746500,"grossProfit":59900,"status":"9/11まで・一部DR未確認","note":"秋山製麺・お酒配送を含む。粗利は両方確定分のみ"},
@@ -32,25 +34,22 @@
     {"site":"富士","revenue":0,"driverCost":0,"grossProfit":0,"status":"9月から稼働なし","note":"ユーザー確認済み。2026年9月以降は稼働なしとして0実績管理"},
     {"site":"一宮","revenue":9732,"driverCost":9360,"grossProfit":372,"status":"9/3 CX 0.5 確定","note":"9/3 島田真一 / 一宮CX 0.5。本体18,000円＋9月サーチャージ1,464円＝19,464円、半日卸9,732円。DR支払9,360円"},
     {"site":"中村区","revenue":0,"driverCost":0,"grossProfit":0,"status":"9月から稼働なし","note":"ユーザー確認済み。2026年9月以降は稼働なしとして0実績管理"},
-    {"site":"鶴見","revenue":null,"driverCost":null,"grossProfit":null,"actualCount":10,"status":"9/11まで3名の稼働実績確認済み・金額未確定","targetDrivers":["佐藤 剛","大山 加奈子","秋葉 貴大"],"note":"鶴見DSシフト 2026年9月(鶴見区) gid=954430544 を確認。9/1〜9/11で佐藤剛4稼働、大山加奈子4稼働、秋葉貴大2稼働。勤務区分（4h/5.5h/12h）と当月金額がシフト表だけでは確定できないため売上・DR・粗利は未計上。"}
+    {"site":"鶴見","revenue":89354,"driverCost":80000,"grossProfit":9354,"actualCount":10,"status":"9/11まで3名・金額確定","targetDrivers":["佐藤 剛","大山 加奈子","秋葉 貴大"],"note":"佐藤剛4稼働・大山加奈子4稼働は鶴見4h（卸8,000＋サーチャージ312＝8,312円税別、DR7,500円）。秋葉貴大2稼働は鶴見5.5h（卸11,000＋サーチャージ429＝11,429円税別、DR10,000円）。合計売上89,354円、DR80,000円、粗利差額9,354円。"}
   ],
   "confirmedActuals": [
-    {"date":"2026-09-03","site":"一宮","driver":"島田 真一","business":"一宮CX","actual":0.5,"baseRate":18000,"surcharge":1464,"fullDayWholesale":19464,"revenueRate":9732,"taxBasis":"税別","revenue":9732,"driverPayment":9360,"driverCost":9360,"grossProfit":372,"financeStatus":"9月 卸・DR確定"}
+    {"date":"2026-09-03","site":"一宮","driver":"島田 真一","business":"一宮CX","actual":0.5,"baseRate":18000,"surcharge":1464,"fullDayWholesale":19464,"revenueRate":9732,"taxBasis":"税別","revenue":9732,"driverPayment":9360,"driverCost":9360,"grossProfit":372,"financeStatus":"9月 卸・DR確定"},
+    {"date":"2026-09-01","site":"鶴見","driver":"佐藤 剛","business":"鶴見4h","actual":1,"baseRate":8000,"surcharge":312,"revenueRate":8312,"taxBasis":"税別","revenue":8312,"driverPayment":7500,"driverCost":7500,"grossProfit":812,"financeStatus":"確定"},
+    {"date":"2026-09-02","site":"鶴見","driver":"佐藤 剛","business":"鶴見4h","actual":1,"baseRate":8000,"surcharge":312,"revenueRate":8312,"taxBasis":"税別","revenue":8312,"driverPayment":7500,"driverCost":7500,"grossProfit":812,"financeStatus":"確定"},
+    {"date":"2026-09-07","site":"鶴見","driver":"佐藤 剛","business":"鶴見4h","actual":1,"baseRate":8000,"surcharge":312,"revenueRate":8312,"taxBasis":"税別","revenue":8312,"driverPayment":7500,"driverCost":7500,"grossProfit":812,"financeStatus":"確定"},
+    {"date":"2026-09-10","site":"鶴見","driver":"佐藤 剛","business":"鶴見4h","actual":1,"baseRate":8000,"surcharge":312,"revenueRate":8312,"taxBasis":"税別","revenue":8312,"driverPayment":7500,"driverCost":7500,"grossProfit":812,"financeStatus":"確定"},
+    {"date":"2026-09-01","site":"鶴見","driver":"大山 加奈子","business":"鶴見4h","actual":1,"baseRate":8000,"surcharge":312,"revenueRate":8312,"taxBasis":"税別","revenue":8312,"driverPayment":7500,"driverCost":7500,"grossProfit":812,"financeStatus":"確定"},
+    {"date":"2026-09-02","site":"鶴見","driver":"大山 加奈子","business":"鶴見4h","actual":1,"baseRate":8000,"surcharge":312,"revenueRate":8312,"taxBasis":"税別","revenue":8312,"driverPayment":7500,"driverCost":7500,"grossProfit":812,"financeStatus":"確定"},
+    {"date":"2026-09-03","site":"鶴見","driver":"大山 加奈子","business":"鶴見4h","actual":1,"baseRate":8000,"surcharge":312,"revenueRate":8312,"taxBasis":"税別","revenue":8312,"driverPayment":7500,"driverCost":7500,"grossProfit":812,"financeStatus":"確定"},
+    {"date":"2026-09-06","site":"鶴見","driver":"大山 加奈子","business":"鶴見4h","actual":1,"baseRate":8000,"surcharge":312,"revenueRate":8312,"taxBasis":"税別","revenue":8312,"driverPayment":7500,"driverCost":7500,"grossProfit":812,"financeStatus":"確定"},
+    {"date":"2026-09-05","site":"鶴見","driver":"秋葉 貴大","business":"鶴見5.5h","actual":1,"baseRate":11000,"surcharge":429,"revenueRate":11429,"taxBasis":"税別","revenue":11429,"driverPayment":10000,"driverCost":10000,"grossProfit":1429,"financeStatus":"確定"},
+    {"date":"2026-09-11","site":"鶴見","driver":"秋葉 貴大","business":"鶴見5.5h","actual":1,"baseRate":11000,"surcharge":429,"revenueRate":11429,"taxBasis":"税別","revenue":11429,"driverPayment":10000,"driverCost":10000,"grossProfit":1429,"financeStatus":"確定"}
   ],
-  "pendingActuals": [
-    {"date":"2026-09-01","site":"鶴見","driver":"佐藤 剛","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
-    {"date":"2026-09-02","site":"鶴見","driver":"佐藤 剛","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
-    {"date":"2026-09-07","site":"鶴見","driver":"佐藤 剛","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
-    {"date":"2026-09-10","site":"鶴見","driver":"佐藤 剛","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
-    {"date":"2026-09-01","site":"鶴見","driver":"大山 加奈子","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
-    {"date":"2026-09-02","site":"鶴見","driver":"大山 加奈子","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
-    {"date":"2026-09-03","site":"鶴見","driver":"大山 加奈子","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
-    {"date":"2026-09-06","site":"鶴見","driver":"大山 加奈子","actual":1,"shiftMark":"18:30","financeStatus":"稼働実績確認済み・金額未確定"},
-    {"date":"2026-09-05","site":"鶴見","driver":"秋葉 貴大","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"},
-    {"date":"2026-09-11","site":"鶴見","driver":"秋葉 貴大","actual":1,"shiftMark":"20:00","financeStatus":"稼働実績確認済み・金額未確定"}
-  ],
-  "approvalQueue": [
-    {"id":"2026-09-tsurumi-rate-classification","type":"金額区分確認","date":"2026-09-01〜2026-09-11","site":"鶴見","drivers":["佐藤 剛","大山 加奈子","秋葉 貴大"],"question":"3名の稼働実績10件は反映済みです。シフト表の20:00/18:30を鶴見4h・5.5h・12hのどの勤務区分として計算するか、9月の卸単価・DR単価と合わせて確認が必要です。"}
-  ],
-  "note": "富士市・中村区は2026年9月から稼働なしで確定。鶴見は佐藤剛・大山加奈子・秋葉貴大の3名のみ対象とし、9/11まで合計10稼働をシフト正本から反映済み。金額は勤務区分と9月単価が確定するまで推測計上しない。サーチャージは全拠点で毎月確認する。"
+  "pendingActuals": [],
+  "approvalQueue": [],
+  "note": "富士市・中村区は2026年9月から稼働なしで確定。鶴見は佐藤剛・大山加奈子・秋葉貴大の3名のみ対象で9/11まで10稼働を確定。鶴見4hは8,000円＋サーチャージ312円、鶴見5.5hは11,000円＋サーチャージ429円（いずれも税別・8/9以降適用）。サーチャージは全拠点で毎月確認する。"
 }
