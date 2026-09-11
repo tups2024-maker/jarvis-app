@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='V7.1.3';
+  const VERSION='V7.2.0';
   const CALL_API='https://jarvis-api.t-ups2024.workers.dev/api/realtime/call';
   const CONNECT_TIMEOUT_MS=15000;
   let pc=null,dc=null,stream=null,audio=null,connecting=false,connected=false,lastError='';
@@ -39,6 +39,10 @@
     setStatus(`LIVE ERROR: ${lastError}`);setCore('error',label);emit('ups-live-unavailable',{error:lastError})
   }
   function addTranscript(text,cls){const log=document.getElementById('chatlog');if(!log||!text)return;const d=document.createElement('div');d.className='msg '+cls;d.textContent=text;log.appendChild(d);log.scrollTop=log.scrollHeight}
+  function applySpec(){
+    if(!dc||dc.readyState!=='open'||typeof window.upsSpecPrompt!=='function')return;
+    try{dc.send(JSON.stringify({type:'session.update',session:{instructions:window.upsSpecPrompt()}}))}catch(e){console.warn('spec update failed',e)}
+  }
   function onEvent(raw){let e;try{e=JSON.parse(raw.data)}catch{return}
     const type=e.type||'';
     if(type==='session.created'||type==='session.updated'){connected=true;connecting=false;lastError='';setStatus('アップズ君 LIVE');setCore('listening','LIVE / LISTENING');emit('ups-live-connected',e)}
@@ -71,10 +75,11 @@
       stream.getTracks().forEach(t=>pc.addTrack(t,stream));
       dc=pc.createDataChannel('oai-events');
       dc.onmessage=onEvent;
-      dc.onopen=()=>{connected=true;connecting=false;lastError='';clearTimeout(timeout);setStatus('アップズ君 LIVE');setCore('listening','LIVE / LISTENING')};
+      dc.onopen=()=>{connected=true;connecting=false;lastError='';clearTimeout(timeout);applySpec();setStatus('アップズ君 LIVE');setCore('listening','LIVE / LISTENING')};
       dc.onclose=()=>{if(connected)cleanup('TAP / VOICE')};
       const offer=await pc.createOffer();await pc.setLocalDescription(offer);
-      const r=await fetch(CALL_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sdp:offer.sdp,version:VERSION}),signal:controller.signal});
+      const spec=typeof window.upsSpecPrompt==='function'?window.upsSpecPrompt():'';
+      const r=await fetch(CALL_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sdp:offer.sdp,version:VERSION,spec}),signal:controller.signal});
       const answer=await r.text();
       if(!r.ok)throw new Error(`Worker ${r.status}: ${answer.slice(0,220)}`);
       if(!answer||!answer.startsWith('v='))throw new Error(`Invalid SDP: ${answer.slice(0,180)}`);
@@ -88,6 +93,7 @@
       return false;
     }
   }
+  window.addEventListener('ups-spec-changed',()=>{if(connected)applySpec()});
   window.upsLiveStart=start;
   window.upsLiveStop=()=>cleanup();
   window.upsLiveConnected=()=>connected;
