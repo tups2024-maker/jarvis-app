@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='V7.0.30';
+  const VERSION='V7.2.0';
   const API='https://jarvis-api.t-ups2024.workers.dev/api/chat';
   const KEY_ID='ups_chat_response_id';
   const KEY_LOG='ups_chat_log_v1';
@@ -81,7 +81,9 @@
     add(message,'me');busy=true;signal(true);setStatus('アップズ君が考えています…');
     const send=document.getElementById('send');if(send)send.disabled=true;
     try{
-      const payload={message,mode:voice?'voice':'text'};
+      const spec=typeof window.upsSpecPrompt==='function'?window.upsSpecPrompt():'';
+      const effectiveMessage=spec?`${spec}\n\n【ユーザー発話】\n${message}`:message;
+      const payload={message:effectiveMessage,mode:voice?'voice':'text',clientVersion:VERSION};
       if(previousResponseId)payload.previousResponseId=previousResponseId;
       const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       const j=await r.json();if(!r.ok||!j.success)throw new Error(j.error||'AI response error');
