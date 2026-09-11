@@ -1,7 +1,13 @@
-const CACHE='jarvis-v7-0-13-20260905';
+const CACHE='jarvis-v7-0-20-20260911';
 const CORE=[
   './',
   './index.html',
+  './desktop-live.html',
+  './mobile-live.html',
+  './desktop.html',
+  './mobile.html',
+  './finance-dashboard.js',
+  './finance-status.json',
   './v7.html',
   './manifest.json',
   './jarvis-icon.svg',
@@ -29,8 +35,8 @@ self.addEventListener('fetch',event=>{
   const url=new URL(req.url);
   if(url.origin!==self.location.origin) return;
 
-  // HTML/navigation is always network-first so the newest JARVIS loads quickly.
-  if(req.mode==='navigate' || req.destination==='document'){
+  // HTML/navigation and live finance assets are always network-first.
+  if(req.mode==='navigate' || req.destination==='document' || /(?:finance-dashboard\.js|finance-status\.json|desktop-live\.html|mobile-live\.html)$/.test(url.pathname)){
     event.respondWith(
       fetch(req,{cache:'no-store'})
         .then(res=>{const copy=res.clone();caches.open(CACHE).then(c=>c.put(req,copy)).catch(()=>{});return res;})
@@ -39,7 +45,7 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  // Static assets use stale-while-revalidate for app-like speed without locking old code.
+  // Static assets use stale-while-revalidate for app-like speed.
   event.respondWith((async()=>{
     const cached=await caches.match(req);
     const network=fetch(req).then(res=>{
