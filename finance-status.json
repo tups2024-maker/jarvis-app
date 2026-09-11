@@ -7,7 +7,7 @@
   "todayRevenue": 161584,
   "todayRevenueScope": "三島＋静岡GION＋野洲の確認済み分",
   "monthRevenue": 1997264,
-  "monthDriverCost": 1257180,
+  "monthDriverCost": 1261860,
   "confirmedGrossProfit": 109216,
   "confirmedGrossMargin": 0.08020468291479281,
   "confirmedRevenueForMargin": 1361716,
@@ -15,25 +15,25 @@
   "unknownRevenueRate": 2,
   "unknownDriverCost": 34,
   "latestActualDate": "2026-09-11",
-  "updatedAt": "2026-09-11 11:04 JST",
+  "updatedAt": "2026-09-11 11:06 JST",
   "rateRules": [
-    {"site":"一宮","business":"一宮CX","driverRate":9360,"rateBasis":"1.0実績あたり","status":"DR単価確定・売上単価未確認"},
-    {"site":"一宮","business":"一宮MX","driverRate":9360,"rateBasis":"1.0実績あたり","status":"DR単価確定・売上単価未確認"}
+    {"site":"一宮","business":"一宮CX","driverPayment":9360,"rateBasis":"CX 0.5実績1回あたり","status":"DR支払確定・売上単価未確認"},
+    {"site":"一宮","business":"一宮MX","driverPayment":9360,"rateBasis":"MX 0.5実績1回あたり","status":"DR支払確定・売上単価未確認"}
   ],
   "siteBreakdown": [
     {"site":"三島","revenue":1345000,"driverCost":746500,"grossProfit":59900,"status":"9/11まで・一部DR未確認","note":"秋山製麺・お酒配送を含む。粗利は両方確定分のみ"},
     {"site":"静岡","revenue":450664,"driverCost":331000,"grossProfit":22716,"status":"9/11まで・一部DR未確認","note":"GION 309,544円＋遠州 141,120円。粗利は両方確定分のみ"},
     {"site":"野洲","revenue":201600,"driverCost":175000,"grossProfit":26600,"status":"9/11まで確認済み","note":"10稼働 × 卸20,160円 / DR17,500円"},
     {"site":"富士","revenue":null,"driverCost":null,"grossProfit":null,"status":"実績未入力","note":"2026年9月 富士 遠州トラックのタブは存在するが実績行なし"},
-    {"site":"一宮","revenue":null,"driverCost":4680,"grossProfit":null,"status":"実績0.5・DR確定／売上単価未確認","note":"9/3 島田真一 / 一宮CX / 実績0.5。DR単価9,360円×0.5=4,680円。売上単価のみ未確認"},
+    {"site":"一宮","revenue":null,"driverCost":9360,"grossProfit":null,"status":"実績0.5・DR支払確定／売上単価未確認","note":"9/3 島田真一 / 一宮CX / 実績0.5。CXのDR支払は9,360円。0.5をさらに掛けない。売上単価のみ未確認"},
     {"site":"中村区","revenue":null,"driverCost":null,"grossProfit":null,"status":"実績未反映","note":"実運用版の2026年9月 中村区タブはヘッダーのみ"},
     {"site":"鶴見","revenue":null,"driverCost":null,"grossProfit":null,"status":"実績未反映","note":"実運用版の2026年9月 鶴見タブはヘッダーのみ"}
   ],
   "confirmedActuals": [
-    {"date":"2026-09-03","site":"一宮","driver":"島田 真一","business":"一宮CX","actual":0.5,"revenueRate":null,"driverRate":9360,"driverCost":4680,"financeStatus":"DR確定・売上単価未確認"}
+    {"date":"2026-09-03","site":"一宮","driver":"島田 真一","business":"一宮CX","actual":0.5,"revenueRate":null,"driverPayment":9360,"driverCost":9360,"financeStatus":"DR支払確定・売上単価未確認"}
   ],
   "approvalQueue": [
-    {"id":"2026-09-03-ichinomiya-cx-shimada","type":"売上単価確認","date":"2026-09-03","site":"一宮","driver":"島田 真一","business":"一宮CX","actual":0.5,"driverRate":9360,"driverCost":4680,"question":"一宮CXの卸（売上）単価を確認してください。"}
+    {"id":"2026-09-03-ichinomiya-cx-shimada","type":"売上単価確認","date":"2026-09-03","site":"一宮","driver":"島田 真一","business":"一宮CX","actual":0.5,"driverPayment":9360,"driverCost":9360,"question":"一宮CXの卸（売上）単価を確認してください。"}
   ],
-  "note": "一宮CX・MXのDR単価は各9,360円で確定。9/3 一宮CX 0.5のDR支払は4,680円。売上単価のみ未確認のため売上・粗利にはまだ計上していない。"
+  "note": "一宮CX・MXは0.5実績1回に対するDR支払が各9,360円。9/3 一宮CX 0.5のDR支払は9,360円として修正。売上単価のみ未確認。"
 }
