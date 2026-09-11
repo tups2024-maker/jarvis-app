@@ -4,5 +4,15 @@
   "sourceSheet": "JARVIS売上利益",
   "actualsCutoff": "TODAY",
   "unknownHandling": "未確認として除外",
-  "note": "JARVISトップ画面への直接表示は既存UI/API実装確認後に接続する"
+  "todayRevenue": 121000,
+  "monthRevenue": 1345000,
+  "monthDriverCost": 746500,
+  "confirmedGrossProfit": 59900,
+  "confirmedGrossMargin": 0.07428075396825397,
+  "unknownCount": 30,
+  "unknownRevenueRate": 1,
+  "unknownDriverCost": 29,
+  "latestActualDate": "2026-09-11",
+  "updatedAt": "2026-09-11 10:26 JST",
+  "note": "確認済みデータのみ。未確認金額は0円扱いせず粗利から除外。全社利益としては未確定。"
 }
