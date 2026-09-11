@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#020711">
+<title>JARVIS Desktop</title>
+</head>
+<body style="margin:0;background:#020711;color:#dff6ff;font-family:system-ui,sans-serif;padding:24px">JARVISを起動しています…
+<script>
+(async()=>{
+  try{
+    const r=await fetch('./desktop.html?v=20260911-1026',{cache:'no-store'});
+    if(!r.ok) throw new Error('desktop '+r.status);
+    let html=await r.text();
+    const addon='<script src="./finance-dashboard.js?v=20260911-1026"><\/script>';
+    html=html.includes('</body>')?html.replace('</body>',addon+'</body>'):html+addon;
+    document.open();document.write(html);document.close();
+  }catch(e){location.replace('./desktop.html?v=20260911-1026');}
+})();
+</script>
+</body>
+</html>
