@@ -1,6 +1,7 @@
 (()=>{
-  const VERSION='V7.3.0';
-  let finance=null,lastRefresh=0;
+  const VERSION='V7.3.1';
+  const API='https://jarvis-api.t-ups2024.workers.dev';
+  let finance=null,shift=null,delivery=null,lastRefresh=0;
   const SKILLS=[
     ['general','汎用AI','質問回答・要約・文章作成・アイデア・比較・計画・学習支援'],
     ['research','調査AI','最新情報や外部情報が必要かを判断し、利用可能な検索機能がある場合のみ調査する'],
@@ -18,29 +19,36 @@
     approval:'外部送信、公開投稿、求人掲載、契約、金銭の最終確定、単価変更、シフト/配車の最終確定、重要設定変更、データ削除は最後にまとめて承認待ちにする。',
     truth:'ツールや接続が無い操作を実行済みと表現しない。未確認データや数字を推測しない。'
   };
-  function yen(v){const n=Number(v);return Number.isFinite(n)?`¥${Math.round(n).toLocaleString('ja-JP')}`:'未確認'}
+  const yen=v=>Number.isFinite(Number(v))?`¥${Math.round(Number(v)).toLocaleString('ja-JP')}`:'未確認';
   function pick(obj,keys){for(const k of keys){if(obj&&obj[k]!=null)return obj[k]}return null}
   function summarizeFinance(d){
     if(!d||typeof d!=='object')return '財務スナップショット:未取得';
-    const rev=pick(d,['monthRevenue','revenue','monthlyRevenue']);
-    const gross=pick(d,['confirmedGrossProfit','grossProfit','monthGrossProfit']);
-    const pay=pick(d,['monthDriverCost','driverCost','drPay']);
-    const today=pick(d,['todayRevenue','today']);
-    return `財務スナップショット: 今月売上 ${yen(rev)} / 確認済み粗利 ${yen(gross)} / DR支払 ${yen(pay)} / 今日売上 ${yen(today)}`;
+    return `財務スナップショット: 今月売上 ${yen(pick(d,['monthRevenue','revenue','monthlyRevenue']))} / 確認済み粗利 ${yen(pick(d,['confirmedGrossProfit','grossProfit','monthGrossProfit']))} / DR支払 ${yen(pick(d,['monthDriverCost','driverCost','drPay']))} / 今日売上 ${yen(pick(d,['todayRevenue','today']))}`;
+  }
+  function compact(label,d){
+    if(!d)return `${label}:未取得`;
+    try{const s=JSON.stringify(d);return `${label}:${s.length>6500?s.slice(0,6500)+'…':s}`}catch{return `${label}:取得済み（整形不可）`}
+  }
+  async function getJson(url,ms=4500){
+    const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);
+    try{const r=await fetch(url,{cache:'no-store',signal:c.signal});if(!r.ok)return null;return await r.json()}catch{return null}finally{clearTimeout(t)}
   }
   async function refresh(force=false){
-    if(!force&&Date.now()-lastRefresh<60000)return finance;
+    if(!force&&Date.now()-lastRefresh<60000)return {finance,shift,delivery};
     lastRefresh=Date.now();
-    try{
-      const r=await fetch(`./finance-status.json?t=${Date.now()}`,{cache:'no-store'});
-      if(r.ok)finance=await r.json();
-    }catch(e){}
-    window.dispatchEvent(new CustomEvent('ups-skills-context',{detail:{version:VERSION,finance}}));
-    return finance;
+    const [f,s,d]=await Promise.all([
+      getJson(`./finance-status.json?t=${Date.now()}`),
+      getJson(`${API}/shift?t=${Date.now()}`),
+      getJson(`${API}/delivery?t=${Date.now()}`)
+    ]);
+    if(f)finance=f;if(s)shift=s;if(d)delivery=d;
+    const detail={version:VERSION,finance,shift,delivery};
+    window.dispatchEvent(new CustomEvent('ups-skills-context',{detail}));
+    return detail;
   }
   function prompt(){
     const skillText=SKILLS.map((x,i)=>`${i+1}. ${x[1]}: ${x[2]}`).join('\n');
-    return `【UP'S AI SKILLS ${VERSION}】\nあなたはChatGPTのように幅広い相談へ対応できる汎用AIであり、同時にUP'sのAI司令塔「アップズ君」。ユーザーに部署選択を要求せず、発話内容から必要なスキルを自動選択し、複数分野なら統合して答える。\n\n【利用スキル】\n${skillText}\n\n【自動運用】\n${approvalRules.auto}\n${approvalRules.approval}\n${approvalRules.truth}\n\n【会社データ優先】\n${summarizeFinance(finance)}\n会社データがある質問では一般知識よりJARVIS内データを優先する。シフト、単価、サーチャージ、実績など取得できていない値は「未確認」とする。\n\n【会話】\n普通の質問、相談、文章作成、企画、学習、技術相談にも自然に回答する。音声では簡潔に、文字では必要に応じて詳しくする。最新情報が必要な質問は、検索機能を実際に利用できる場合だけ最新情報として回答し、利用できない場合は最新確認が必要だと明示する。`;
+    return `【UP'S AI SKILLS ${VERSION}】\nあなたはChatGPTのように幅広い相談へ対応できる汎用AIであり、同時にUP'sのAI司令塔「アップズ君」。ユーザーに部署選択を要求せず、発話内容から必要なスキルを自動選択し、複数分野なら統合して答える。\n\n【利用スキル】\n${skillText}\n\n【自動運用】\n${approvalRules.auto}\n${approvalRules.approval}\n${approvalRules.truth}\n\n【会社データ優先】\n${summarizeFinance(finance)}\n${compact('シフトAPI',shift)}\n${compact('配送API',delivery)}\n会社データがある質問では一般知識より上記JARVIS内データを優先する。API未取得・空欄・不明値は推測せず「未確認」とする。未来シフトを実績として扱わない。単価・サーチャージは確認済み情報のみ使う。\n\n【会話】\n普通の質問、相談、文章作成、企画、学習、技術相談にも自然に回答する。音声では簡潔に、文字では必要に応じて詳しくする。最新情報が必要な質問は検索機能を実際に利用できる場合だけ最新情報として回答し、利用できない場合は最新確認が必要だと明示する。`;
   }
   function approvalNeeded(text){
     const t=String(text||'');
@@ -53,6 +61,6 @@
   window.upsSpecPrompt=()=>`${basePrompt?basePrompt():''}${basePrompt?'\n\n':''}${prompt()}`;
   window.upsSkillsRefresh=refresh;
   window.upsSkillsApprovalNeeded=approvalNeeded;
-  window.upsSkills={version:VERSION,list:SKILLS.map(x=>({id:x[0],name:x[1],description:x[2]}))};
+  window.upsSkills={version:VERSION,list:SKILLS.map(x=>({id:x[0],name:x[1],description:x[2]})),context:()=>({finance,shift,delivery})};
   refresh(true);setInterval(()=>refresh(false),60000);
 })();
