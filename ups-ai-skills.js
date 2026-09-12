@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='V7.3.1';
+  const VERSION='V7.3.2';
   const API='https://jarvis-api.t-ups2024.workers.dev';
   let finance=null,shift=null,delivery=null,lastRefresh=0;
   const SKILLS=[
