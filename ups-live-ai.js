@@ -1,7 +1,8 @@
 (()=>{
   const VERSION='V7.3.13-data1';
   const CALL_API='https://jarvis-api.t-ups2024.workers.dev/api/realtime/call';
-  const CONNECT_TIMEOUT_MS=15000;
+  // OpenAI Realtime call setup can take 20 seconds or longer on mobile.
+  const CONNECT_TIMEOUT_MS=60000;
   let pc=null,dc=null,stream=null,audio=null,connecting=false,connected=false,lastError='',handlingInternal=false;
 
   function emit(name,detail){window.dispatchEvent(new CustomEvent(name,{detail}))}
