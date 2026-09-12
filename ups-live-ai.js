@@ -90,8 +90,7 @@
     lastError='';
     if(!navigator.mediaDevices?.getUserMedia||!window.RTCPeerConnection){fail('このブラウザでは音声接続を開始できません','VOICE UNSUPPORTED');return false}
     connecting=true;setStatus('アップズ君 LIVE 接続中…');setCore('connecting','CONNECTING');
-    const controller=new AbortController();
-    const timeout=setTimeout(()=>controller.abort(),CONNECT_TIMEOUT_MS);
+    let timeout=null;
     try{
       await refreshCompanyContext();
       pc=new RTCPeerConnection();
@@ -110,6 +109,10 @@
       dc.onclose=()=>{if(connected)cleanup('TAP / VOICE')};
       const offer=await pc.createOffer();await pc.setLocalDescription(offer);
       const spec=typeof window.upsSpecPrompt==='function'?window.upsSpecPrompt():'';
+      // The company-data refresh can take longer than the realtime-call timeout.
+      // Start this timer only when the realtime API request itself begins.
+      const controller=new AbortController();
+      timeout=setTimeout(()=>controller.abort(),CONNECT_TIMEOUT_MS);
       const r=await fetch(CALL_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sdp:offer.sdp,version:VERSION,spec}),signal:controller.signal});
       const answer=await r.text();
       if(!r.ok)throw new Error(`Worker ${r.status}: ${answer.slice(0,220)}`);
