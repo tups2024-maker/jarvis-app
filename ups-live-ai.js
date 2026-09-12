@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='V7.3.9';
+  const VERSION='V7.3.13-data1';
   const CALL_API='https://jarvis-api.t-ups2024.workers.dev/api/realtime/call';
   const CONNECT_TIMEOUT_MS=15000;
   let pc=null,dc=null,stream=null,audio=null,connecting=false,connected=false,lastError='',handlingInternal=false;
@@ -41,6 +41,15 @@
   function applySpec(){
     if(!dc||dc.readyState!=='open'||typeof window.upsSpecPrompt!=='function')return;
     try{dc.send(JSON.stringify({type:'session.update',session:{type:'realtime',instructions:window.upsSpecPrompt()}}))}catch(e){console.warn('spec update failed',e)}
+  }
+  async function refreshCompanyContext(){
+    if(typeof window.upsSkillsRefresh!=='function')return null;
+    try{
+      setStatus('シフト・配送管理表を同期中…');
+      const ctx=await window.upsSkillsRefresh(true);
+      emit('ups-company-context-refreshed',ctx);
+      return ctx;
+    }catch(e){console.warn('UPs live company context refresh failed',e);return null}
   }
   async function handleInternalTranscript(text){
     if(handlingInternal||typeof window.upsInternalAction!=='function'||!text)return false;
@@ -84,6 +93,7 @@
     const controller=new AbortController();
     const timeout=setTimeout(()=>controller.abort(),CONNECT_TIMEOUT_MS);
     try{
+      await refreshCompanyContext();
       pc=new RTCPeerConnection();
       audio=document.createElement('audio');audio.autoplay=true;audio.playsInline=true;audio.style.display='none';document.body.appendChild(audio);
       pc.ontrack=e=>{audio.srcObject=e.streams[0]||new MediaStream([e.track]);audio.play().catch(()=>{})};
@@ -115,6 +125,7 @@
     }
   }
   window.addEventListener('ups-spec-changed',()=>{if(connected)applySpec()});
+  window.addEventListener('ups-company-context-refreshed',()=>{if(connected)applySpec()});
   window.upsLiveStart=start;
   window.upsLiveStop=()=>cleanup();
   window.upsLiveConnected=()=>connected;
