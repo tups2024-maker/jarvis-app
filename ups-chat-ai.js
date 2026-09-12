@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='V7.3.8';
+  const VERSION='V7.3.13-data1';
   const API='https://jarvis-api.t-ups2024.workers.dev/api/chat';
   const KEY_ID='ups_chat_response_id';
   const KEY_LOG='ups_chat_log_v1';
@@ -25,6 +25,19 @@
 
   async function tryInternalAction(message,voice){if(typeof window.upsInternalAction!=='function')return null;const action=await window.upsInternalAction(message);if(!action?.handled)return null;const reply=action.reply||'内部処理を実行しました。';add(reply,'ai');emit('ups-internal-action',{message,...action});emit('ups-chat-reply',{message,reply,responseId:null,voice,internal:true});setStatus(action.approvalRequired?'最終承認が必要です':'UP’s AI READY');if(voice)await speak(reply);return reply}
 
+  async function refreshCompanyContext(){
+    if(typeof window.upsSkillsRefresh!=='function')return null;
+    try{
+      setStatus('シフト・配送管理表を同期中…');
+      const ctx=await window.upsSkillsRefresh(true);
+      emit('ups-company-context-refreshed',ctx);
+      return ctx;
+    }catch(e){
+      console.warn('UPs company data refresh failed',e);
+      return null;
+    }
+  }
+
   async function chat(message,{voice=false}={}){
     message=String(message||'').trim();if(!message||busy)return null;
     if(typeof window.show==='function')window.show('ai');
@@ -32,6 +45,7 @@
     const send=document.getElementById('send');if(send)send.disabled=true;
     try{
       const internalReply=await tryInternalAction(message,voice);if(internalReply)return internalReply;
+      await refreshCompanyContext();
       const spec=typeof window.upsSpecPrompt==='function'?window.upsSpecPrompt():'';
       const effectiveMessage=spec?`${spec}\n\n【ユーザー発話】\n${message}`:message;
       const payload={message:effectiveMessage,mode:voice?'voice':'text',clientVersion:VERSION};
