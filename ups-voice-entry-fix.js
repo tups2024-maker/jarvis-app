@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='V7.3.13-VOICE1';
+  const VERSION='V7.3.14-VOICE-PERMISSION';
   let starting=false;
 
   function friendlyError(value){
@@ -23,6 +23,9 @@
       if(state==='connecting')talk.innerHTML='<span>🎙</span><div>接続中…<small>少しお待ちください</small></div>';
       else if(state==='listening')talk.innerHTML='<span>🎙</span><div>聞いています<small>そのまま話してください</small></div>';
       else if(state==='speaking')talk.innerHTML='<span>🔊</span><div>アップズ君が応答中<small>途中で話しかけてもOK</small></div>';
+      else if(state==='permission'){
+        talk.innerHTML='<span>↗</span><div>Safariでマイクを許可<small>右下のSafariボタンで開いてください</small></div>';
+      }
       else if(state==='error'){
         talk.innerHTML='<span>↻</span><div>もう一度話しかける<small></small></div>';
         const detail=talk.querySelector('small');
@@ -44,7 +47,7 @@
     try{
       const ok=await window.upsLiveStart();
       if(ok)setLocal('listening','LIVE / LISTENING');
-      else setLocal('error','RETRY',typeof window.upsLiveLastError==='function'?window.upsLiveLastError():'');
+      else{const err=typeof window.upsLiveLastError==='function'?window.upsLiveLastError():'';setLocal(/NotAllowedError|Permission denied|permission/i.test(String(err))?'permission':'error','RETRY',err)}
     }catch(e){
       console.warn('UPs voice entry failed',e);
       setLocal('error','RETRY',e?.message||e);
@@ -66,12 +69,14 @@
     if(st==='connecting')setLocal(st,label||'CONNECTING');
     else if(st==='listening')setLocal(st,label||'LIVE / LISTENING');
     else if(st==='speaking')setLocal(st,label||'SPEAKING');
+    else if(st==='permission')setLocal(st,'MIC PERMISSION');
     else if(st==='error')setLocal(st,'RETRY');
     else if(st==='idle')setLocal(st,label||'READY');
   });
 
   window.addEventListener('ups-live-unavailable',e=>{
-    setLocal('error','RETRY',e.detail?.error||'');
+    const err=String(e.detail?.error||'');
+    setLocal(/NotAllowedError|Permission denied|permission/i.test(err)?'permission':'error','RETRY',err);
   });
 
   window.upsVoiceEntryFix={version:VERSION,start};

@@ -36,7 +36,8 @@
   }
   function fail(msg,label='LIVE ERROR'){
     connected=false;connecting=false;lastError=msg||label;dispose();
-    setStatus(`LIVE ERROR: ${lastError}`);setCore('error',label);emit('ups-live-unavailable',{error:lastError})
+    const permission=/NotAllowedError|Permission denied|permission/i.test(String(lastError));
+    setStatus(permission?'マイクの許可が必要です':`LIVE ERROR: ${lastError}`);setCore(permission?'permission':'error',permission?'MIC PERMISSION':label);emit('ups-live-unavailable',{error:lastError,reason:permission?'permission':'connection'})
   }
   function addTranscript(text,cls){const log=document.getElementById('chatlog');if(!log||!text)return;const d=document.createElement('div');d.className='msg '+cls;d.textContent=text;log.appendChild(d);log.scrollTop=log.scrollHeight}
   function applySpec(){
