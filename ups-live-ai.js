@@ -47,6 +47,7 @@
     if(typeof window.upsSkillsRefresh!=='function')return null;
     try{
       setStatus('シフト・配送管理表を同期中…');
+      emit('ups-company-context-refreshing',null);
       const ctx=await window.upsSkillsRefresh(true);
       emit('ups-company-context-refreshed',ctx);
       return ctx;
@@ -76,10 +77,10 @@
     if(type==='session.created'||type==='session.updated'){connected=true;connecting=false;lastError='';setStatus('アップズ君 LIVE');setCore('listening','LIVE / LISTENING');emit('ups-live-connected',e)}
     if(type.includes('input_audio_buffer.speech_started')){setCore('listening','LISTENING');emit('ups-chat-busy',false)}
     if(type.includes('response.audio')||type.includes('response.output_audio')){if(!handlingInternal){setCore('speaking','SPEAKING');emit('ups-chat-busy',true)}}
-    if(type==='response.done'){if(!handlingInternal){setCore('listening','YOUR TURN');emit('ups-chat-busy',false)}}
+    if(type==='response.done'){if(!handlingInternal){setCore('listening','YOUR TURN');emit('ups-chat-busy',false);emit('ups-ai-task',{phase:'done',message:'音声での回答が完了しました。'})}}
     if(type==='conversation.item.input_audio_transcription.completed'){
       const t=e.transcript||e.item?.content?.[0]?.transcript;
-      if(t){addTranscript(t,'me');handleInternalTranscript(t)}
+      if(t){addTranscript(t,'me');emit('ups-ai-task',{phase:'routing',message:t,source:'voice'});handleInternalTranscript(t)}
     }
     if(type==='response.audio_transcript.done'||type==='response.output_audio_transcript.done'){const t=e.transcript;if(t&&!handlingInternal)addTranscript(t,'ai')}
     if(type==='error'){const msg=e.error?.message||e.message||'Realtime session error';if(/cancel/i.test(msg)&&handlingInternal)return;console.warn('UPs realtime error',e);fail(msg,'LIVE ERROR')}

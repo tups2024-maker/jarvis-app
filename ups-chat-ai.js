@@ -23,12 +23,13 @@
   function chunks(text){const s=spokenText(text);if(!s)return[];const parts=s.match(/[^。！？!?]+[。！？!?]?/g)||[s];const out=[];let buf='';parts.forEach(p=>{if((buf+p).length>90&&buf){out.push(buf);buf=p}else buf+=p});if(buf)out.push(buf);return out.slice(0,12)}
   function speak(text){return new Promise(resolve=>{if(!('speechSynthesis'in window)||!text){emit('ups-speech-end',null);resolve();return}const list=chunks(text);if(!list.length){emit('ups-speech-end',null);resolve();return}try{speechSynthesis.cancel();const voice=bestJapaneseVoice();let i=0,started=false;const next=()=>{if(i>=list.length){setStatus('UP’s AI READY');emit('ups-speech-end',text);resolve();return}const u=new SpeechSynthesisUtterance(list[i++]);u.lang='ja-JP';u.rate=0.96;u.pitch=1.02;u.volume=1;if(voice)u.voice=voice;u.onstart=()=>{if(!started){started=true;setStatus('アップズ君が話しています…');emit('ups-speech-start',text)}};u.onend=()=>setTimeout(next,75);u.onerror=()=>setTimeout(next,20);speechSynthesis.speak(u)};next()}catch(e){emit('ups-speech-end',null);resolve()}})}
 
-  async function tryInternalAction(message,voice){if(typeof window.upsInternalAction!=='function')return null;const action=await window.upsInternalAction(message);if(!action?.handled)return null;const reply=action.reply||'内部処理を実行しました。';add(reply,'ai');emit('ups-internal-action',{message,...action});emit('ups-chat-reply',{message,reply,responseId:null,voice,internal:true});setStatus(action.approvalRequired?'最終承認が必要です':'UP’s AI READY');if(voice)await speak(reply);return reply}
+  async function tryInternalAction(message,voice){if(typeof window.upsInternalAction!=='function')return null;const action=await window.upsInternalAction(message);if(!action?.handled)return null;const reply=action.reply||'内部処理を実行しました。';add(reply,'ai');emit('ups-internal-action',{message,...action});emit('ups-chat-reply',{message,reply,responseId:null,voice,internal:true,approvalRequired:!!action.approvalRequired});setStatus(action.approvalRequired?'最終承認が必要です':'UP’s AI READY');if(voice)await speak(reply);return reply}
 
   async function refreshCompanyContext(){
     if(typeof window.upsSkillsRefresh!=='function')return null;
     try{
       setStatus('シフト・配送管理表を同期中…');
+      emit('ups-company-context-refreshing',null);
       const ctx=await window.upsSkillsRefresh(true);
       emit('ups-company-context-refreshed',ctx);
       return ctx;
@@ -41,7 +42,7 @@
   async function chat(message,{voice=false}={}){
     message=String(message||'').trim();if(!message||busy)return null;
     if(typeof window.show==='function')window.show('ai');
-    add(message,'me');busy=true;signal(true);setStatus('アップズ君が考えています…');
+    add(message,'me');emit('ups-ai-task',{phase:'routing',message});busy=true;signal(true);setStatus('アップズ君が考えています…');
     const send=document.getElementById('send');if(send)send.disabled=true;
     try{
       const internalReply=await tryInternalAction(message,voice);if(internalReply)return internalReply;
