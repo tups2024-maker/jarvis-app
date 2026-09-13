@@ -77,7 +77,7 @@
     if(type==='session.created'||type==='session.updated'){connected=true;connecting=false;lastError='';setStatus('アップズ君 LIVE');setCore('listening','LIVE / LISTENING');emit('ups-live-connected',e)}
     if(type.includes('input_audio_buffer.speech_started')){setCore('listening','LISTENING');emit('ups-chat-busy',false)}
     if(type.includes('response.audio')||type.includes('response.output_audio')){if(!handlingInternal){setCore('speaking','SPEAKING');emit('ups-chat-busy',true)}}
-    if(type==='response.done'){if(!handlingInternal){setCore('listening','YOUR TURN');emit('ups-chat-busy',false);emit('ups-ai-task',{phase:'done',message:'音声での回答が完了しました。'})}}
+    if(type==='response.done'){if(!handlingInternal){setCore('listening','YOUR TURN');emit('ups-chat-busy',false);emit('ups-ai-task',{phase:'done',message:'音声での回答が完了しました。',source:'voice',preserveRole:true})}}
     if(type==='conversation.item.input_audio_transcription.completed'){
       const t=e.transcript||e.item?.content?.[0]?.transcript;
       if(t){addTranscript(t,'me');emit('ups-ai-task',{phase:'routing',message:t,source:'voice'});handleInternalTranscript(t)}
