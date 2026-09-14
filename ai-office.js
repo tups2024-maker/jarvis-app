@@ -6,11 +6,11 @@ const workers={
   finance:{badge:'🧑‍💼',name:'経理',job:'売上・粗利・明細'},
   sales:{badge:'🧑‍💻',name:'営業',job:'企業・商談・フォロー'},
   recruit:{badge:'🧑‍🚀',name:'採用',job:'応募・面接・人材'},
-  legal:{badge:'🧑‍⚖️',name:'法務・契約',job:'契約書・申請・確認'},
+  secretary:{badge:'🧑‍💼',name:'AI秘書',job:'予定・契約・リマインド'},
   analysis:{badge:'🧑‍🔬',name:'AI分析',job:'集計・比較・改善案'}
 };
 const phaseLabel={idle:'待機中',routing:'振り分け中',fetching:'データ取得中',analyzing:'分析中',approval:'承認待ち',permission:'マイク許可待ち',done:'完了',error:'エラー'};
-function roleFor(text){const m=String(text||'');if(/(売上|粗利|利益|経理|請求|明細|支払|単価|振込)/.test(m))return'finance';if(/(シフト|出勤|退勤|配送|配車|欠車|ドライバー|稼働|三島|鶴見|Amazon)/i.test(m))return'ops';if(/(営業|商談|企業|見込|顧客|架電|アポ|メール)/.test(m))return'sales';if(/(採用|応募|面接|求人|人材)/.test(m))return'recruit';if(/(契約|契約書|法務|申請|書類|規約)/.test(m))return'legal';if(/(分析|比較|予測|傾向|改善|レポート|集計)/.test(m))return'analysis';return'analysis'}
+function roleFor(text){const m=String(text||'');if(/(売上|粗利|利益|経理|請求|明細|支払|単価|振込)/.test(m))return'finance';if(/(シフト|出勤|退勤|配送|配車|欠車|ドライバー|稼働|三島|鶴見|Amazon)/i.test(m))return'ops';if(/(営業|商談|企業|見込|顧客|架電|アポ|メール)/.test(m))return'sales';if(/(採用|応募|面接|求人|人材)/.test(m))return'recruit';if(/(予定|日程|カレンダー|リマインド|契約|契約書|法務|申請|書類|規約|締切|期限)/.test(m))return'secretary';if(/(分析|比較|予測|傾向|改善|レポート|集計)/.test(m))return'analysis';return'analysis'}
 function shortTask(text,fallback){const s=String(text||fallback||'').replace(/\s+/g,' ').trim();return s.length>46?s.slice(0,46)+'…':s}
 const yen=n=>Number.isFinite(Number(n))?'¥'+Number(n).toLocaleString('ja-JP'):'—';
 const dateParts=()=>{const p=new Intl.DateTimeFormat('ja-JP',{timeZone:'Asia/Tokyo',year:'numeric',month:'numeric',day:'numeric',hour:'numeric',hour12:false}).formatToParts(new Date());const o=Object.fromEntries(p.map(x=>[x.type,x.value]));return{y:+o.year,m:+o.month,d:+o.day,h:+o.hour}};
