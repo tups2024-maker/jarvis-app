@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='V7.3.8';
+  const VERSION='V7.3.16-screen-number-lock';
   const KEY='ups_internal_finance_override_v1';
   const originalFetch=window.fetch.bind(window);
   const money=n=>Number.isFinite(Number(n))?'¥'+Number(n).toLocaleString('ja-JP'):'—';
@@ -21,10 +21,13 @@
   function applyDom(data){const pairs=[['今月売上','monthRevenue'],['確認済み粗利','confirmedGrossProfit'],['DR支払','monthDriverCost']];document.querySelectorAll('.ups-kpi,.aio-kpi').forEach(card=>{const label=card.querySelector('span')?.textContent||'';for(const [name,key] of pairs){if(label.includes(name)){const b=card.querySelector('b');if(b)b.textContent=money(data[key])}}});}
   async function repairFinance(){const src=await fetchFinance(),result=reconcile(src);save(result);applyDom(result.data);window.dispatchEvent(new CustomEvent('ups-finance-reconciled',{detail:result}));return result}
   function criticalIntent(m){return /(単価|サーチャージ|元シート|配送管理表|原本|削除|外部送信|公開|契約|振込|支払).*(変更|修正|更新|確定|実行)|(?:変更|修正|更新|確定|実行).*(単価|サーチャージ|元シート|配送管理表|原本|削除|外部送信|公開|契約|振込|支払)/.test(m)}
+  function financeReadIntent(m){return /(今月(?:の)?売上|今日(?:の)?売上|売上|確認済み粗利|粗利|DR支払|ドライバー支払|画面(?:の)?数字|金額).*(いくら|教えて|読んで|読み上げ|確認|どうなって|合って)|(?:いくら|教えて|読んで|読み上げ|確認|どうなって|合って).*(今月(?:の)?売上|今日(?:の)?売上|売上|確認済み粗利|粗利|DR支払|ドライバー支払|画面(?:の)?数字|金額)/.test(m)&&!/(変更|修正|更新|確定|実行)/.test(m)}
   function financeIntent(m){return /(売上|粗利|利益|DR支払|経理|差異|数字).*(修正|直|再計算|整合|合わせ|確認)|(?:修正|直|再計算|整合|合わせ|確認).*(売上|粗利|利益|DR支払|経理|差異|数字)|内部修正/.test(m)}
+  async function readFinance(m){const r=await repairFinance(),d=r.data||{};const all=/(画面|全部|数字|金額)/.test(m),today=/今日(?:の)?売上/.test(m),lines=[];if(all||(!today&&/(今月(?:の)?売上|売上)/.test(m)))lines.push(`今月売上は、${money(d.monthRevenue)}です。`);if(all||today)lines.push(`今日の売上は、${money(d.todayRevenue)}です。`);if(all||/(確認済み粗利|粗利)/.test(m))lines.push(`確認済み粗利は、${money(d.confirmedGrossProfit)}です。`);if(all||/(DR支払|ドライバー支払)/.test(m))lines.push(`DR支払は、${money(d.monthDriverCost)}です。`);if(!lines.length)lines.push(`今月売上は、${money(d.monthRevenue)}です。`,`確認済み粗利は、${money(d.confirmedGrossProfit)}です。`,`DR支払は、${money(d.monthDriverCost)}です。`,`今日の売上は、${money(d.todayRevenue)}です。`);return{handled:true,approvalRequired:false,reply:`画面に表示している確定値をそのまま読み上げます。\n${lines.join('\n')}`,result:r,source:'finance-status-screen-lock'}}
   function diffLine(name,d){return d?`${name}: ${money(d.before)} → ${money(d.after)}（差 ${d.delta>=0?'+':''}${money(d.delta).replace('¥','¥')}）`:''}
   async function run(message){const m=String(message||'').trim();if(!m)return null;
     if(criticalIntent(m))return{handled:true,approvalRequired:true,reply:'この操作は重要変更にあたるため自動実行しません。元シート変更・単価変更・外部送信などは最終承認後に実行する設定です。'};
+    if(financeReadIntent(m)){try{return await readFinance(m)}catch(e){return{handled:true,approvalRequired:false,reply:'画面の確定値を取得できなかったため、金額は読み上げませんでした。再読み込みしてからもう一度お試しください。',error:String(e)}}}
     if(!financeIntent(m))return null;
     try{const r=await repairFinance();const lines=[];if(r.diff.monthRevenue)lines.push(diffLine('今月売上',r.diff.monthRevenue));if(r.diff.monthDriverCost)lines.push(diffLine('DR支払',r.diff.monthDriverCost));if(r.diff.confirmedGrossProfit)lines.push(diffLine('確認済み粗利',r.diff.confirmedGrossProfit));
       const reply=r.changed?`内部の売上・粗利整合チェックを実行し、JARVIS表示を自動補正しました。\n${lines.join('\n')}\n元のGoogle Sheetsは変更していません。未確認金額は推測していません。`:`内部の売上・DR支払・確認済み粗利を再集計しました。現在のJARVIS表示と拠点別合計に差異はありません。元のGoogle Sheetsは変更していません。`;
