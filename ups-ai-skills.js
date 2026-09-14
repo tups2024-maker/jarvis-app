@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='V7.3.13-data2';
+  const VERSION='V7.3.15-number-reading';
   const API='https://jarvis-api.t-ups2024.workers.dev';
   let finance=null,shift=null,delivery=null,lastRefresh=0,refreshPromise=null;
   const SKILLS=[
@@ -15,7 +15,7 @@
   const approvalRules={
     auto:'取得・読取・集計・分析・比較・検査・候補抽出・下書き・改善案・社内向け整理は自動で進める。途中確認は原則しない。',
     approval:'外部送信、公開投稿、契約、金銭の最終確定、単価変更、シフト/配車の最終確定、重要設定変更、データ削除は最後にまとめて承認待ちにする。',
-    truth:'ツールや接続が無い操作を実行済みと表現しない。未確認データや数字を推測しない。'
+    truth:'ツールや接続が無い操作を実行済みと表現しない。未確認データや数字を推測しない。音声回答の数字は桁ごとに読まず、日本語として自然に読む。2,116,510円は「二百十一万六千五百十円」、9/11は「九月十一日」、12.5%は「十二点五パーセント」、11hは「十一時間」と読み、金額・日付・割合・台数・人数は単位まで省略せず読み上げる。'
   };
   const yen=v=>Number.isFinite(Number(v))?`¥${Math.round(Number(v)).toLocaleString('ja-JP')}`:'未確認';
   function pick(obj,keys){for(const k of keys){if(obj&&obj[k]!=null)return obj[k]}return null}

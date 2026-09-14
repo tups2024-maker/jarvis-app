@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='V7.3.13-data1';
+  const VERSION='V7.3.15-number-reading';
   const API='https://jarvis-api.t-ups2024.workers.dev/api/chat';
   const KEY_ID='ups_chat_response_id';
   const KEY_LOG='ups_chat_log_v1';
@@ -19,7 +19,10 @@
   function bestJapaneseVoice(){refreshVoices();const jp=voiceCache.filter(v=>/^ja(-|_)?/i.test(v.lang||'')||/Japanese|日本語/i.test(v.name||''));if(!jp.length)return null;const preferred=['Kyoko','Otoya','Nanami','Haruka','Ayumi','Ichiro','Google 日本語','Google Japanese','Microsoft Nanami','Microsoft Haruka'];const score=v=>{let s=0,n=v.name||'';preferred.forEach((p,i)=>{if(n.toLowerCase().includes(p.toLowerCase()))s+=100-i});if(v.localService)s+=10;if(/^ja-JP$/i.test(v.lang||''))s+=8;return s};return jp.sort((a,b)=>score(b)-score(a))[0]||null}
   if('speechSynthesis'in window){refreshVoices();speechSynthesis.onvoiceschanged=refreshVoices}
 
-  function spokenText(text){return String(text||'').replace(/```[\s\S]*?```/g,'コード部分は画面で確認してください。').replace(/https?:\/\/\S+/g,'リンクは画面に表示しています。').replace(/[*#>`_~]/g,'').replace(/\n{2,}/g,'。').replace(/\n/g,'、').replace(/\s+/g,' ').trim()}
+  const jaDigit=['ゼロ','一','二','三','四','五','六','七','八','九'];
+  function fourToJa(n){const units=['','十','百','千'];let out='';String(n).padStart(4,'0').split('').forEach((d,i)=>{const v=Number(d),u=3-i;if(v)out+=(v===1&&u>0?'':jaDigit[v])+units[u]});return out}
+  function numberToJa(raw){const clean=String(raw).replace(/,/g,''),parts=clean.split('.'),n=Number(parts[0]);if(!Number.isFinite(n))return raw;if(n===0)return parts[1]?`ゼロ点${parts[1].split('').map(x=>jaDigit[Number(x)]).join('')}`:'ゼロ';let value=Math.abs(Math.trunc(n)),out='',group=0;const large=['','万','億','兆','京'];while(value&&group<large.length){const part=value%10000;if(part)out=fourToJa(part)+large[group]+out;value=Math.floor(value/10000);group++}if(n<0)out='マイナス'+out;if(parts[1])out+=`点${parts[1].split('').map(x=>jaDigit[Number(x)]).join('')}`;return out}
+  function spokenText(text){return String(text||'').replace(/```[\s\S]*?```/g,'コード部分は画面で確認してください。').replace(/https?:\/\/\S+/g,'リンクは画面に表示しています。').replace(/(20\d{2})[\/-](\d{1,2})[\/-](\d{1,2})/g,(_,y,m,d)=>`${numberToJa(y)}年${numberToJa(m)}月${numberToJa(d)}日`).replace(/(\d{1,2})\/(\d{1,2})/g,(_,m,d)=>`${numberToJa(m)}月${numberToJa(d)}日`).replace(/[¥￥]\s*([\d,]+(?:\.\d+)?)/g,(_,n)=>`${numberToJa(n)}円`).replace(/([\d,]+(?:\.\d+)?)\s*円/g,(_,n)=>`${numberToJa(n)}円`).replace(/([\d,]+(?:\.\d+)?)\s*%/g,(_,n)=>`${numberToJa(n)}パーセント`).replace(/([\d,]+(?:\.\d+)?)\s*h\b/gi,(_,n)=>`${numberToJa(n)}時間`).replace(/\b\d{1,3}(?:,\d{3})+\b/g,n=>numberToJa(n)).replace(/[*#>`_~]/g,'').replace(/\n{2,}/g,'。').replace(/\n/g,'、').replace(/\s+/g,' ').trim()}
   function chunks(text){const s=spokenText(text);if(!s)return[];const parts=s.match(/[^。！？!?]+[。！？!?]?/g)||[s];const out=[];let buf='';parts.forEach(p=>{if((buf+p).length>90&&buf){out.push(buf);buf=p}else buf+=p});if(buf)out.push(buf);return out.slice(0,12)}
   function speak(text){return new Promise(resolve=>{if(!('speechSynthesis'in window)||!text){emit('ups-speech-end',null);resolve();return}const list=chunks(text);if(!list.length){emit('ups-speech-end',null);resolve();return}try{speechSynthesis.cancel();const voice=bestJapaneseVoice();let i=0,started=false;const next=()=>{if(i>=list.length){setStatus('UP’s AI READY');emit('ups-speech-end',text);resolve();return}const u=new SpeechSynthesisUtterance(list[i++]);u.lang='ja-JP';u.rate=0.96;u.pitch=1.02;u.volume=1;if(voice)u.voice=voice;u.onstart=()=>{if(!started){started=true;setStatus('アップズ君が話しています…');emit('ups-speech-start',text)}};u.onend=()=>setTimeout(next,75);u.onerror=()=>setTimeout(next,20);speechSynthesis.speak(u)};next()}catch(e){emit('ups-speech-end',null);resolve()}})}
 
