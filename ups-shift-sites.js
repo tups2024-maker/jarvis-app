@@ -20,6 +20,19 @@
     {id:'enshu-fuji',label:'遠州富士',group:'遠州トラック',book:ENSHU,gid:'1914323243',tab:'2026年9月 富士 遠州トラック',caption:'遠州トラック正本'}
   ];
 
+  const DELIVERY_SITES=[
+    {label:'鶴見',group:'ギオン',book:CORE,gid:'107675747',tab:'2026年9月 鶴見'},
+    {label:'中村区',group:'ギオン',book:CORE,gid:'1241751568',tab:'2026年9月 中村区'},
+    {label:'一宮',group:'ギオン',book:CORE,gid:'902048376',tab:'2026年9月 一宮'},
+    {label:'静岡・駿河区',group:'ギオン',book:CORE,gid:'2051049705',tab:'2026年9月 静岡'},
+    {label:'三島',group:'ギオン',book:CORE,gid:'283632455',tab:'2026年9月 三島'},
+    {label:'お酒',group:'その他',book:CORE,gid:'306319410',tab:'2026年9月 株式会社サカエ'},
+    {label:'秋山製麺',group:'その他',book:CORE,gid:'350367810',tab:'2026年9月 秋山製麺所'},
+    {label:'遠州野洲',group:'遠州トラック',book:ENSHU,gid:'2050990999',tab:'2026年9月 野洲市 遠州トラック'},
+    {label:'遠州駿河',group:'遠州トラック',book:ENSHU,gid:'1543564420',tab:'2026年9月 静岡 遠州トラック'},
+    {label:'遠州富士',group:'遠州トラック',book:ENSHU,gid:'1914323243',tab:'2026年9月 富士 遠州トラック'}
+  ];
+
   const state={area:localStorage.getItem('ups-shift-area-v2')||'all',data:null,month:'',start:3,days:31,loading:false};
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const site=id=>SITES.find(x=>x.id===id)||SITES[0];
@@ -63,7 +76,7 @@
   function addStyle(){
     if(document.getElementById('ups-shift-sites-style'))return;
     const s=document.createElement('style');s.id='ups-shift-sites-style';
-    s.textContent='.ups-site-shift{margin-top:14px;border:1px solid rgba(83,226,255,.28);border-radius:16px;background:#03131e;padding:13px;overflow:hidden}.ups-site-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}.ups-site-head h3{margin:0;font-size:16px}.ups-site-head small{color:#7bdff1}.ups-site-tabs{display:flex;gap:7px;overflow-x:auto;padding:2px 0 9px}.ups-site-tab{flex:0 0 auto;border:1px solid #275e6d;border-radius:999px;background:#061d28;color:#a9d7df;padding:8px 12px;font-weight:750;cursor:pointer}.ups-site-tab.active{border-color:#50e5ff;background:#0b3b51;color:#fff}.ups-shift-scroll{overflow:auto;border:1px solid #17404c;border-radius:12px;max-height:58vh}.ups-shift-table{border-collapse:separate;border-spacing:0;min-width:max-content;width:100%;background:#021018}.ups-shift-table th,.ups-shift-table td{padding:7px 8px;border-right:1px solid #143a46;border-bottom:1px solid #143a46;text-align:center;font-size:11px;min-width:39px}.ups-shift-table th{position:sticky;top:0;background:#082633;color:#82e9fa;z-index:2}.ups-shift-table th:first-child,.ups-shift-table td:first-child{position:sticky;left:0;min-width:104px;text-align:left;background:#061c27;z-index:1}.ups-shift-table th:first-child{z-index:3}.ups-shift-on{color:#eaffff;background:#083247}.ups-shift-empty{padding:22px;text-align:center;color:#8fb5bf}.ups-site-foot{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:9px;color:#7ea6b0;font-size:11px}.ups-shift-refresh,.ups-sheet-open{border:1px solid #286778;border-radius:9px;background:#082735;color:#ddfaff;padding:7px 10px;cursor:pointer;text-decoration:none;font-weight:700}.ups-shift-source-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 1px}.ups-shift-source-head b{display:block;color:#eaffff}.ups-shift-source-head small{color:#7ea6b0}.ups-sheet-frame{width:100%;height:64vh;min-height:430px;border:1px solid #17404c;border-radius:12px;background:#fff}.ups-site-groups{display:grid;gap:12px}.ups-site-group{border:1px solid #17404c;border-radius:13px;padding:11px;background:#041923}.ups-site-group h4{margin:0 0 9px;color:#72e7f8}.ups-site-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:8px}.ups-site-card{border:1px solid #275e6d;border-radius:11px;background:#072330;color:#eaffff;padding:12px;text-align:left;cursor:pointer}.ups-site-card b,.ups-site-card small{display:block}.ups-site-card small{margin-top:4px;color:#7ea6b0}.ups-site-note{padding:8px 2px;color:#8fb5bf;font-size:11px}';
+    s.textContent='.ups-site-shift,.ups-delivery-sites{margin-top:14px;border:1px solid rgba(83,226,255,.28);border-radius:16px;background:#03131e;padding:13px;overflow:hidden}.ups-site-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}.ups-site-head h3{margin:0;font-size:16px}.ups-site-head small{color:#7bdff1}.ups-site-tabs{display:flex;gap:7px;overflow-x:auto;padding:2px 0 9px}.ups-site-tab{flex:0 0 auto;border:1px solid #275e6d;border-radius:999px;background:#061d28;color:#a9d7df;padding:8px 12px;font-weight:750;cursor:pointer}.ups-site-tab.active{border-color:#50e5ff;background:#0b3b51;color:#fff}.ups-shift-scroll{overflow:auto;border:1px solid #17404c;border-radius:12px;max-height:58vh}.ups-shift-table{border-collapse:separate;border-spacing:0;min-width:max-content;width:100%;background:#021018}.ups-shift-table th,.ups-shift-table td{padding:7px 8px;border-right:1px solid #143a46;border-bottom:1px solid #143a46;text-align:center;font-size:11px;min-width:39px}.ups-shift-table th{position:sticky;top:0;background:#082633;color:#82e9fa;z-index:2}.ups-shift-table th:first-child,.ups-shift-table td:first-child{position:sticky;left:0;min-width:104px;text-align:left;background:#061c27;z-index:1}.ups-shift-table th:first-child{z-index:3}.ups-shift-on{color:#eaffff;background:#083247}.ups-shift-empty{padding:22px;text-align:center;color:#8fb5bf}.ups-site-foot{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:9px;color:#7ea6b0;font-size:11px}.ups-shift-refresh,.ups-sheet-open{border:1px solid #286778;border-radius:9px;background:#082735;color:#ddfaff;padding:7px 10px;cursor:pointer;text-decoration:none;font-weight:700}.ups-sheet-open.primary{display:flex;min-height:70px;align-items:center;justify-content:center;text-align:center;border-color:#50e5ff;background:linear-gradient(135deg,#075675,#0a2d62);font-size:15px}.ups-shift-source-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 1px}.ups-shift-source-head b{display:block;color:#eaffff}.ups-shift-source-head small{color:#7ea6b0}.ups-site-groups{display:grid;gap:12px}.ups-site-group{border:1px solid #17404c;border-radius:13px;padding:11px;background:#041923}.ups-site-group h4{margin:0 0 9px;color:#72e7f8}.ups-site-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:8px}.ups-site-card{border:1px solid #275e6d;border-radius:11px;background:#072330;color:#eaffff;padding:12px;text-align:left;cursor:pointer;text-decoration:none}.ups-site-card b,.ups-site-card small{display:block}.ups-site-card small{margin-top:4px;color:#7ea6b0}.ups-site-note{padding:8px 2px;color:#8fb5bf;font-size:11px}';
     document.head.appendChild(s);
   }
 
@@ -89,7 +102,20 @@
 
   function renderSource(s){
     const r=resolved(s);
-    return`<div class="ups-shift-source-head"><div><b>${esc(r.group)} / ${esc(r.label)}</b><small>${esc(r.caption)}・${esc(r.tab)}</small></div><a class="ups-sheet-open" href="${sheetUrl(r)}" target="_blank" rel="noopener">正本を開く</a></div><iframe class="ups-sheet-frame" title="${esc(r.label)}シフト" src="${sheetUrl(r,true)}" loading="lazy"></iframe><div class="ups-site-note">表示されない場合は「正本を開く」を押してください。</div>`;
+    return`<div class="ups-shift-source-head"><div><b>${esc(r.group)} / ${esc(r.label)}</b><small>${esc(r.caption)}・${esc(r.tab)}</small></div></div><a class="ups-sheet-open primary" href="${sheetUrl(r)}" target="_blank" rel="noopener">${esc(r.label)}の最新シフト正本を開く</a><div class="ups-site-note">GoogleのCookie制限を避けるため、正本を別画面で直接開きます。戻るとJARVISに戻れます。</div>`;
+  }
+
+  function deliveryUrl(s){return`https://docs.google.com/spreadsheets/d/${s.book}/edit#gid=${encodeURIComponent(s.gid)}`}
+  function renderDeliveryGroup(group){
+    const rows=DELIVERY_SITES.filter(s=>s.group===group);
+    return`<section class="ups-site-group"><h4>${esc(group)}</h4><div class="ups-site-cards">${rows.map(s=>`<a class="ups-site-card" href="${deliveryUrl(s)}" target="_blank" rel="noopener"><b>${esc(s.label)}</b><small>${esc(s.tab)}</small></a>`).join('')}</div></section>`;
+  }
+  function mountDelivery(){
+    const target=document.querySelector('#delivery');if(!target)return;
+    let box=document.getElementById('upsDeliverySites');if(box)return;
+    box=document.createElement('section');box.id='upsDeliverySites';box.className='ups-delivery-sites';
+    box.innerHTML=`<div class="ups-site-head"><div><small>GOOGLE DELIVERY / MASTER</small><h3>拠点別 配送管理表</h3></div></div><div class="ups-site-groups">${renderDeliveryGroup('ギオン')}${renderDeliveryGroup('遠州トラック')}${renderDeliveryGroup('その他')}</div><div class="ups-site-note">遠州トラックはギオンと別の正本へ接続しています。各ボタンは2026年9月の該当タブを直接開きます。</div>`;
+    target.appendChild(box);
   }
 
   function render(){
@@ -124,6 +150,6 @@
     const nav=document.querySelector(`[data-go="${id}"]`);if(nav)nav.click();selectArea(area);if(area==='mishima')load();
   }};
 
-  function init(){addStyle();mount();render();load()}
+  function init(){addStyle();mount();mountDelivery();render();load()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
