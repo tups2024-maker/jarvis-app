@@ -3,9 +3,11 @@
   'use strict';
 
   const DEFAULT_SOURCES=[
-    {id:'alcohol',label:'酒配達',icon:'▣',keywords:['株式会社サカエ','サカエ','お酒','酒配達']},
-    {id:'amazon',label:'Amazon配達',icon:'A',keywords:['Amazon','アマゾン','鶴見','中村区','一宮','静岡','三島','野洲','富士','駿河','遠州トラック','ギオン']},
-    {id:'noodle',label:'製麺配達',icon:'麺',keywords:['秋山製麺','秋山製麺所','製麺']}
+    {id:'enshu',label:'遠州トラック',icon:'遠',keywords:['遠州トラック','野洲) 遠州','富士・駿河) 遠州','駿河区遠州']},
+    {id:'gion',label:'GION',icon:'G',keywords:['GION','ギオン','鶴見','中村区','一宮','2026年9月 静岡','2026年9月 三島']},
+    {id:'rocketnow',label:'ロケットナウ',icon:'R',keywords:['名古屋R','ロケットナウ','Rocket Now','名古屋']},
+    {id:'sakae',label:'株式会社サカエ',icon:'酒',keywords:['株式会社サカエ','サカエ','お酒','酒配達']},
+    {id:'akiyama',label:'秋山製麺',icon:'麺',keywords:['秋山製麺','秋山製麺所','製麺']}
   ];
 
   function sources(){
@@ -48,16 +50,15 @@
     return -1;
   }
   function classify(sheetName,businessName){
-    const text=norm(sheetName+' '+businessName);
-    const defs=sources();
-    // Specific categories first so generic Amazon/location keywords do not swallow them.
-    const ordered=[...defs].sort((a,b)=>{
-      const ap=/amazon/i.test(a.id)?1:0, bp=/amazon/i.test(b.id)?1:0;
-      return ap-bp;
-    });
-    for(const s of ordered){
-      if((s.keywords||[]).some(k=>text.includes(norm(k)))) return s.id;
-    }
+    const sheet=norm(sheetName),business=norm(businessName),text=norm(sheet+' '+business);
+    const defs=sources(),byId=id=>defs.find(s=>s.id===id);
+    // 誤分類防止の優先順位：専用案件 > 遠州 > GION。AM は完全一致系だけで扱う。
+    if(/^(AM|秋山製麺|秋山製麺所)(?:\s|$|\/|\+)/i.test(business)||/秋山製麺|秋山製麺所/.test(text))return byId('akiyama')?'akiyama':'other';
+    if(/株式会社サカエ|サカエ|お酒|酒配達/.test(text))return byId('sakae')?'sakae':'other';
+    if(/名古屋R|ロケットナウ|Rocket Now/i.test(text)||/^名古屋$/.test(business))return byId('rocketnow')?'rocketnow':'other';
+    if(/遠州トラック|野洲\)\s*遠州|富士・駿河\)\s*遠州|駿河区遠州/.test(text))return byId('enshu')?'enshu':'other';
+    if(/GION|ギオン|鶴見|中村区|一宮/.test(text)||/2026年\d+月\s*(静岡|三島)/.test(sheet))return byId('gion')?'gion':'other';
+    for(const d of defs){if((d.keywords||[]).some(k=>text.includes(norm(k))))return d.id}
     return 'other';
   }
   function monthLabel(){
