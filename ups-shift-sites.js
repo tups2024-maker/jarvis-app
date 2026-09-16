@@ -8,30 +8,33 @@
   const ICHINOMIYA='1P1MYU4TonLaxhzjbM8JVZBi3DR8PmDONyfcu0ARyEiM';
   const SURUGA='19HbkZYZgpDLNVpyBfeEikhlXkmGLWb0a68hIS5EulJ4';
   const TSURUMI='1kfKxe39e9GHaIEGJV-THWVfulp6TqGVv4oL_P89wa04';
+  const SHIFT_MASTER='1cc2b-7mvljP42SIIBZketcvyEb0TQSd9iwAm05OtVWs';
+  const MASTER_UPS_GID='280575530';
 
   const SITES=[
     {id:'all',label:'全拠点',group:'一覧'},
-    {id:'mishima',label:'三島',group:'ギオン',mode:'api'},
-    {id:'ichinomiya',label:'一宮',group:'ギオン',book:ICHINOMIYA,gid:'83965649',tab:'2026年9月 一宮',caption:'愛知 一宮シフト 新'},
-    {id:'shizuoka',label:'駿河区',group:'ギオン',book:SURUGA,gid:'458098367',nextGid:'788842575',switchOn:'2026-09-18',tab:'シフト入力8/1~',nextTab:'DCJ3(9/18~)',caption:'静岡駿河DS DAシフト表'},
-    {id:'tsurumi',label:'鶴見',group:'ギオン',book:TSURUMI,gid:'954430544',tab:'2026年9月(鶴見区)',caption:'鶴見DSシフト'},
-    {id:'nakamura',label:'中村区',group:'ギオン',book:CORE,gid:'1241751568',tab:'2026年9月 中村区',caption:'配送管理表 正本'},
-    {id:'enshu-yasu',label:'遠州野洲',group:'遠州トラック',book:SHIGA,gid:'821349324',tab:'2026年9月(野洲) 遠州',caption:'滋賀 スプレッド正本'},
-    {id:'enshu-suruga',label:'遠州駿河',group:'遠州トラック',book:ENSHU,gid:'169402149',tab:'2026年9月(富士・駿河) 遠州',caption:'遠州トラック正本'},
-    {id:'enshu-fuji',label:'遠州富士',group:'遠州トラック',book:ENSHU,gid:'169402149',tab:'2026年9月(富士・駿河) 遠州',caption:'遠州トラック正本'}
+    {id:'mishima',label:'三島市',group:'GION',mode:'api'},
+    {id:'shizuoka',label:'静岡',group:'GION',book:SURUGA,gid:'458098367',nextGid:'788842575',switchOn:'2026-09-18',tab:'シフト入力8/1~',nextTab:'DCJ3(9/18~)',caption:'静岡駿河DS DAシフト表'},
+    {id:'ichinomiya',label:'一宮',group:'GION',book:ICHINOMIYA,gid:'83965649',tab:'2026年9月 一宮  ',caption:'愛知 一宮シフト 新'},
+    {id:'tsurumi',label:'鶴見区',group:'GION',book:TSURUMI,gid:'954430544',tab:'2026年9月(鶴見区) ',caption:'鶴見DSシフト'},
+    {id:'nakamura',label:'中村区',group:'GION',book:CORE,gid:'1241751568',tab:'2026年9月 中村区  ',caption:'配送管理表 正本（シフト反映）'},
+    {id:'enshu-yasu',label:'滋賀',group:'遠州トラック',book:SHIGA,gid:'821349324',tab:'2026年9月(野洲) 遠州  ',caption:'滋賀 スプレッド正本'},
+    {id:'enshu-fuji',label:'富士',group:'遠州トラック',book:ENSHU,gid:'169402149',tab:'2026年9月(富士・駿河) 遠州 ',caption:'遠州トラック正本 / 富士'},
+    {id:'enshu-suruga',label:'駿河区遠州',group:'遠州トラック',book:ENSHU,gid:'169402149',tab:'2026年9月(富士・駿河) 遠州 ',caption:'遠州トラック正本 / 駿河区'}
   ];
 
   const DELIVERY_SITES=[
-    {label:'鶴見',group:'ギオン',book:CORE,gid:'107675747',tab:'2026年9月 鶴見'},
-    {label:'中村区',group:'ギオン',book:CORE,gid:'1241751568',tab:'2026年9月 中村区'},
-    {label:'一宮',group:'ギオン',book:CORE,gid:'902048376',tab:'2026年9月 一宮'},
-    {label:'静岡・駿河区',group:'ギオン',book:CORE,gid:'2051049705',tab:'2026年9月 静岡'},
-    {label:'三島',group:'ギオン',book:CORE,gid:'283632455',tab:'2026年9月 三島'},
-    {label:'お酒',group:'その他',book:CORE,gid:'306319410',tab:'2026年9月 株式会社サカエ'},
-    {label:'秋山製麺',group:'その他',book:CORE,gid:'350367810',tab:'2026年9月 秋山製麺所'},
-    {label:'遠州野洲',group:'遠州トラック',book:SHIGA,gid:'821349324',tab:'2026年9月(野洲) 遠州'},
-    {label:'遠州駿河',group:'遠州トラック',book:ENSHU,gid:'169402149',tab:'2026年9月(富士・駿河) 遠州'},
-    {label:'遠州富士',group:'遠州トラック',book:ENSHU,gid:'169402149',tab:'2026年9月(富士・駿河) 遠州'}
+    {label:'三島市',group:'GION',book:CORE,gid:'283632455',tab:'2026年9月 三島 '},
+    {label:'静岡',group:'GION',book:CORE,gid:'2051049705',tab:'2026年9月 静岡 '},
+    {label:'一宮',group:'GION',book:CORE,gid:'902048376',tab:'2026年9月 一宮  '},
+    {label:'鶴見区',group:'GION',book:CORE,gid:'107675747',tab:'2026年9月 鶴見 '},
+    {label:'中村区',group:'GION',book:CORE,gid:'1241751568',tab:'2026年9月 中村区  '},
+    {label:'滋賀',group:'遠州トラック',book:SHIGA,gid:'821349324',tab:'2026年9月(野洲) 遠州  ',note:'シフト正本から配送管理へ反映'},
+    {label:'富士',group:'遠州トラック',book:ENSHU,gid:'169402149',tab:'2026年9月(富士・駿河) 遠州 ',note:'富士セクションを使用'},
+    {label:'駿河区遠州',group:'遠州トラック',book:ENSHU,gid:'169402149',tab:'2026年9月(富士・駿河) 遠州 ',note:'遠州トラック駿河DSセクションを使用'},
+    {label:'名古屋R',group:'ロケットナウ',book:SHIFT_MASTER,gid:MASTER_UPS_GID,tab:'UPs',note:'名古屋 / R の案件コードだけをロケットナウとして仕分け'},
+    {label:'お酒',group:'株式会社サカエ',book:CORE,gid:'306319410',tab:'2026年9月 株式会社サカエ '},
+    {label:'AM',group:'秋山製麺',book:CORE,gid:'350367810',tab:'2026年9月 秋山製麺所 '}
   ];
 
   const state={area:localStorage.getItem('ups-shift-area-v2')||'all',data:null,month:'',start:3,days:31,loading:false};
@@ -77,7 +80,7 @@
   function addStyle(){
     if(document.getElementById('ups-shift-sites-style'))return;
     const s=document.createElement('style');s.id='ups-shift-sites-style';
-    s.textContent='.ups-site-shift,.ups-delivery-sites{margin-top:14px;border:1px solid rgba(83,226,255,.28);border-radius:16px;background:#03131e;padding:13px;overflow:hidden}.ups-site-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}.ups-site-head h3{margin:0;font-size:16px}.ups-site-head small{color:#7bdff1}.ups-site-tabs{display:flex;gap:7px;overflow-x:auto;padding:2px 0 9px}.ups-site-tab{flex:0 0 auto;border:1px solid #275e6d;border-radius:999px;background:#061d28;color:#a9d7df;padding:8px 12px;font-weight:750;cursor:pointer}.ups-site-tab.active{border-color:#50e5ff;background:#0b3b51;color:#fff}.ups-shift-scroll{overflow:auto;border:1px solid #17404c;border-radius:12px;max-height:58vh}.ups-shift-table{border-collapse:separate;border-spacing:0;min-width:max-content;width:100%;background:#021018}.ups-shift-table th,.ups-shift-table td{padding:7px 8px;border-right:1px solid #143a46;border-bottom:1px solid #143a46;text-align:center;font-size:11px;min-width:39px}.ups-shift-table th{position:sticky;top:0;background:#082633;color:#82e9fa;z-index:2}.ups-shift-table th:first-child,.ups-shift-table td:first-child{position:sticky;left:0;min-width:104px;text-align:left;background:#061c27;z-index:1}.ups-shift-table th:first-child{z-index:3}.ups-shift-on{color:#eaffff;background:#083247}.ups-shift-empty{padding:22px;text-align:center;color:#8fb5bf}.ups-site-foot{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:9px;color:#7ea6b0;font-size:11px}.ups-shift-refresh,.ups-sheet-open{border:1px solid #286778;border-radius:9px;background:#082735;color:#ddfaff;padding:7px 10px;cursor:pointer;text-decoration:none;font-weight:700}.ups-sheet-open.primary{display:flex;min-height:70px;align-items:center;justify-content:center;text-align:center;border-color:#50e5ff;background:linear-gradient(135deg,#075675,#0a2d62);font-size:15px}.ups-shift-source-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 1px}.ups-shift-source-head b{display:block;color:#eaffff}.ups-shift-source-head small{color:#7ea6b0}.ups-site-groups{display:grid;gap:12px}.ups-site-group{border:1px solid #17404c;border-radius:13px;padding:11px;background:#041923}.ups-site-group h4{margin:0 0 9px;color:#72e7f8}.ups-site-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:8px}.ups-site-card{border:1px solid #275e6d;border-radius:11px;background:#072330;color:#eaffff;padding:12px;text-align:left;cursor:pointer;text-decoration:none}.ups-site-card b,.ups-site-card small{display:block}.ups-site-card small{margin-top:4px;color:#7ea6b0}.ups-site-note{padding:8px 2px;color:#8fb5bf;font-size:11px}';
+    s.textContent='.ups-site-shift,.ups-delivery-sites{margin-top:14px;border:1px solid rgba(83,226,255,.28);border-radius:16px;background:#03131e;padding:13px;overflow:hidden}.ups-site-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}.ups-site-head h3{margin:0;font-size:16px}.ups-site-head small{color:#7bdff1}.ups-site-tabs{display:flex;gap:7px;overflow-x:auto;padding:2px 0 9px}.ups-site-tab{flex:0 0 auto;border:1px solid #275e6d;border-radius:999px;background:#061d28;color:#a9d7df;padding:8px 12px;font-weight:750;cursor:pointer}.ups-site-tab.active{border-color:#50e5ff;background:#0b3b51;color:#fff}.ups-shift-scroll{overflow:auto;border:1px solid #17404c;border-radius:12px;max-height:58vh}.ups-shift-table{border-collapse:separate;border-spacing:0;min-width:max-content;width:100%;background:#021018}.ups-shift-table th,.ups-shift-table td{padding:7px 8px;border-right:1px solid #143a46;border-bottom:1px solid #143a46;text-align:center;font-size:11px;min-width:39px}.ups-shift-table th{position:sticky;top:0;background:#082633;color:#82e9fa;z-index:2}.ups-shift-table th:first-child,.ups-shift-table td:first-child{position:sticky;left:0;min-width:104px;text-align:left;background:#061c27;z-index:1}.ups-shift-table th:first-child{z-index:3}.ups-shift-on{color:#eaffff;background:#083247}.ups-shift-empty{padding:22px;text-align:center;color:#8fb5bf}.ups-site-foot{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:9px;color:#7ea6b0;font-size:11px}.ups-shift-refresh,.ups-sheet-open{border:1px solid #286778;border-radius:9px;background:#082735;color:#ddfaff;padding:7px 10px;cursor:pointer;text-decoration:none;font-weight:700}.ups-sheet-open.primary{display:flex;min-height:70px;align-items:center;justify-content:center;text-align:center;border-color:#50e5ff;background:linear-gradient(135deg,#075675,#0a2d62);font-size:15px}.ups-shift-source-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 1px}.ups-shift-source-head b{display:block;color:#eaffff}.ups-shift-source-head small{color:#7ea6b0}.ups-source-frame{height:56vh;min-height:420px;border:1px solid #17404c;border-radius:12px;overflow:hidden;background:#fff}.ups-source-frame iframe{width:100%;height:100%;border:0;background:#fff}.ups-source-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:9px}.ups-site-groups{display:grid;gap:12px}.ups-site-group{border:1px solid #17404c;border-radius:13px;padding:11px;background:#041923}.ups-site-group h4{margin:0 0 9px;color:#72e7f8}.ups-site-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:8px}.ups-site-card{border:1px solid #275e6d;border-radius:11px;background:#072330;color:#eaffff;padding:12px;text-align:left;cursor:pointer;text-decoration:none}.ups-site-card b,.ups-site-card small{display:block}.ups-site-card small{margin-top:4px;color:#7ea6b0}.ups-site-note{padding:8px 2px;color:#8fb5bf;font-size:11px}';
     document.head.appendChild(s);
   }
 
@@ -90,7 +93,7 @@
   }
 
   function renderOverview(){
-    const groups=['ギオン','遠州トラック'];
+    const groups=['GION','遠州トラック'];
     return`<div class="ups-site-groups">${groups.map(group=>`<section class="ups-site-group"><h4>${esc(group)}</h4><div class="ups-site-cards">${SITES.filter(s=>s.group===group).map(s=>`<button class="ups-site-card" data-site-card="${esc(s.id)}" type="button"><b>${esc(s.label)}</b><small>${esc(s.caption||'シフト正本')}</small></button>`).join('')}</div></section>`).join('')}</div><div class="ups-site-note">拠点を選ぶと、その拠点の正本だけを表示します。</div>`;
   }
 
@@ -103,19 +106,21 @@
 
   function renderSource(s){
     const r=resolved(s);
-    return`<div class="ups-shift-source-head"><div><b>${esc(r.group)} / ${esc(r.label)}</b><small>${esc(r.caption)}・${esc(r.tab)}</small></div></div><a class="ups-sheet-open primary" href="${sheetUrl(r)}" target="_blank" rel="noopener">${esc(r.label)}の最新シフト正本を開く</a><div class="ups-site-note">GoogleのCookie制限を避けるため、正本を別画面で直接開きます。戻るとJARVISに戻れます。</div>`;
+    return `<div class="ups-shift-source-head"><div><b>${esc(r.group)} / ${esc(r.label)}</b><small>${esc(r.caption)}・${esc(r.tab)}</small></div><span>正本LIVE</span></div>
+      <div class="ups-source-frame"><iframe src="${sheetUrl(r,true)}" title="${esc(r.label)} シフト正本" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+      <div class="ups-source-actions"><a class="ups-sheet-open" href="${sheetUrl(r)}" target="_blank" rel="noopener">正本を別画面で開く</a><span class="ups-site-note">JARVIS内で三島市と同じ画面から確認できます。表示できない場合だけ正本を別画面で開いてください。</span></div>`;
   }
 
   function deliveryUrl(s){return`https://docs.google.com/spreadsheets/d/${s.book}/edit#gid=${encodeURIComponent(s.gid)}`}
   function renderDeliveryGroup(group){
     const rows=DELIVERY_SITES.filter(s=>s.group===group);
-    return`<section class="ups-site-group"><h4>${esc(group)}</h4><div class="ups-site-cards">${rows.map(s=>`<a class="ups-site-card" href="${deliveryUrl(s)}" target="_blank" rel="noopener"><b>${esc(s.label)}</b><small>${esc(s.tab)}</small></a>`).join('')}</div></section>`;
+    return`<section class="ups-site-group"><h4>${esc(group)}</h4><div class="ups-site-cards">${rows.map(s=>`<a class="ups-site-card" href="${deliveryUrl(s)}" target="_blank" rel="noopener"><b>${esc(s.label)}</b><small>${esc(s.tab)}</small>${s.note?`<small>${esc(s.note)}</small>`:''}</a>`).join('')}</div></section>`;
   }
   function mountDelivery(){
-    const target=document.querySelector('#delivery');if(!target)return;
+    const target=document.querySelector('#delivery')||document.querySelector('#ops');if(!target)return;
     let box=document.getElementById('upsDeliverySites');if(box)return;
     box=document.createElement('section');box.id='upsDeliverySites';box.className='ups-delivery-sites';
-    box.innerHTML=`<div class="ups-site-head"><div><small>GOOGLE DELIVERY / MASTER</small><h3>拠点別 配送管理表</h3></div></div><div class="ups-site-groups">${renderDeliveryGroup('ギオン')}${renderDeliveryGroup('遠州トラック')}${renderDeliveryGroup('その他')}</div><div class="ups-site-note">遠州トラックはギオンと別の正本へ接続しています。各ボタンは2026年9月の該当タブを直接開きます。</div>`;
+    box.innerHTML=`<div class="ups-site-head"><div><small>DELIVERY ROUTING / SOURCE OF TRUTH</small><h3>配送管理表の仕分け</h3></div></div><div class="ups-site-groups">${renderDeliveryGroup('GION')}${renderDeliveryGroup('遠州トラック')}${renderDeliveryGroup('ロケットナウ')}${renderDeliveryGroup('株式会社サカエ')}${renderDeliveryGroup('秋山製麺')}</div><div class="ups-site-note">仕分け固定：GION＝三島市・静岡・一宮・鶴見区・中村区 / 遠州トラック＝滋賀・富士・駿河区遠州 / 名古屋R＝ロケットナウ / お酒＝株式会社サカエ / AM＝秋山製麺。拠点名・案件元を先に判定し、文字の部分一致だけでは分類しません。</div>`;
     target.appendChild(box);
   }
 
