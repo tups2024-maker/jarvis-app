@@ -25,7 +25,7 @@
   function criticalIntent(m){return /(単価|サーチャージ|元シート|配送管理表|原本|削除|外部送信|公開|契約|振込|支払).*(変更|修正|更新|確定|実行)|(?:変更|修正|更新|確定|実行).*(単価|サーチャージ|元シート|配送管理表|原本|削除|外部送信|公開|契約|振込|支払)/.test(m)}
   const clean=v=>String(v||'').replace(/[\s　]/g,'').replace(/さん|氏/g,'').trim();
   const colLetter=n=>{let s='';while(n>0){n--;s=String.fromCharCode(65+n%26)+s;n=Math.floor(n/26)}return s};
-  function screenArea(m){if(/一宮/.test(m))return'ichinomiya';if(/静岡|駿河/.test(m))return'shizuoka';if(/富士/.test(m))return'fuji';if(/中村|名古屋/.test(m))return'nakamura';if(/野洲|滋賀/.test(m))return'yasu';if(/ロケット/.test(m))return'rocket';if(/三島/.test(m))return'mishima';return'all'}
+  function screenArea(m){if(/遠州.*(?:野洲|滋賀)|(?:野洲|滋賀).*遠州/.test(m))return'enshu-yasu';if(/遠州.*(?:駿河|静岡)|(?:駿河|静岡).*遠州/.test(m))return'enshu-suruga';if(/遠州.*富士|富士.*遠州/.test(m))return'enshu-fuji';if(/鶴見/.test(m))return'tsurumi';if(/一宮/.test(m))return'ichinomiya';if(/静岡|駿河/.test(m))return'shizuoka';if(/富士/.test(m))return'enshu-fuji';if(/中村|名古屋/.test(m))return'nakamura';if(/野洲|滋賀/.test(m))return'enshu-yasu';if(/三島/.test(m))return'mishima';return'all'}
   function shiftValue(m){
     if(/欠車|×/.test(m))return'×';if(/休み|休(?:みに|へ|に)?変更/.test(m))return'休';if(/研修/.test(m))return'研';
     if(/秋山|製麺|\bAM\b/i.test(m))return'AM';if(/お酒|サカエ/.test(m))return'お酒';if(/(?:三島)?5h|\bMX\b/i.test(m))return'MX';if(/(?:三島)?6h|\bCX\b/i.test(m))return'CX';
@@ -35,7 +35,7 @@
   async function screenAction(m){
     if(/(?:シフト|勤務).*(見せ|表示|開い|確認)|(?:見せ|表示|開い|確認).*(?:シフト|勤務)/.test(m)&&!/(変更|修正|追加|登録|反映)/.test(m)){
       const area=screenArea(m);if(window.UPS_SHIFT_SITES)window.UPS_SHIFT_SITES.show(area);else showPage(document.querySelector('#shift')?'shift':'ops');
-      return{handled:true,approvalRequired:false,reply:`${area==='all'?'全拠点':({'mishima':'三島','shizuoka':'静岡・駿河','fuji':'富士','ichinomiya':'一宮','nakamura':'中村区','yasu':'野洲','rocket':'ロケットナウ'}[area])}の最新シフト画面を表示しました。Googleシフト正本から再取得しています。`};
+      return{handled:true,approvalRequired:false,reply:`${area==='all'?'全拠点':({'mishima':'三島','shizuoka':'駿河区','tsurumi':'鶴見','ichinomiya':'一宮','nakamura':'中村区','enshu-yasu':'遠州野洲','enshu-suruga':'遠州駿河','enshu-fuji':'遠州富士'}[area])}の最新シフト画面を表示しました。拠点ごとのGoogle正本を直接表示しています。`};
     }
     if(/配送管理(?:表|ページ)?.*(見せ|表示|開い|確認)|(?:見せ|表示|開い|確認).*配送管理/.test(m)){
       showPage(document.querySelector('#delivery')?'delivery':'ops');if(typeof window.upsSkillsRefresh==='function')await window.upsSkillsRefresh(true).catch(()=>null);
