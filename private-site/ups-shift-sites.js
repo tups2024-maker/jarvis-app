@@ -120,7 +120,16 @@
     const target=document.querySelector('#delivery')||document.querySelector('#ops');if(!target)return;
     let box=document.getElementById('upsDeliverySites');if(box)return;
     box=document.createElement('section');box.id='upsDeliverySites';box.className='ups-delivery-sites';
-    box.innerHTML=`<div class="ups-site-head"><div><small>DELIVERY ROUTING / SOURCE OF TRUTH</small><h3>配送管理表の仕分け</h3></div></div><div class="ups-site-groups">${renderDeliveryGroup('GION')}${renderDeliveryGroup('遠州トラック')}${renderDeliveryGroup('ロケットナウ')}${renderDeliveryGroup('株式会社サカエ')}${renderDeliveryGroup('秋山製麺')}</div><div class="ups-site-note">仕分け固定：GION＝三島市・静岡・一宮・鶴見区・中村区 / 遠州トラック＝滋賀・富士・駿河区遠州 / 名古屋R＝ロケットナウ / お酒＝株式会社サカエ / AM＝秋山製麺。拠点名・案件元を先に判定し、文字の部分一致だけでは分類しません。</div>`;
+    box.innerHTML=`<div class="ups-site-head"><div><small>DELIVERY ROUTING / SOURCE OF TRUTH</small><h3>配送管理表の仕分け</h3></div></div>
+<div class="ups-source-actions" style="margin-bottom:12px">
+  <a class="ups-sheet-open primary" href="https://docs.google.com/spreadsheets/d/${CORE}/edit" target="_blank" rel="noopener">配送管理表 正本を開く</a>
+  <a class="ups-sheet-open" href="https://docs.google.com/spreadsheets/d/${SHIFT_MASTER}/edit#gid=${MASTER_UPS_GID}" target="_blank" rel="noopener">9月DAシフト正本を開く</a>
+  <a class="ups-sheet-open" href="https://docs.google.com/spreadsheets/d/${CORE}/edit#gid=208595120" target="_blank" rel="noopener">2026年8月 三島</a>
+  <a class="ups-sheet-open" href="https://docs.google.com/spreadsheets/d/${CORE}/edit#gid=442837635" target="_blank" rel="noopener">2026年7月 三島</a>
+</div>
+<div class="ups-site-note" style="margin-bottom:10px">配送管理表の過去月データは正本内に残っています。2026年8月・7月・6月…2023年8月まで確認できます。</div>
+<div class="ups-site-groups">${renderDeliveryGroup('GION')}${renderDeliveryGroup('遠州トラック')}${renderDeliveryGroup('ロケットナウ')}${renderDeliveryGroup('株式会社サカエ')}${renderDeliveryGroup('秋山製麺')}</div>
+<div class="ups-site-note">仕分け固定：GION＝三島市・静岡・一宮・鶴見区・中村区 / 遠州トラック＝滋賀・富士・駿河区遠州 / 名古屋R＝ロケットナウ / お酒＝株式会社サカエ / AM＝秋山製麺。拠点名・案件元を先に判定し、文字の部分一致だけでは分類しません。</div>`;
     target.appendChild(box);
   }
 
