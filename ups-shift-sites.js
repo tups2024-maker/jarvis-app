@@ -3,21 +3,22 @@
 
   const API='https://jarvis-api.t-ups2024.workers.dev';
   const CORE='1Itlt2LkosrvNnvZrbAWb6PpeZlAQaW0hJf8CzwPfddI';
-  const ENSHU='1z6cSUsEdu929JHRbqPjp-rjDbfSOuLVATKhf6hPJHoQ';
-  const ICHINOMIYA='1cc2b-7mvljP42SIIBZketcvyEb0TQSd9iwAm05OtVWs';
+  const ENSHU='1r9FHCprJY8OamZzFakNPPiyYSxZBlfCvjQvvKKmLtpc';
+  const SHIGA='162oC1bZ5b2na_7Kr0r-Z7FEOpEa_sycv-aKDzGP1CrE';
+  const ICHINOMIYA='1P1MYU4TonLaxhzjbM8JVZBi3DR8PmDONyfcu0ARyEiM';
   const SURUGA='19HbkZYZgpDLNVpyBfeEikhlXkmGLWb0a68hIS5EulJ4';
   const TSURUMI='1kfKxe39e9GHaIEGJV-THWVfulp6TqGVv4oL_P89wa04';
 
   const SITES=[
     {id:'all',label:'全拠点',group:'一覧'},
     {id:'mishima',label:'三島',group:'ギオン',mode:'api'},
-    {id:'ichinomiya',label:'一宮',group:'ギオン',book:ICHINOMIYA,gid:'280575530',tab:'UPs',caption:'2026年9月DAシフト / UPs'},
+    {id:'ichinomiya',label:'一宮',group:'ギオン',book:ICHINOMIYA,gid:'83965649',tab:'2026年9月 一宮',caption:'愛知 一宮シフト 新'},
     {id:'shizuoka',label:'駿河区',group:'ギオン',book:SURUGA,gid:'458098367',nextGid:'788842575',switchOn:'2026-09-18',tab:'シフト入力8/1~',nextTab:'DCJ3(9/18~)',caption:'静岡駿河DS DAシフト表'},
     {id:'tsurumi',label:'鶴見',group:'ギオン',book:TSURUMI,gid:'954430544',tab:'2026年9月(鶴見区)',caption:'鶴見DSシフト'},
     {id:'nakamura',label:'中村区',group:'ギオン',book:CORE,gid:'1241751568',tab:'2026年9月 中村区',caption:'配送管理表 正本'},
-    {id:'enshu-yasu',label:'遠州野洲',group:'遠州トラック',book:ENSHU,gid:'2050990999',tab:'2026年9月 野洲市 遠州トラック',caption:'遠州トラック正本'},
-    {id:'enshu-suruga',label:'遠州駿河',group:'遠州トラック',book:ENSHU,gid:'1543564420',tab:'2026年9月 静岡 遠州トラック',caption:'遠州トラック正本'},
-    {id:'enshu-fuji',label:'遠州富士',group:'遠州トラック',book:ENSHU,gid:'1914323243',tab:'2026年9月 富士 遠州トラック',caption:'遠州トラック正本'}
+    {id:'enshu-yasu',label:'遠州野洲',group:'遠州トラック',book:SHIGA,gid:'821349324',tab:'2026年9月(野洲) 遠州',caption:'滋賀 スプレッド正本'},
+    {id:'enshu-suruga',label:'遠州駿河',group:'遠州トラック',book:ENSHU,gid:'169402149',tab:'2026年9月(富士・駿河) 遠州',caption:'遠州トラック正本'},
+    {id:'enshu-fuji',label:'遠州富士',group:'遠州トラック',book:ENSHU,gid:'169402149',tab:'2026年9月(富士・駿河) 遠州',caption:'遠州トラック正本'}
   ];
 
   const DELIVERY_SITES=[
@@ -28,9 +29,9 @@
     {label:'三島',group:'ギオン',book:CORE,gid:'283632455',tab:'2026年9月 三島'},
     {label:'お酒',group:'その他',book:CORE,gid:'306319410',tab:'2026年9月 株式会社サカエ'},
     {label:'秋山製麺',group:'その他',book:CORE,gid:'350367810',tab:'2026年9月 秋山製麺所'},
-    {label:'遠州野洲',group:'遠州トラック',book:ENSHU,gid:'2050990999',tab:'2026年9月 野洲市 遠州トラック'},
-    {label:'遠州駿河',group:'遠州トラック',book:ENSHU,gid:'1543564420',tab:'2026年9月 静岡 遠州トラック'},
-    {label:'遠州富士',group:'遠州トラック',book:ENSHU,gid:'1914323243',tab:'2026年9月 富士 遠州トラック'}
+    {label:'遠州野洲',group:'遠州トラック',book:SHIGA,gid:'821349324',tab:'2026年9月(野洲) 遠州'},
+    {label:'遠州駿河',group:'遠州トラック',book:ENSHU,gid:'169402149',tab:'2026年9月(富士・駿河) 遠州'},
+    {label:'遠州富士',group:'遠州トラック',book:ENSHU,gid:'169402149',tab:'2026年9月(富士・駿河) 遠州'}
   ];
 
   const state={area:localStorage.getItem('ups-shift-area-v2')||'all',data:null,month:'',start:3,days:31,loading:false};
