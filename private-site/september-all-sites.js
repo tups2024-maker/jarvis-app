@@ -53,9 +53,28 @@ function style(){
  .j9-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:9px 0}.j9-open{display:inline-flex;padding:8px 11px;border:1px solid #2d7687;border-radius:9px;background:#082b39;color:#effcff;text-decoration:none;font-weight:800}.j9-note{color:#8eb6c0;font-size:11px}.j9-empty{padding:24px;text-align:center;color:#9abdc5}
  `;document.head.appendChild(s)
 }
+function buildShizuokaGion(){
+ if(!snap?.shift?.master?.rows)return null;
+ const rows=snap.shift.master.rows;
+ const header=rows[2]||[];
+ const dayStart=3, dayEnd=33;
+ const out=[
+   ['静岡GION','2026年9月',...header.slice(dayStart,dayEnd)],
+   ['DR名','所属',...Array.from({length:30},()=> '')]
+ ];
+ for(const r of rows.slice(4)){
+   const name=String(r?.[1]||'').trim();
+   if(!name)continue;
+   const days=(r||[]).slice(dayStart,dayEnd);
+   const has=days.some(v=>String(v||'').trim()==='静岡');
+   if(!has)continue;
+   out.push([name,"UP's",...days.map(v=>String(v||'').trim()==='静岡'?'静岡':'')]);
+ }
+ return {title:'静岡GION / UP\'s DAシフト正本から抽出',rows:out};
+}
 function sheetData(area){
  if(!snap)return null;
- if(area==='shizuoka')return {title:'静岡 9月（9/1〜17 / 9/18〜）',multi:[snap.shift.shizuoka_pre,snap.shift.shizuoka_post]};
+ if(area==='shizuoka')return buildShizuokaGion();
  if(area==='ichinomiya')return snap.shift.ichinomiya;
  if(area==='tsurumi')return snap.shift.tsurumi;
  if(area==='shiga')return snap.shift.shiga;
