@@ -54,23 +54,26 @@ function style(){
  `;document.head.appendChild(s)
 }
 function buildShizuokaGion(){
- if(!snap?.shift?.master?.rows)return null;
- const rows=snap.shift.master.rows;
- const header=rows[2]||[];
- const dayStart=3, dayEnd=33;
- const out=[
-   ['静岡GION','2026年9月',...header.slice(dayStart,dayEnd)],
-   ['DR名','所属',...Array.from({length:30},()=> '')]
- ];
- for(const r of rows.slice(4)){
+ const rows=snap?.delivery?.core?.['2026年9月 静岡 ']?.rows;
+ if(!rows)return null;
+ const byName=new Map();
+ for(const r of rows.slice(3)){
+   const date=String(r?.[0]||'').trim();
    const name=String(r?.[1]||'').trim();
-   if(!name)continue;
-   const days=(r||[]).slice(dayStart,dayEnd);
-   const has=days.some(v=>String(v||'').trim()==='静岡');
-   if(!has)continue;
-   out.push([name,"UP's",...days.map(v=>String(v||'').trim()==='静岡'?'静岡':'')]);
+   const work=String(r?.[2]||'').trim();
+   const m=date.match(/^9月(\d+)日$/);
+   if(!m||!name)continue;
+   const day=Number(m[1]);
+   if(day<1||day>30)continue;
+   if(!byName.has(name))byName.set(name,Array(30).fill(''));
+   byName.get(name)[day-1]=work||'静岡';
  }
- return {title:'静岡GION / UP\'s DAシフト正本から抽出',rows:out};
+ const out=[
+   ['静岡GION / 静岡Amazon','2026年9月',...Array.from({length:30},(_,i)=>String(i+1))],
+   ['DR名','実績',...Array.from({length:30},()=> '')]
+ ];
+ for(const [name,days] of byName)out.push([name,'配送管理実績',...days]);
+ return {title:'静岡GION / 9月 静岡Amazon 配送管理実績',rows:out};
 }
 function sheetData(area){
  if(!snap)return null;
