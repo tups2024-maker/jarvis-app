@@ -1,14 +1,38 @@
 {
-  "updatedAt": "2026-09-18T15:01:55.265Z",
-  "actualsCutoff": "2026-09-11",
-  "latestActualDate": "9/11",
-  "monthRevenue": 2116510,
-  "monthDriverCost": 1378360,
-  "confirmedGrossProfit": 120102,
-  "confirmedGrossMargin": 0.081,
-  "latestDayRevenue": 193173,
-  "unconfirmedCount": 1,
-  "unconfirmedRevenueUnitCount": 1,
+  "updatedAt": "2026-09-18T23:36:00+09:00",
+  "actualsCutoff": "2026-09-18",
+  "latestActualDate": "9/18",
+  "monthRevenue": 3417598,
+  "monthDriverCost": 2191860,
+  "confirmedRevenueForMargin": 2373602,
+  "confirmedGrossProfit": 199242,
+  "confirmedGrossMargin": 0.08394077861410633,
+  "latestDayRevenue": 161584,
+  "unconfirmedCount": 3,
+  "unconfirmedRevenueUnitCount": 3,
   "unconfirmedDriverCostCount": 0,
-  "source": "2026年9月 配送管理表 実運用版 / JARVIS売上利益"
+  "source": "2026年9月 配送管理表 実運用版 + 滋賀/富士・駿河9月シフト正本",
+  "notes": [
+    "9/12〜9/18を再取得して加算",
+    "滋賀・駿河遠州はシフト正本の稼働記号ベース",
+    "名古屋Rは9/12・9/15の2件を検出したが売上単価未確認のため売上には未計上",
+    "DR金額空欄の協力会社分は従来どおりDR計上対象外として推測しない"
+  ],
+  "refreshBreakdown": {
+    "baseThrough0911": {
+      "revenue": 2116510,
+      "driverCost": 1378360,
+      "confirmedGrossProfit": 120102
+    },
+    "core0912to0918": {
+      "revenue": 1059168,
+      "driverCost": 596000,
+      "confirmedGrossProfit": 54720
+    },
+    "enshu0912to0918": {
+      "revenue": 241920,
+      "driverCost": 217500,
+      "confirmedGrossProfit": 24420
+    }
+  }
 }
