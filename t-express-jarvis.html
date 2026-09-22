@@ -58,8 +58,8 @@ body{min-height:100svh}.wrap{width:min(1200px,100%);margin:auto;padding:22px cla
 </section>
 
 <section class="chat" id="chat">
-  <div class="chat-head"><b>T君</b><div><button class="voice-toggle" id="voiceToggle" type="button">🔊 音声ON</button> <span id="chatStatus">● READY</span></div></div>
-  <div class="messages" id="messages"><div class="msg ai">T君です。SNS、note、求人、営業、売上、資産形成について指示してください。</div></div>
+  <div class="chat-head"><b>T君</b><div><button class="voice-toggle" id="voiceToggle" type="button">🔊 声をテスト</button> <span id="chatStatus">● READY</span></div></div>
+  <div class="messages" id="messages"><div class="msg ai">こんにちは、T君です。普通に話しかけてください。声での会話もできます。</div></div>
   <div class="composer">
     <button class="voice-btn" id="mic" type="button" aria-label="T君に話しかける">🎙️</button>
     <textarea id="input" placeholder="例：今月の売上を伸ばすために、今日やるべきことを3つ出して"></textarea>
@@ -74,33 +74,85 @@ const API='https://jarvis-api.t-ups2024.workers.dev/api/chat';
 const RESPONSE_KEY='t-kun-openai-previous-response-id';
 const input=document.getElementById('input'),send=document.getElementById('send'),messages=document.getElementById('messages'),statusEl=document.getElementById('chatStatus');
 const mic=document.getElementById('mic'),voiceToggle=document.getElementById('voiceToggle'),voiceNote=document.getElementById('voiceNote');
-let speakingEnabled=true, listening=false, lastWasVoice=false;
+let speakingEnabled=true, voiceUnlocked=false, listening=false, lastWasVoice=false;
 
 function add(text,who){
   const d=document.createElement('div'); d.className='msg '+who; d.textContent=text;
   messages.appendChild(d); messages.scrollTop=messages.scrollHeight;
 }
 function cleanForSpeech(text){
-  return String(text||'').replace(/[*#_`>]/g,'').replace(/https?:\/\/\S+/g,'').slice(0,1200);
+  return String(text||'').replace(/[*#_`>]/g,'').replace(/https?:\/\/\S+/g,'').trim();
+}
+function japaneseVoice(){
+  const voices=window.speechSynthesis?.getVoices?.()||[];
+  return voices.find(v=>/^ja-JP$/i.test(v.lang))||voices.find(v=>/^ja/i.test(v.lang))||null;
+}
+function utter(text,onend){
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='ja-JP'; u.rate=1.0; u.pitch=1.0; u.volume=1;
+  const v=japaneseVoice(); if(v)u.voice=v;
+  if(onend)u.onend=onend;
+  u.onerror=()=>{statusEl.textContent='● VOICE ERROR';voiceNote.textContent='音声出力に失敗しました。iPhoneの音量と消音設定も確認してください。';};
+  return u;
+}
+function unlockVoice(announce=false){
+  if(!('speechSynthesis' in window)){
+    voiceNote.textContent='このブラウザは読み上げに対応していません。';
+    return false;
+  }
+  try{
+    speechSynthesis.cancel();
+    speechSynthesis.resume();
+    const test=utter(announce?'T君です。音声は正常です。':' ');
+    speechSynthesis.speak(test);
+    voiceUnlocked=true;
+    if(announce){
+      voiceToggle.textContent='🔊 音声ON';
+      voiceNote.textContent='T君の音声を有効にしました。返事を自動で読み上げます。';
+      statusEl.textContent='● VOICE READY';
+      setTimeout(()=>{if(statusEl.textContent==='● VOICE READY')statusEl.textContent='● READY'},1600);
+    }
+    return true;
+  }catch(e){
+    voiceNote.textContent='音声を開始できませんでした。もう一度「声をテスト」を押してください。';
+    return false;
+  }
 }
 function speak(text){
   if(!speakingEnabled||!('speechSynthesis' in window))return;
+  if(!voiceUnlocked)return;
+  const clean=cleanForSpeech(text).slice(0,1600);
+  if(!clean)return;
   speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(cleanForSpeech(text));
-  u.lang='ja-JP'; u.rate=1.03; u.pitch=1;
-  const voices=speechSynthesis.getVoices();
-  const ja=voices.find(v=>/^ja/i.test(v.lang));
-  if(ja)u.voice=ja;
-  speechSynthesis.speak(u);
+  speechSynthesis.resume();
+  const chunks=(clean.match(/[^。！？!?\n]+[。！？!?]?/g)||[clean]).map(s=>s.trim()).filter(Boolean);
+  let i=0;
+  const next=()=>{
+    if(i>=chunks.length)return;
+    const part=chunks[i++].slice(0,220);
+    const u=utter(part,next);
+    speechSynthesis.speak(u);
+  };
+  next();
 }
 voiceToggle.addEventListener('click',()=>{
+  if(!voiceUnlocked){speakingEnabled=true;unlockVoice(true);return;}
   speakingEnabled=!speakingEnabled;
-  if(!speakingEnabled&&'speechSynthesis' in window)speechSynthesis.cancel();
-  voiceToggle.textContent=speakingEnabled?'🔊 音声ON':'🔇 音声OFF';
+  if(!speakingEnabled){
+    speechSynthesis.cancel();
+    voiceToggle.textContent='🔇 音声OFF';
+    voiceNote.textContent='読み上げをOFFにしました。';
+  }else{
+    voiceToggle.textContent='🔊 音声ON';
+    voiceNote.textContent='読み上げをONにしました。';
+    speechSynthesis.resume();
+  }
 });
 
 async function chat(textOverride){
   const text=String(textOverride??input.value).trim(); if(!text)return;
+  // iPhoneではユーザー操作中に一度音声エンジンを起こしておくと、非同期応答後の読み上げが安定する。
+  if(!voiceUnlocked)unlockVoice(false);
   add(text,'user'); input.value=''; send.disabled=true; statusEl.textContent='● THINKING';
   try{
     const previousResponseId=localStorage.getItem(RESPONSE_KEY)||null;
@@ -124,17 +176,14 @@ async function chat(textOverride){
 send.addEventListener('click',()=>chat());
 input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();chat()}});
 
-// iPhone/Safari を含む Web Speech API。未対応端末は文字入力へフォールバック。
 const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
 let recognition=null;
 if(SpeechRecognition){
   recognition=new SpeechRecognition();
-  recognition.lang='ja-JP';
-  recognition.interimResults=true;
-  recognition.continuous=false;
+  recognition.lang='ja-JP'; recognition.interimResults=true; recognition.continuous=false;
   recognition.onstart=()=>{listening=true;mic.classList.add('listening');mic.textContent='⏹';statusEl.textContent='● LISTENING';voiceNote.textContent='聞いています… 話し終わるとT君へ送信します。'};
   recognition.onresult=e=>{
-    let finalText='', interim='';
+    let finalText='',interim='';
     for(let i=e.resultIndex;i<e.results.length;i++){
       const t=e.results[i][0].transcript;
       if(e.results[i].isFinal)finalText+=t; else interim+=t;
@@ -142,19 +191,22 @@ if(SpeechRecognition){
     input.value=finalText||interim;
     if(finalText.trim()){lastWasVoice=true;setTimeout(()=>chat(finalText),120)}
   };
-  recognition.onerror=e=>{statusEl.textContent='● READY';voiceNote.textContent='音声を聞き取れませんでした。もう一度🎙️を押してください。';};
+  recognition.onerror=e=>{statusEl.textContent='● READY';voiceNote.textContent='音声を聞き取れませんでした。マイク許可を確認して、もう一度🎙️を押してください。';};
   recognition.onend=()=>{listening=false;mic.classList.remove('listening');mic.textContent='🎙️';if(statusEl.textContent==='● LISTENING')statusEl.textContent='● READY';};
   mic.addEventListener('click',()=>{
+    if(!voiceUnlocked)unlockVoice(false);
     if(listening){recognition.stop();return}
     try{recognition.start()}catch(e){}
   });
 }else{
-  mic.disabled=true; mic.style.opacity='.45';
-  voiceNote.textContent='このブラウザでは音声入力が使えないため、文字でT君に話しかけてください。';
+  mic.disabled=true;mic.style.opacity='.45';
+  voiceNote.textContent='このブラウザでは音声入力が使えません。文字入力は利用できます。';
 }
 
-// iOSはユーザー操作後に音声一覧がロードされることがある。
-if('speechSynthesis' in window)speechSynthesis.getVoices();
+if('speechSynthesis' in window){
+  speechSynthesis.getVoices();
+  if(typeof speechSynthesis.onvoiceschanged!=='undefined')speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+}
 </script>
 </body>
 </html>
