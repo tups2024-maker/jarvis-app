@@ -70,250 +70,190 @@ body{min-height:100svh}.wrap{width:min(1200px,100%);margin:auto;padding:22px cla
 <div class="foot">T君 / PRIVATE AI CONSOLE</div>
 </div>
 <script>
-const API='https://jarvis-api.t-ups2024.workers.dev/api/chat';
+const API_BASE='https://jarvis-api.t-ups2024.workers.dev';
+const CHAT_API=API_BASE+'/api/chat';
+const LIVE_API=API_BASE+'/api/realtime/call';
 const RESPONSE_KEY='t-kun-openai-previous-response-id';
-const input=document.getElementById('input'),send=document.getElementById('send'),messages=document.getElementById('messages'),statusEl=document.getElementById('chatStatus');
-const mic=document.getElementById('mic'),voiceToggle=document.getElementById('voiceToggle'),voiceNote=document.getElementById('voiceNote');
-const talkOrb=document.getElementById('talkOrb'),orbLabel=document.getElementById('orbLabel'),orbHint=document.getElementById('orbHint');
 
-let speakingEnabled=true, voiceUnlocked=false, listening=false, lastWasVoice=false;
-let conversationMode=false, recognition=null, waitingForAI=false, suppressRestart=false;
-let heardText='', sentThisTurn=false;
+const input=document.getElementById('input');
+const send=document.getElementById('send');
+const messages=document.getElementById('messages');
+const statusEl=document.getElementById('chatStatus');
+const mic=document.getElementById('mic');
+const voiceToggle=document.getElementById('voiceToggle');
+const voiceNote=document.getElementById('voiceNote');
+const talkOrb=document.getElementById('talkOrb');
+const orbLabel=document.getElementById('orbLabel');
+const orbHint=document.getElementById('orbHint');
+
+let pc=null, dc=null, localStream=null, remoteAudio=null;
+let liveActive=false, connecting=false;
 
 function add(text,who){
-  const d=document.createElement('div'); d.className='msg '+who; d.textContent=text;
-  messages.appendChild(d); messages.scrollTop=messages.scrollHeight;
+  const d=document.createElement('div');
+  d.className='msg '+who;
+  d.textContent=text;
+  messages.appendChild(d);
+  messages.scrollTop=messages.scrollHeight;
 }
 function setOrb(state,label,sub){
   talkOrb.classList.remove('listening','thinking','speaking');
   if(state)talkOrb.classList.add(state);
   orbLabel.innerHTML=(label||'T君')+'<span>'+(sub||'タップして話す')+'</span>';
 }
-function cleanForSpeech(text){
-  return String(text||'').replace(/[*#_`>]/g,'').replace(/https?:\/\/\S+/g,'').trim();
-}
-function japaneseVoice(){
-  const voices=window.speechSynthesis?.getVoices?.()||[];
-  return voices.find(v=>/^ja-JP$/i.test(v.lang))||voices.find(v=>/^ja/i.test(v.lang))||null;
-}
-function utter(text,onend){
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang='ja-JP'; u.rate=1.0; u.pitch=1.0; u.volume=1;
-  const v=japaneseVoice(); if(v)u.voice=v;
-  if(onend)u.onend=onend;
-  u.onerror=()=>{
-    statusEl.textContent='● VOICE ERROR';
-    setOrb('', 'T君','タップして再開');
-    voiceNote.textContent='音声出力に失敗しました。音量と消音設定を確認してください。';
-  };
-  return u;
-}
-function unlockVoice(announce=false){
-  if(!('speechSynthesis' in window)){
-    voiceNote.textContent='このブラウザは読み上げに対応していません。';
-    return false;
-  }
-  try{
-    speechSynthesis.cancel(); speechSynthesis.resume();
-    const test=utter(announce?'T君です。準備できました。話しかけてください。':' ');
-    speechSynthesis.speak(test);
-    voiceUnlocked=true;
-    if(announce){
-      voiceToggle.textContent='🔊 音声ON';
-      voiceNote.textContent='T君の音声を有効にしました。';
-    }
-    return true;
-  }catch(e){
-    voiceNote.textContent='音声を開始できませんでした。球体をもう一度タップしてください。';
-    return false;
-  }
-}
-function speak(text){
-  return new Promise(resolve=>{
-    if(!speakingEnabled||!voiceUnlocked||!('speechSynthesis' in window)){resolve();return}
-    const clean=cleanForSpeech(text).slice(0,1600);
-    if(!clean){resolve();return}
-    speechSynthesis.cancel(); speechSynthesis.resume();
-    setOrb('speaking','T君','話しています');
+function setLiveUi(mode){
+  if(mode==='connecting'){
+    statusEl.textContent='● CONNECTING';
+    setOrb('thinking','T君','接続しています');
+    orbHint.innerHTML='<strong>リアルタイム音声へ接続中</strong><br>少しだけ待ってください';
+    voiceNote.textContent='T君の音声通話を準備しています。';
+  }else if(mode==='ready'){
+    statusEl.textContent='● LIVE';
+    setOrb('listening','T君','話しかけてください');
+    orbHint.innerHTML='<strong>LIVE会話モードON</strong><br>普通に話しかけてください';
+    voiceNote.textContent='そのまま話せます。T君が返答中でも、あなたが話し始めれば会話を続けられます。';
+    voiceToggle.textContent='⏹ 通話終了';
+    mic.textContent='●';
+  }else if(mode==='speaking'){
     statusEl.textContent='● SPEAKING';
-    const chunks=(clean.match(/[^。！？!?\n]+[。！？!?]?/g)||[clean]).map(s=>s.trim()).filter(Boolean);
-    let i=0;
-    const next=()=>{
-      if(i>=chunks.length){
-        statusEl.textContent='● READY';
-        setOrb('', 'T君','会話中');
-        resolve(); return;
-      }
-      const u=utter(chunks[i++].slice(0,220),next);
-      speechSynthesis.speak(u);
-    };
-    next();
-  });
-}
-function startListening(){
-  if(!recognition){
-    voiceNote.textContent='このブラウザでは音声入力が使えません。文字入力をご利用ください。';
-    return;
-  }
-  if(waitingForAI||listening)return;
-  try{
-    suppressRestart=false;
-    recognition.start();
-  }catch(e){}
-}
-function stopConversation(){
-  conversationMode=false; suppressRestart=true;
-  try{recognition&&recognition.stop()}catch(e){}
-  try{speechSynthesis&&speechSynthesis.cancel()}catch(e){}
-  setOrb('', 'T君','タップして話す');
-  orbHint.innerHTML='<strong>中央の球体をタップ</strong><br>音声会話を再開';
-  statusEl.textContent='● READY';
-}
-async function startConversation(){
-  if(conversationMode){ stopConversation(); return; }
-  conversationMode=true; speakingEnabled=true;
-  unlockVoice(false);
-  setOrb('listening','T君','聞いています');
-  orbHint.innerHTML='<strong>会話モードON</strong><br>もう一度タップすると停止';
-  startListening();
-}
-
-async function chat(textOverride){
-  const text=String(textOverride??input.value).trim(); if(!text)return;
-  if(!voiceUnlocked)unlockVoice(false);
-  add(text,'user'); input.value=''; send.disabled=true; waitingForAI=true;
-  statusEl.textContent='● THINKING'; setOrb('thinking','T君','考えています');
-  try{
-    const previousResponseId=localStorage.getItem(RESPONSE_KEY)||null;
-    const persona='あなたはT_Express専用AI「T君」です。ChatGPTのように自然な日本語で会話してください。直前の会話を引き継ぎ、毎回同じ挨拶や自己紹介は不要です。音声会話ではまず短く自然に答え、必要なら続けて説明してください。T_ExpressのSNS、note、求人、営業、売上、AI事業、資産形成を中心に支援してください。';
-    const r=await fetch(API,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
-      message:persona+'\n\nユーザー：'+text,
-      department:'monetization',
-      mode:lastWasVoice?'voice':'chat',
-      previousResponseId
-    })});
-    if(!r.ok)throw new Error('HTTP '+r.status);
-    const data=await r.json();
-    const answer=data.reply||data.output_text||data.message||data.answer||'返答を受け取りました。';
-    if(data.responseId)localStorage.setItem(RESPONSE_KEY,data.responseId);
-    add(answer,'ai');
-    await speak(answer);
-  }catch(e){
-    add('今はAI接続がうまくいっていません。少ししてからもう一度話しかけてください。','ai');
-    statusEl.textContent='● CONNECTION ERROR';
-    setOrb('', 'T君','タップして再開');
-  }finally{
-    send.disabled=false; waitingForAI=false; lastWasVoice=false;
-    if(conversationMode){
-      setTimeout(()=>startListening(),350);
-    }else{
-      setOrb('', 'T君','タップして話す');
-    }
-  }
-}
-
-send.addEventListener('click',()=>chat());
-input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();chat()}});
-
-voiceToggle.addEventListener('click',()=>{
-  if(!voiceUnlocked){speakingEnabled=true;unlockVoice(true);return}
-  speakingEnabled=!speakingEnabled;
-  if(!speakingEnabled){
-    speechSynthesis.cancel(); voiceToggle.textContent='🔇 音声OFF';
-    voiceNote.textContent='読み上げをOFFにしました。';
-  }else{
-    voiceToggle.textContent='🔊 音声ON';
-    voiceNote.textContent='読み上げをONにしました。';
-  }
-});
-
-const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-if(SpeechRecognition){
-  recognition=new SpeechRecognition();
-  recognition.lang='ja-JP';
-  recognition.interimResults=true;
-  recognition.continuous=false;
-  recognition.maxAlternatives=1;
-
-  recognition.onstart=()=>{
-    listening=true; heardText=''; sentThisTurn=false;
-    mic.classList.add('listening'); mic.textContent='⏹';
+    setOrb('speaking','T君','話しています');
+  }else if(mode==='listening'){
     statusEl.textContent='● LISTENING';
     setOrb('listening','T君','聞いています');
-    voiceNote.textContent='そのまま話してください。話し終わると自動で返事します。';
-  };
-  recognition.onresult=e=>{
-    let finalText='',interim='';
-    for(let i=e.resultIndex;i<e.results.length;i++){
-      const t=e.results[i][0].transcript;
-      if(e.results[i].isFinal)finalText+=t; else interim+=t;
-    }
-    const latest=(finalText||interim).trim();
-    if(latest){
-      heardText=latest;
-      input.value=latest;
-      setOrb('listening','T君','「'+latest.slice(0,18)+(latest.length>18?'…':'')+'」');
-      voiceNote.textContent='聞き取り中：'+latest;
-    }
-    if(finalText.trim()&&!sentThisTurn){
-      sentThisTurn=true;
-      lastWasVoice=true;
-      suppressRestart=true;
-      heardText=finalText.trim();
-      try{recognition.stop()}catch(e){}
-      setTimeout(()=>chat(heardText),120);
-    }
-  };
-  recognition.onerror=e=>{
-    listening=false; mic.classList.remove('listening'); mic.textContent='🎙️';
-    if(e.error==='not-allowed'||e.error==='service-not-allowed'){
-      conversationMode=false;
-      setOrb('', 'T君','マイク許可が必要');
-      voiceNote.textContent='マイクが許可されていません。Safariのサイト設定でマイクを許可してください。';
-    }else if(e.error==='no-speech'){
-      voiceNote.textContent='声が聞き取れませんでした。もう一度話してください。';
-      if(conversationMode&&!waitingForAI)setTimeout(()=>startListening(),700);
-    }else if(conversationMode && !waitingForAI){
-      setTimeout(()=>startListening(),700);
-    }
-  };
-  recognition.onend=()=>{
-    listening=false; mic.classList.remove('listening'); mic.textContent='🎙️';
-    // iPhone Safari can finish recognition with only an interim transcript.
-    // If we heard anything but did not receive a "final" result, send it now.
-    if(heardText.trim()&&!sentThisTurn&&!waitingForAI){
-      sentThisTurn=true;
-      lastWasVoice=true;
-      suppressRestart=true;
-      const text=heardText.trim();
-      setOrb('thinking','T君','送信しています');
-      voiceNote.textContent='T君に送信中：'+text;
-      setTimeout(()=>chat(text),120);
-      return;
-    }
-    if(conversationMode && !waitingForAI && !suppressRestart){
-      setTimeout(()=>startListening(),500);
-    }
-  };
-
-  mic.addEventListener('click',()=>{
-    if(!voiceUnlocked)unlockVoice(false);
-    if(listening){suppressRestart=true;recognition.stop();return}
-    lastWasVoice=true; startListening();
+  }else{
+    statusEl.textContent='● READY';
+    setOrb('','T君','タップして話す');
+    orbHint.innerHTML='<strong>中央の球体をタップ</strong><br>ChatGPTのように音声会話';
+    voiceNote.textContent='中央の球体をタップすると、T君とのリアルタイム音声会話を開始します。';
+    voiceToggle.textContent='🔊 音声会話';
+    mic.textContent='🎙️';
+  }
+}
+function waitIceComplete(peer){
+  if(peer.iceGatheringState==='complete')return Promise.resolve();
+  return new Promise(resolve=>{
+    const check=()=>{
+      if(peer.iceGatheringState==='complete'){
+        peer.removeEventListener('icegatheringstatechange',check);
+        resolve();
+      }
+    };
+    peer.addEventListener('icegatheringstatechange',check);
+    setTimeout(resolve,2500);
   });
-
-  talkOrb.addEventListener('click',startConversation);
-  talkOrb.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();startConversation()}});
-}else{
-  mic.disabled=true; mic.style.opacity='.45';
-  talkOrb.addEventListener('click',()=>{voiceNote.textContent='このブラウザでは音声入力が使えません。文字入力をご利用ください。';});
-  voiceNote.textContent='このブラウザでは音声入力が使えません。文字入力は利用できます。';
 }
-
-if('speechSynthesis' in window){
-  speechSynthesis.getVoices();
-  if(typeof speechSynthesis.onvoiceschanged!=='undefined')speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+function handleRealtimeEvent(raw){
+  let e;
+  try{e=JSON.parse(raw)}catch{return}
+  const type=e?.type||'';
+  if(type.includes('speech_started'))setLiveUi('listening');
+  if(type.includes('response.audio')||type.includes('response.output_audio'))setLiveUi('speaking');
+  if(type==='response.done'||type.includes('audio.done')){
+    if(liveActive)setLiveUi('listening');
+  }
 }
+async function startLive(){
+  if(connecting||liveActive)return;
+  connecting=true;
+  setLiveUi('connecting');
+  try{
+    localStream=await navigator.mediaDevices.getUserMedia({
+      audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}
+    });
+    pc=new RTCPeerConnection();
+    remoteAudio=document.createElement('audio');
+    remoteAudio.autoplay=true;
+    remoteAudio.playsInline=true;
+    remoteAudio.style.display='none';
+    document.body.appendChild(remoteAudio);
+    pc.ontrack=e=>{
+      remoteAudio.srcObject=e.streams[0];
+      remoteAudio.play().catch(()=>{});
+    };
+    pc.onconnectionstatechange=()=>{
+      if(pc.connectionState==='connected'&&!liveActive){
+        liveActive=true; connecting=false; setLiveUi('ready');
+      }
+      if(['failed','closed','disconnected'].includes(pc.connectionState)&&liveActive){
+        stopLive(true);
+      }
+    };
+    localStream.getTracks().forEach(track=>pc.addTrack(track,localStream));
+    dc=pc.createDataChannel('oai-events');
+    dc.onopen=()=>{liveActive=true;connecting=false;setLiveUi('ready')};
+    dc.onmessage=e=>handleRealtimeEvent(e.data);
+    const offer=await pc.createOffer();
+    await pc.setLocalDescription(offer);
+    await waitIceComplete(pc);
+    const r=await fetch(LIVE_API,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({sdp:pc.localDescription.sdp})
+    });
+    if(!r.ok)throw new Error('Realtime '+r.status+' '+(await r.text()).slice(0,160));
+    const answerSdp=await r.text();
+    await pc.setRemoteDescription({type:'answer',sdp:answerSdp});
+  }catch(err){
+    console.error('[T君 realtime]',err);
+    connecting=false;
+    await stopLive(false);
+    statusEl.textContent='● LIVE ERROR';
+    setOrb('','T君','接続を確認してください');
+    orbHint.innerHTML='<strong>音声通話に接続できませんでした</strong><br>文字チャットは利用できます';
+    voiceNote.textContent='リアルタイム音声サーバーの接続設定を確認してください。';
+  }
+}
+async function stopLive(reset=true){
+  liveActive=false;connecting=false;
+  try{dc?.close()}catch(e){}
+  try{pc?.close()}catch(e){}
+  try{localStream?.getTracks()?.forEach(t=>t.stop())}catch(e){}
+  try{remoteAudio?.pause()}catch(e){}
+  try{remoteAudio?.remove()}catch(e){}
+  dc=null;pc=null;localStream=null;remoteAudio=null;
+  if(reset)setLiveUi('idle');
+}
+async function toggleLive(){
+  if(liveActive||connecting)await stopLive(true);
+  else await startLive();
+}
+talkOrb.addEventListener('click',toggleLive);
+talkOrb.addEventListener('keydown',e=>{
+  if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleLive()}
+});
+mic.addEventListener('click',toggleLive);
+voiceToggle.addEventListener('click',toggleLive);
+
+async function chat(){
+  const text=String(input.value||'').trim();
+  if(!text)return;
+  add(text,'user');
+  input.value='';
+  send.disabled=true;
+  statusEl.textContent='● THINKING';
+  try{
+    const previousResponseId=localStorage.getItem(RESPONSE_KEY)||null;
+    const r=await fetch(CHAT_API,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:text,department:'monetization',previousResponseId})
+    });
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const data=await r.json();
+    if(data.responseId)localStorage.setItem(RESPONSE_KEY,data.responseId);
+    add(data.reply||data.output_text||data.message||data.answer||'返答を受け取りました。','ai');
+    statusEl.textContent=liveActive?'● LIVE':'● READY';
+  }catch(e){
+    add('今はAI接続がうまくいっていません。少ししてからもう一度試してください。','ai');
+    statusEl.textContent='● CONNECTION ERROR';
+  }finally{send.disabled=false}
+}
+send.addEventListener('click',chat);
+input.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();chat()}
+});
+window.addEventListener('pagehide',()=>stopLive(false));
+setLiveUi('idle');
 </script>
 </body>
 </html>
