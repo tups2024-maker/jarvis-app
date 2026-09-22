@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#020711">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<title>T_Express JARVIS</title>
+<title>T君</title>
 <style>
 :root{--bg:#020711;--panel:#07131d;--panel2:#0a1c29;--cyan:#73e9ff;--cyan2:#21b6d7;--ink:#eafcff;--muted:#8fb0bc;--line:#143847;--gold:#d5b46d;--ok:#5ee6a8;--danger:#ff7d8d}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 15%,#0c2636 0,#06131f 28%,#020711 68%);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
@@ -13,16 +13,16 @@ body{min-height:100svh}.wrap{width:min(1200px,100%);margin:auto;padding:22px cla
 .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;padding:44px 0 30px}.eyebrow{color:var(--cyan);font-size:10px;letter-spacing:.26em}.hero h1{font-size:clamp(34px,6vw,68px);line-height:1.08;margin:12px 0 16px;letter-spacing:-.02em}.hero p{max-width:680px;color:#9fc5cf;line-height:1.9;font-size:14px}.orb-wrap{display:grid;place-items:center;min-height:280px}.orb{width:min(220px,55vw);aspect-ratio:1;border-radius:50%;position:relative;background:radial-gradient(circle at 40% 38%,#a8f7ff 0,#4bdcf4 12%,#0b6788 32%,#04131e 64%,#020711 76%);box-shadow:0 0 35px #37cfea55,0 0 90px #21b6d733,inset 0 0 40px #9df7ff55;animation:pulse 3.8s ease-in-out infinite}.orb:before,.orb:after{content:"";position:absolute;inset:-16px;border-radius:50%;border:1px solid #4fe7ff66}.orb:after{inset:-34px;border-color:#4fe7ff22}.orb b{position:absolute;inset:0;display:grid;place-items:center;text-align:center;letter-spacing:.2em;font-size:12px;text-shadow:0 0 8px #000}.orb span{display:block;color:#bff8ff;font-size:9px;margin-top:6px;letter-spacing:.18em}@keyframes pulse{50%{transform:scale(1.03);box-shadow:0 0 45px #37cfeaaa,0 0 110px #21b6d755,inset 0 0 55px #9df7ff66}}
 .status{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:4px 0 28px}.stat{background:linear-gradient(180deg,#081824dd,#06121bdd);border:1px solid var(--line);border-radius:16px;padding:16px}.stat span{display:block;color:var(--muted);font-size:10px;letter-spacing:.1em}.stat strong{display:block;margin-top:8px;font-size:21px}.stat i{font-style:normal;font-size:10px;color:var(--ok);margin-top:5px;display:block}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:linear-gradient(180deg,#091a27e8,#051018e8);border:1px solid var(--line);border-radius:18px;padding:18px;min-height:158px;display:flex;flex-direction:column;transition:.2s}.card:hover{transform:translateY(-3px);border-color:#3ccbe6}.card .k{font-size:10px;color:var(--cyan);letter-spacing:.15em}.card h3{margin:10px 0 8px;font-size:17px}.card p{margin:0;color:var(--muted);font-size:12px;line-height:1.7}.card .go{margin-top:auto;padding-top:14px;color:#d5f9ff;font-size:12px;text-decoration:none}.card .go:hover{color:#fff}
-.chat{margin-top:26px;border:1px solid var(--line);background:#04101aee;border-radius:20px;overflow:hidden}.chat-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}.chat-head b{font-size:14px}.chat-head span{font-size:10px;color:var(--ok)}.messages{min-height:170px;max-height:330px;overflow:auto;padding:16px}.msg{max-width:82%;padding:11px 13px;border-radius:14px;margin:8px 0;line-height:1.7;font-size:13px;white-space:pre-wrap}.msg.ai{background:#08202d;border:1px solid #17485a}.msg.user{margin-left:auto;background:#12354a;border:1px solid #216780}.composer{display:grid;grid-template-columns:1fr auto;gap:8px;padding:12px;border-top:1px solid var(--line)}textarea{resize:none;min-height:48px;max-height:130px;border:1px solid var(--line);border-radius:13px;background:#020a10;color:#fff;padding:12px;font:inherit;outline:none}textarea:focus{border-color:var(--cyan2)}button.send{border:0;border-radius:13px;background:linear-gradient(135deg,#42d9ef,#1285a6);color:#00131b;font-weight:800;padding:0 18px;cursor:pointer}.foot{margin-top:20px;text-align:center;color:#5f8190;font-size:10px}
+.chat{margin-top:26px;border:1px solid var(--line);background:#04101aee;border-radius:20px;overflow:hidden}.chat-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}.chat-head b{font-size:14px}.chat-head span{font-size:10px;color:var(--ok)}.messages{min-height:170px;max-height:330px;overflow:auto;padding:16px}.msg{max-width:82%;padding:11px 13px;border-radius:14px;margin:8px 0;line-height:1.7;font-size:13px;white-space:pre-wrap}.msg.ai{background:#08202d;border:1px solid #17485a}.msg.user{margin-left:auto;background:#12354a;border:1px solid #216780}.composer{display:grid;grid-template-columns:auto 1fr auto;gap:8px;padding:12px;border-top:1px solid var(--line)}.voice-btn{border:1px solid var(--line);border-radius:13px;background:#08202d;color:#d5f9ff;min-width:52px;font-size:20px;cursor:pointer}.voice-btn.listening{border-color:#73e9ff;box-shadow:0 0 18px #37cfea66;background:#0d3445}.voice-note{padding:0 14px 10px;color:#6f98a8;font-size:10px}.voice-toggle{border:1px solid var(--line);background:#07131d;color:#bfefff;border-radius:10px;padding:7px 10px;font-size:10px;cursor:pointer}textarea{resize:none;min-height:48px;max-height:130px;border:1px solid var(--line);border-radius:13px;background:#020a10;color:#fff;padding:12px;font:inherit;outline:none}textarea:focus{border-color:var(--cyan2)}button.send{border:0;border-radius:13px;background:linear-gradient(135deg,#42d9ef,#1285a6);color:#00131b;font-weight:800;padding:0 18px;cursor:pointer}.foot{margin-top:20px;text-align:center;color:#5f8190;font-size:10px}
 @media(max-width:900px){.hero{grid-template-columns:1fr}.orb-wrap{order:-1;min-height:220px}.status{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.wrap{padding:14px 14px 34px}.top{align-items:flex-start}.actions{max-width:150px}.hero{padding-top:30px}.hero h1{font-size:38px}.status,.grid{grid-template-columns:1fr}.stat,.card{border-radius:15px}.composer{grid-template-columns:1fr}.send{min-height:44px}.msg{max-width:92%}}
+@media(max-width:560px){.composer{grid-template-columns:auto 1fr}.composer .send{grid-column:1/-1}.wrap{padding:14px 14px 34px}.top{align-items:flex-start}.actions{max-width:150px}.hero{padding-top:30px}.hero h1{font-size:38px}.status,.grid{grid-template-columns:1fr}.stat,.card{border-radius:15px}.composer{grid-template-columns:1fr}.send{min-height:44px}.msg{max-width:92%}}
 @media(prefers-reduced-motion:reduce){.orb{animation:none}.card{transition:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header class="top">
-  <div class="brand"><small>T_EXPRESS / PRIVATE AI CONSOLE</small><strong>T_Express JARVIS</strong></div>
+  <div class="brand"><small>T_EXPRESS / T-KUN AI CONSOLE</small><strong>T君</strong></div>
   <div class="actions">
     <a class="btn" href="./texpress.html">公式HP</a>
     <a class="btn" href="https://www.instagram.com/t_express1201/" target="_blank" rel="noopener">Instagram</a>
@@ -32,11 +32,11 @@ body{min-height:100svh}.wrap{width:min(1200px,100%);margin:auto;padding:22px cla
 
 <section class="hero">
   <div>
-    <span class="eyebrow">AI BUSINESS COMMAND</span>
+    <span class="eyebrow">T-KUN / AI BUSINESS COMMAND</span>
     <h1>事業を、ひとつの<br>画面から動かす。</h1>
-    <p>T_ExpressのAI・コンテンツ事業専用JARVIS。SNS、note、求人、営業、売上、資産形成をまとめ、次にやるべきことを会話から整理します。</p>
+    <p>T_Express専用AI「T君」。声でも文字でも自然に会話しながら、SNS、note、求人、営業、売上、資産形成を一緒に整理します。</p>
   </div>
-  <div class="orb-wrap"><div class="orb"><b>JARVIS<span>T_EXPRESS</span></b></div></div>
+  <div class="orb-wrap"><div class="orb"><b>JARVIS<span>T-KUN</span></b></div></div>
 </section>
 
 <section class="status">
@@ -47,7 +47,7 @@ body{min-height:100svh}.wrap{width:min(1200px,100%);margin:auto;padding:22px cla
 </section>
 
 <section class="grid">
-  <article class="card"><span class="k">01 / AI SECRETARY</span><h3>JARVIS会話</h3><p>事業判断、タスク整理、売上改善、求人・営業の次アクションを会話で整理。</p><a class="go" href="#chat">会話を開始 →</a></article>
+  <article class="card"><span class="k">01 / AI SECRETARY</span><h3>T君と会話</h3><p>普通の会話のように相談できます。前の話を引き継ぎながら、次の行動まで一緒に整理します。</p><a class="go" href="#chat">会話を開始 →</a></article>
   <article class="card"><span class="k">02 / SNS</span><h3>SNS運用</h3><p>Instagram・Threadsの投稿企画、採用導線、PV向上施策を管理。</p><a class="go" href="https://www.instagram.com/t_express1201/" target="_blank" rel="noopener">Instagramを開く →</a></article>
   <article class="card"><span class="k">03 / NOTE</span><h3>note収益化</h3><p>記事企画、サブスク、販売導線、収益目標の進捗を管理。</p><a class="go" href="https://note.com/turusaka20/n/nac7743fac35f" target="_blank" rel="noopener">noteを開く →</a></article>
   <article class="card"><span class="k">04 / RECRUIT</span><h3>採用管理</h3><p>求人原稿、媒体ごとの改善、一宮・富士など重点エリアの応募強化。</p><a class="go" href="https://en-gage.net/turusaka20_jobs/" target="_blank" rel="noopener">採用ページを開く →</a></article>
@@ -58,34 +58,103 @@ body{min-height:100svh}.wrap{width:min(1200px,100%);margin:auto;padding:22px cla
 </section>
 
 <section class="chat" id="chat">
-  <div class="chat-head"><b>T_Express JARVIS</b><span id="chatStatus">● READY</span></div>
-  <div class="messages" id="messages"><div class="msg ai">T_Express JARVISです。SNS、note、求人、営業、売上、資産形成について指示してください。</div></div>
+  <div class="chat-head"><b>T君</b><div><button class="voice-toggle" id="voiceToggle" type="button">🔊 音声ON</button> <span id="chatStatus">● READY</span></div></div>
+  <div class="messages" id="messages"><div class="msg ai">T君です。SNS、note、求人、営業、売上、資産形成について指示してください。</div></div>
   <div class="composer">
+    <button class="voice-btn" id="mic" type="button" aria-label="T君に話しかける">🎙️</button>
     <textarea id="input" placeholder="例：今月の売上を伸ばすために、今日やるべきことを3つ出して"></textarea>
     <button class="send" id="send">送信</button>
-  </div>
+  </div><div class="voice-note" id="voiceNote">🎙️を押して話すと、そのままT君へ送信します。返事は音声でも読み上げます。</div>
 </section>
 
-<div class="foot">T_Express JARVIS / PRIVATE AI CONSOLE</div>
+<div class="foot">T君 / PRIVATE AI CONSOLE</div>
 </div>
 <script>
 const API='https://jarvis-api.t-ups2024.workers.dev/api/chat';
+const RESPONSE_KEY='t-kun-openai-previous-response-id';
 const input=document.getElementById('input'),send=document.getElementById('send'),messages=document.getElementById('messages'),statusEl=document.getElementById('chatStatus');
-function add(text,who){const d=document.createElement('div');d.className='msg '+who;d.textContent=text;messages.appendChild(d);messages.scrollTop=messages.scrollHeight}
-async function chat(){
-  const text=input.value.trim(); if(!text)return;
+const mic=document.getElementById('mic'),voiceToggle=document.getElementById('voiceToggle'),voiceNote=document.getElementById('voiceNote');
+let speakingEnabled=true, listening=false, lastWasVoice=false;
+
+function add(text,who){
+  const d=document.createElement('div'); d.className='msg '+who; d.textContent=text;
+  messages.appendChild(d); messages.scrollTop=messages.scrollHeight;
+}
+function cleanForSpeech(text){
+  return String(text||'').replace(/[*#_`>]/g,'').replace(/https?:\/\/\S+/g,'').slice(0,1200);
+}
+function speak(text){
+  if(!speakingEnabled||!('speechSynthesis' in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(cleanForSpeech(text));
+  u.lang='ja-JP'; u.rate=1.03; u.pitch=1;
+  const voices=speechSynthesis.getVoices();
+  const ja=voices.find(v=>/^ja/i.test(v.lang));
+  if(ja)u.voice=ja;
+  speechSynthesis.speak(u);
+}
+voiceToggle.addEventListener('click',()=>{
+  speakingEnabled=!speakingEnabled;
+  if(!speakingEnabled&&'speechSynthesis' in window)speechSynthesis.cancel();
+  voiceToggle.textContent=speakingEnabled?'🔊 音声ON':'🔇 音声OFF';
+});
+
+async function chat(textOverride){
+  const text=String(textOverride??input.value).trim(); if(!text)return;
   add(text,'user'); input.value=''; send.disabled=true; statusEl.textContent='● THINKING';
   try{
-    const r=await fetch(API,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:text,context:'T_Express専用JARVIS。AI事業、SNS運用、note収益、求人、営業、売上・利益、資産形成を支援する。'})});
+    const previousResponseId=localStorage.getItem(RESPONSE_KEY)||null;
+    const persona='あなたはT_Express専用AI「T君」です。自然な日本語で、普通の人と話すように会話してください。毎回自己紹介や定型文を入れず、直前の会話を引き継いでください。音声会話では短めに返し、必要なら詳しく説明してください。T_ExpressのSNS、note、求人、営業、売上、AI事業、資産形成を中心に支援してください。';
+    const r=await fetch(API,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
+      message:persona+'\n\nユーザー：'+text,
+      department:'monetization',
+      mode:lastWasVoice?'voice':'chat',
+      previousResponseId
+    })});
     if(!r.ok)throw new Error('HTTP '+r.status);
     const data=await r.json();
-    const answer=data.output_text||data.reply||data.message||data.answer||'応答は受信しましたが表示形式を確認できませんでした。';
-    add(answer,'ai'); statusEl.textContent='● READY';
-  }catch(e){add('AI接続でエラーが発生しました。少し後で再度送信してください。','ai');statusEl.textContent='● CONNECTION ERROR'}
-  finally{send.disabled=false}
+    const answer=data.reply||data.output_text||data.message||data.answer||'返答を受け取りました。';
+    if(data.responseId)localStorage.setItem(RESPONSE_KEY,data.responseId);
+    add(answer,'ai'); statusEl.textContent='● READY'; speak(answer);
+  }catch(e){
+    add('今はAI接続がうまくいっていません。少ししてからもう一度話しかけてください。','ai');
+    statusEl.textContent='● CONNECTION ERROR';
+  }finally{send.disabled=false;lastWasVoice=false}
 }
-send.addEventListener('click',chat);
+send.addEventListener('click',()=>chat());
 input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();chat()}});
+
+// iPhone/Safari を含む Web Speech API。未対応端末は文字入力へフォールバック。
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+let recognition=null;
+if(SpeechRecognition){
+  recognition=new SpeechRecognition();
+  recognition.lang='ja-JP';
+  recognition.interimResults=true;
+  recognition.continuous=false;
+  recognition.onstart=()=>{listening=true;mic.classList.add('listening');mic.textContent='⏹';statusEl.textContent='● LISTENING';voiceNote.textContent='聞いています… 話し終わるとT君へ送信します。'};
+  recognition.onresult=e=>{
+    let finalText='', interim='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const t=e.results[i][0].transcript;
+      if(e.results[i].isFinal)finalText+=t; else interim+=t;
+    }
+    input.value=finalText||interim;
+    if(finalText.trim()){lastWasVoice=true;setTimeout(()=>chat(finalText),120)}
+  };
+  recognition.onerror=e=>{statusEl.textContent='● READY';voiceNote.textContent='音声を聞き取れませんでした。もう一度🎙️を押してください。';};
+  recognition.onend=()=>{listening=false;mic.classList.remove('listening');mic.textContent='🎙️';if(statusEl.textContent==='● LISTENING')statusEl.textContent='● READY';};
+  mic.addEventListener('click',()=>{
+    if(listening){recognition.stop();return}
+    try{recognition.start()}catch(e){}
+  });
+}else{
+  mic.disabled=true; mic.style.opacity='.45';
+  voiceNote.textContent='このブラウザでは音声入力が使えないため、文字でT君に話しかけてください。';
+}
+
+// iOSはユーザー操作後に音声一覧がロードされることがある。
+if('speechSynthesis' in window)speechSynthesis.getVoices();
 </script>
 </body>
 </html>
