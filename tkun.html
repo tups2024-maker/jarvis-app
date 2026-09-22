@@ -67,7 +67,7 @@ body{min-height:100svh}.wrap{width:min(1200px,100%);margin:auto;padding:22px cla
   </div><div class="voice-note" id="voiceNote">🎙️を押して話すと、そのままT君へ送信します。返事は音声でも読み上げます。</div>
 </section>
 
-<div class="foot">T君 / PRIVATE AI CONSOLE</div>
+<div class="foot">T君 / PRIVATE AI CONSOLE / VOICE BUILD 15:38</div>
 </div>
 <script>
 const API='https://jarvis-api.t-ups2024.workers.dev/api/chat';
@@ -87,8 +87,10 @@ const orbHint=document.getElementById('orbHint');
 let recognition=null;
 let listening=false;
 let speakingEnabled=true;
+let audioUnlocked=false;
 let lastHeard='';
 let silenceTimer=null;
+let speakingNow=false;
 
 function add(text,who){
   const d=document.createElement('div');
@@ -102,42 +104,117 @@ function setOrb(state,label,sub){
   if(state)talkOrb.classList.add(state);
   orbLabel.innerHTML=(label||'T君')+'<span>'+(sub||'タップして話す')+'</span>';
 }
-function getJaVoice(){
-  const vs=speechSynthesis.getVoices();
-  return vs.find(v=>/^ja-JP$/i.test(v.lang))||vs.find(v=>/^ja/i.test(v.lang))||null;
+function getVoices(){
+  try{return speechSynthesis.getVoices()||[]}catch(e){return[]}
 }
-function speak(text){
-  if(!speakingEnabled||!('speechSynthesis' in window))return;
-  const clean=String(text||'').replace(/[*#_`>]/g,'').replace(/https?:\/\/\S+/g,'').trim();
-  if(!clean)return;
-  speechSynthesis.cancel();
-  speechSynthesis.resume();
-  setOrb('speaking','T君','話しています');
-  statusEl.textContent='● SPEAKING';
-  const parts=(clean.match(/[^。！？!?\n]+[。！？!?]?/g)||[clean]).map(s=>s.trim()).filter(Boolean);
-  let i=0;
-  const next=()=>{
-    if(i>=parts.length){
-      setOrb('','T君','タップして話す');
-      statusEl.textContent='● READY';
+function getJaVoice(){
+  const vs=getVoices();
+  return vs.find(v=>/^ja-JP$/i.test(v.lang))
+      || vs.find(v=>/^ja/i.test(v.lang))
+      || vs.find(v=>/Kyoko|Otoya|Siri|Japanese/i.test(v.name))
+      || null;
+}
+function cleanSpeech(text){
+  return String(text||'').replace(/[*#_`>]/g,'').replace(/https?:\/\/\S+/g,'').trim();
+}
+
+function speakOnce(text, opts={}){
+  return new Promise(resolve=>{
+    if(!('speechSynthesis' in window)){resolve(false);return}
+    const clean=cleanSpeech(text).slice(0,500);
+    if(!clean){resolve(false);return}
+
+    let started=false, finished=false;
+    const u=new SpeechSynthesisUtterance(clean);
+    u.lang='ja-JP';
+    u.rate=opts.rate||1;
+    u.pitch=1;
+    u.volume=1;
+    const v=getJaVoice();
+    if(v && !opts.noVoice)u.voice=v;
+
+    const done=ok=>{
+      if(finished)return;
+      finished=true;
+      clearTimeout(watchdog);
+      resolve(ok);
+    };
+    u.onstart=()=>{
+      started=true;
+      speakingNow=true;
+      setOrb('speaking','T君','話しています');
+      statusEl.textContent='● SPEAKING';
+      voiceNote.textContent='T君が話しています。';
+    };
+    u.onend=()=>{
+      speakingNow=false;
+      done(true);
+    };
+    u.onerror=()=>{
+      speakingNow=false;
+      done(false);
+    };
+
+    try{
+      speechSynthesis.cancel();
+      speechSynthesis.resume();
+      speechSynthesis.speak(u);
+    }catch(e){
+      done(false);
       return;
     }
-    const u=new SpeechSynthesisUtterance(parts[i++].slice(0,220));
-    u.lang='ja-JP';u.rate=1;u.pitch=1;u.volume=1;
-    const v=getJaVoice(); if(v)u.voice=v;
-    u.onend=next;
-    u.onerror=()=>{setOrb('','T君','タップして話す');statusEl.textContent='● READY';};
-    speechSynthesis.speak(u);
-  };
-  next();
+
+    const watchdog=setTimeout(()=>{
+      if(!started){
+        try{speechSynthesis.cancel()}catch(e){}
+        done(false);
+      }
+    },900);
+  });
 }
-function unlockVoice(){
-  if(!('speechSynthesis' in window))return;
-  speechSynthesis.cancel();
-  speechSynthesis.resume();
-  const u=new SpeechSynthesisUtterance(' ');
-  u.lang='ja-JP';
-  speechSynthesis.speak(u);
+
+async function speakReliable(text){
+  if(!speakingEnabled||!audioUnlocked)return false;
+  const clean=cleanSpeech(text);
+  if(!clean)return false;
+
+  const pieces=(clean.match(/[^。！？!?\n]+[。！？!?]?/g)||[clean])
+    .map(s=>s.trim()).filter(Boolean);
+
+  for(const piece of pieces){
+    let ok=await speakOnce(piece.slice(0,220),{});
+    if(!ok)ok=await speakOnce(piece.slice(0,220),{noVoice:true,rate:.98});
+    if(!ok)ok=await speakOnce(piece.slice(0,140),{noVoice:true,rate:.9});
+    if(!ok){
+      statusEl.textContent='● VOICE ERROR';
+      voiceNote.textContent='AI返答はできていますが、iPhoneの読み上げ開始に失敗しました。もう一度球体をタップしてください。';
+      setOrb('','T君','音声を再開');
+      return false;
+    }
+  }
+  setOrb('','T君','タップして話す');
+  statusEl.textContent='● READY';
+  voiceNote.textContent='T君の返答を読み上げました。';
+  return true;
+}
+
+async function unlockAndGreet(){
+  if(!('speechSynthesis' in window))return false;
+  audioUnlocked=true;
+  try{
+    speechSynthesis.cancel();
+    speechSynthesis.resume();
+  }catch(e){}
+  const ok=await speakOnce('T君です。話しかけてください。',{});
+  if(!ok){
+    const retry=await speakOnce('T君です。',{noVoice:true,rate:.95});
+    if(!retry){
+      statusEl.textContent='● VOICE ERROR';
+      voiceNote.textContent='iPhoneで音声を開始できませんでした。端末の音量と消音設定を確認してください。';
+      return false;
+    }
+  }
+  return true;
 }
 
 async function askTkun(text){
@@ -148,6 +225,7 @@ async function askTkun(text){
   send.disabled=true;
   setOrb('thinking','T君','考えています');
   statusEl.textContent='● THINKING';
+  voiceNote.textContent='AIが返答を作っています。';
 
   try{
     const previousResponseId=localStorage.getItem(RESPONSE_KEY)||null;
@@ -166,32 +244,66 @@ async function askTkun(text){
     if(data.responseId)localStorage.setItem(RESPONSE_KEY,data.responseId);
     const answer=data.reply||data.output_text||data.message||data.answer||'返答を受け取りました。';
     add(answer,'ai');
-    speak(answer);
+    await speakReliable(answer);
   }catch(e){
+    console.error('[T君 chat]',e);
     add('今はAI接続がうまくいっていません。少ししてからもう一度試してください。','ai');
     setOrb('','T君','タップして話す');
     statusEl.textContent='● CONNECTION ERROR';
+    voiceNote.textContent='AIサーバーとの通信に失敗しました。';
   }finally{
     send.disabled=false;
   }
 }
 
-send.addEventListener('click',()=>{unlockVoice();askTkun(input.value)});
-input.addEventListener('keydown',e=>{
+function stopRecognition(){
+  clearTimeout(silenceTimer);
+  try{recognition&&recognition.stop()}catch(e){}
+}
+
+async function beginVoiceTurn(){
+  if(listening){stopRecognition();return}
+  const ok=audioUnlocked ? true : await unlockAndGreet();
+  if(!ok)return;
+  if(!recognition){
+    voiceNote.textContent='このブラウザでは音声入力に対応していません。文字入力ならAIが声で返答します。';
+    return;
+  }
+  setTimeout(()=>{
+    try{recognition.start()}catch(e){
+      voiceNote.textContent='マイクを開始できませんでした。もう一度球体を押してください。';
+    }
+  },180);
+}
+
+send.addEventListener('click',async()=>{
+  if(!audioUnlocked)await unlockAndGreet();
+  askTkun(input.value);
+});
+input.addEventListener('keydown',async e=>{
   if(e.key==='Enter'&&!e.shiftKey){
     e.preventDefault();
-    unlockVoice();
+    if(!audioUnlocked)await unlockAndGreet();
     askTkun(input.value);
   }
 });
 
 voiceToggle.textContent='🔊 AI音声ON';
-voiceToggle.addEventListener('click',()=>{
-  unlockVoice();
+voiceToggle.addEventListener('click',async()=>{
+  if(!audioUnlocked){
+    speakingEnabled=true;
+    await unlockAndGreet();
+    return;
+  }
   speakingEnabled=!speakingEnabled;
-  voiceToggle.textContent=speakingEnabled?'🔊 AI音声ON':'🔇 AI音声OFF';
-  if(speakingEnabled)speak('T君です。音声をオンにしました。');
-  else speechSynthesis.cancel();
+  if(!speakingEnabled){
+    try{speechSynthesis.cancel()}catch(e){}
+    voiceToggle.textContent='🔇 AI音声OFF';
+    voiceNote.textContent='AI音声をOFFにしました。';
+  }else{
+    voiceToggle.textContent='🔊 AI音声ON';
+    await speakReliable('T君です。AI音声をオンにしました。');
+  }
 });
 
 const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
@@ -199,7 +311,8 @@ if(SpeechRecognition){
   recognition=new SpeechRecognition();
   recognition.lang='ja-JP';
   recognition.interimResults=true;
-  recognition.continuous=true;
+  recognition.continuous=false;
+  recognition.maxAlternatives=1;
 
   recognition.onstart=()=>{
     listening=true;
@@ -208,7 +321,7 @@ if(SpeechRecognition){
     statusEl.textContent='● LISTENING';
     mic.classList.add('listening');
     mic.textContent='⏹';
-    voiceNote.textContent='話しかけてください。1秒ほど無音になると自動で送信します。';
+    voiceNote.textContent='話してください。聞き取れたら自動でAIへ送ります。';
   };
 
   recognition.onresult=e=>{
@@ -217,20 +330,21 @@ if(SpeechRecognition){
       heard+=e.results[i][0].transcript;
     }
     heard=heard.trim();
-    if(heard){
-      lastHeard=heard;
-      input.value=heard;
-      setOrb('listening','T君','「'+heard.slice(0,18)+(heard.length>18?'…':'')+'」');
-      clearTimeout(silenceTimer);
-      silenceTimer=setTimeout(()=>{
-        if(lastHeard){
-          const text=lastHeard;
-          lastHeard='';
-          try{recognition.stop()}catch(e){}
-          askTkun(text);
-        }
-      },1100);
-    }
+    if(!heard)return;
+
+    lastHeard=heard;
+    input.value=heard;
+    setOrb('listening','T君','「'+heard.slice(0,18)+(heard.length>18?'…':'')+'」');
+    voiceNote.textContent='聞き取り：'+heard;
+
+    clearTimeout(silenceTimer);
+    silenceTimer=setTimeout(()=>{
+      const text=lastHeard.trim();
+      if(!text)return;
+      lastHeard='';
+      stopRecognition();
+      askTkun(text);
+    },850);
   };
 
   recognition.onerror=e=>{
@@ -239,7 +353,11 @@ if(SpeechRecognition){
     mic.textContent='🎙️';
     setOrb('','T君','タップして話す');
     statusEl.textContent='● READY';
-    voiceNote.textContent='音声を聞き取れませんでした。もう一度球体を押してください。';
+    if(e.error==='not-allowed'||e.error==='service-not-allowed'){
+      voiceNote.textContent='マイクが許可されていません。Safariのサイト設定でマイクを許可してください。';
+    }else{
+      voiceNote.textContent='音声を聞き取れませんでした。もう一度球体を押してください。';
+    }
   };
 
   recognition.onend=()=>{
@@ -247,8 +365,8 @@ if(SpeechRecognition){
     mic.classList.remove('listening');
     mic.textContent='🎙️';
     clearTimeout(silenceTimer);
-    if(lastHeard){
-      const text=lastHeard;
+    if(lastHeard.trim()){
+      const text=lastHeard.trim();
       lastHeard='';
       askTkun(text);
     }else if(statusEl.textContent==='● LISTENING'){
@@ -257,25 +375,16 @@ if(SpeechRecognition){
     }
   };
 
-  function toggleListen(){
-    unlockVoice();
-    if(listening){
-      try{recognition.stop()}catch(e){}
-      return;
-    }
-    try{recognition.start()}catch(e){}
-  }
-
-  talkOrb.addEventListener('click',toggleListen);
-  mic.addEventListener('click',toggleListen);
+  talkOrb.addEventListener('click',beginVoiceTurn);
+  mic.addEventListener('click',beginVoiceTurn);
   talkOrb.addEventListener('keydown',e=>{
-    if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleListen()}
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      beginVoiceTurn();
+    }
   });
 }else{
-  talkOrb.addEventListener('click',()=>{
-    unlockVoice();
-    speak('T君です。文字で話しかけてください。');
-  });
+  talkOrb.addEventListener('click',unlockAndGreet);
   mic.disabled=true;
   voiceNote.textContent='このブラウザでは音声入力に対応していません。文字入力ならAIが声で返答します。';
 }
@@ -288,7 +397,7 @@ if('speechSynthesis' in window){
 }
 
 setOrb('','T君','タップして話す');
-orbHint.innerHTML='<strong>中央の球体をタップ</strong><br>話すとT君が声で返答します';
+orbHint.innerHTML='<strong>中央の球体をタップ</strong><br>最初にT君が声で応答します';
 statusEl.textContent='● READY';
 </script>
 </body>
