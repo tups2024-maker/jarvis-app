@@ -10,7 +10,7 @@
 :root{--bg:#020711;--panel:#07131d;--panel2:#0a1c29;--cyan:#73e9ff;--cyan2:#21b6d7;--ink:#eafcff;--muted:#8fb0bc;--line:#143847;--gold:#d5b46d;--ok:#5ee6a8;--danger:#ff7d8d}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 15%,#0c2636 0,#06131f 28%,#020711 68%);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
 body{min-height:100svh}.wrap{width:min(1200px,100%);margin:auto;padding:22px clamp(16px,4vw,34px) 50px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px 0 18px;border-bottom:1px solid #143847}.brand small{display:block;color:var(--cyan);font-size:10px;letter-spacing:.25em}.brand strong{font-size:22px;letter-spacing:.06em}.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.btn{border:1px solid var(--line);background:#07131dcc;color:var(--ink);padding:10px 13px;border-radius:12px;text-decoration:none;font-size:12px;cursor:pointer}.btn:hover{border-color:var(--cyan)}
-.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;padding:44px 0 30px}.eyebrow{color:var(--cyan);font-size:10px;letter-spacing:.26em}.hero h1{font-size:clamp(34px,6vw,68px);line-height:1.08;margin:12px 0 16px;letter-spacing:-.02em}.hero p{max-width:680px;color:#9fc5cf;line-height:1.9;font-size:14px}.orb-wrap{display:grid;place-items:center;min-height:280px}.orb{width:min(220px,55vw);aspect-ratio:1;border-radius:50%;position:relative;background:radial-gradient(circle at 40% 38%,#a8f7ff 0,#4bdcf4 12%,#0b6788 32%,#04131e 64%,#020711 76%);box-shadow:0 0 35px #37cfea55,0 0 90px #21b6d733,inset 0 0 40px #9df7ff55;animation:pulse 3.8s ease-in-out infinite}.orb:before,.orb:after{content:"";position:absolute;inset:-16px;border-radius:50%;border:1px solid #4fe7ff66}.orb:after{inset:-34px;border-color:#4fe7ff22}.orb b{position:absolute;inset:0;display:grid;place-items:center;text-align:center;letter-spacing:.2em;font-size:12px;text-shadow:0 0 8px #000}.orb span{display:block;color:#bff8ff;font-size:9px;margin-top:6px;letter-spacing:.18em}@keyframes pulse{50%{transform:scale(1.03);box-shadow:0 0 45px #37cfeaaa,0 0 110px #21b6d755,inset 0 0 55px #9df7ff66}}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;padding:44px 0 30px}.eyebrow{color:var(--cyan);font-size:10px;letter-spacing:.26em}.hero h1{font-size:clamp(34px,6vw,68px);line-height:1.08;margin:12px 0 16px;letter-spacing:-.02em}.hero p{max-width:680px;color:#9fc5cf;line-height:1.9;font-size:14px}.orb-wrap{display:grid;place-items:center;min-height:280px}.orb{width:min(220px,55vw);aspect-ratio:1;border-radius:50%;position:relative;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;background:radial-gradient(circle at 40% 38%,#a8f7ff 0,#4bdcf4 12%,#0b6788 32%,#04131e 64%,#020711 76%);box-shadow:0 0 35px #37cfea55,0 0 90px #21b6d733,inset 0 0 40px #9df7ff55;animation:pulse 3.8s ease-in-out infinite}.orb:before,.orb:after{content:"";position:absolute;inset:-16px;border-radius:50%;border:1px solid #4fe7ff66}.orb:after{inset:-34px;border-color:#4fe7ff22}.orb b{position:absolute;inset:0;display:grid;place-items:center;text-align:center;letter-spacing:.2em;font-size:12px;text-shadow:0 0 8px #000}.orb span{display:block;color:#bff8ff;font-size:9px;margin-top:6px;letter-spacing:.18em}.orb.listening{box-shadow:0 0 55px #73e9ffcc,0 0 130px #21b6d788,inset 0 0 65px #bff8ff88;animation:pulse .85s ease-in-out infinite}.orb.thinking{filter:saturate(.75);animation:pulse 1.8s ease-in-out infinite}.orb.speaking{box-shadow:0 0 60px #5ee6a8bb,0 0 130px #5ee6a855,inset 0 0 65px #c8ffe488}.orb-hint{margin-top:34px;text-align:center;color:#8fb0bc;font-size:11px;letter-spacing:.08em}.orb-hint strong{color:#d5f9ff}@keyframes pulse{50%{transform:scale(1.03);box-shadow:0 0 45px #37cfeaaa,0 0 110px #21b6d755,inset 0 0 55px #9df7ff66}}
 .status{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:4px 0 28px}.stat{background:linear-gradient(180deg,#081824dd,#06121bdd);border:1px solid var(--line);border-radius:16px;padding:16px}.stat span{display:block;color:var(--muted);font-size:10px;letter-spacing:.1em}.stat strong{display:block;margin-top:8px;font-size:21px}.stat i{font-style:normal;font-size:10px;color:var(--ok);margin-top:5px;display:block}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:linear-gradient(180deg,#091a27e8,#051018e8);border:1px solid var(--line);border-radius:18px;padding:18px;min-height:158px;display:flex;flex-direction:column;transition:.2s}.card:hover{transform:translateY(-3px);border-color:#3ccbe6}.card .k{font-size:10px;color:var(--cyan);letter-spacing:.15em}.card h3{margin:10px 0 8px;font-size:17px}.card p{margin:0;color:var(--muted);font-size:12px;line-height:1.7}.card .go{margin-top:auto;padding-top:14px;color:#d5f9ff;font-size:12px;text-decoration:none}.card .go:hover{color:#fff}
 .chat{margin-top:26px;border:1px solid var(--line);background:#04101aee;border-radius:20px;overflow:hidden}.chat-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}.chat-head b{font-size:14px}.chat-head span{font-size:10px;color:var(--ok)}.messages{min-height:170px;max-height:330px;overflow:auto;padding:16px}.msg{max-width:82%;padding:11px 13px;border-radius:14px;margin:8px 0;line-height:1.7;font-size:13px;white-space:pre-wrap}.msg.ai{background:#08202d;border:1px solid #17485a}.msg.user{margin-left:auto;background:#12354a;border:1px solid #216780}.composer{display:grid;grid-template-columns:auto 1fr auto;gap:8px;padding:12px;border-top:1px solid var(--line)}.voice-btn{border:1px solid var(--line);border-radius:13px;background:#08202d;color:#d5f9ff;min-width:52px;font-size:20px;cursor:pointer}.voice-btn.listening{border-color:#73e9ff;box-shadow:0 0 18px #37cfea66;background:#0d3445}.voice-note{padding:0 14px 10px;color:#6f98a8;font-size:10px}.voice-toggle{border:1px solid var(--line);background:#07131d;color:#bfefff;border-radius:10px;padding:7px 10px;font-size:10px;cursor:pointer}textarea{resize:none;min-height:48px;max-height:130px;border:1px solid var(--line);border-radius:13px;background:#020a10;color:#fff;padding:12px;font:inherit;outline:none}textarea:focus{border-color:var(--cyan2)}button.send{border:0;border-radius:13px;background:linear-gradient(135deg,#42d9ef,#1285a6);color:#00131b;font-weight:800;padding:0 18px;cursor:pointer}.foot{margin-top:20px;text-align:center;color:#5f8190;font-size:10px}
@@ -36,7 +36,7 @@ body{min-height:100svh}.wrap{width:min(1200px,100%);margin:auto;padding:22px cla
     <h1>事業を、ひとつの<br>画面から動かす。</h1>
     <p>T_Express専用AI「T君」。声でも文字でも自然に会話しながら、SNS、note、求人、営業、売上、資産形成を一緒に整理します。</p>
   </div>
-  <div class="orb-wrap"><div class="orb"><b>JARVIS<span>T-KUN</span></b></div></div>
+  <div class="orb-wrap"><div><div class="orb" id="talkOrb" role="button" tabindex="0" aria-label="T君と音声会話を開始"><b id="orbLabel">T君<span>タップして話す</span></b></div><div class="orb-hint" id="orbHint"><strong>中央の球体を1回タップ</strong><br>その後は会話を続けられます</div></div></div>
 </section>
 
 <section class="status">
@@ -74,11 +74,19 @@ const API='https://jarvis-api.t-ups2024.workers.dev/api/chat';
 const RESPONSE_KEY='t-kun-openai-previous-response-id';
 const input=document.getElementById('input'),send=document.getElementById('send'),messages=document.getElementById('messages'),statusEl=document.getElementById('chatStatus');
 const mic=document.getElementById('mic'),voiceToggle=document.getElementById('voiceToggle'),voiceNote=document.getElementById('voiceNote');
+const talkOrb=document.getElementById('talkOrb'),orbLabel=document.getElementById('orbLabel'),orbHint=document.getElementById('orbHint');
+
 let speakingEnabled=true, voiceUnlocked=false, listening=false, lastWasVoice=false;
+let conversationMode=false, recognition=null, waitingForAI=false, suppressRestart=false;
 
 function add(text,who){
   const d=document.createElement('div'); d.className='msg '+who; d.textContent=text;
   messages.appendChild(d); messages.scrollTop=messages.scrollHeight;
+}
+function setOrb(state,label,sub){
+  talkOrb.classList.remove('listening','thinking','speaking');
+  if(state)talkOrb.classList.add(state);
+  orbLabel.innerHTML=(label||'T君')+'<span>'+(sub||'タップして話す')+'</span>';
 }
 function cleanForSpeech(text){
   return String(text||'').replace(/[*#_`>]/g,'').replace(/https?:\/\/\S+/g,'').trim();
@@ -92,7 +100,11 @@ function utter(text,onend){
   u.lang='ja-JP'; u.rate=1.0; u.pitch=1.0; u.volume=1;
   const v=japaneseVoice(); if(v)u.voice=v;
   if(onend)u.onend=onend;
-  u.onerror=()=>{statusEl.textContent='● VOICE ERROR';voiceNote.textContent='音声出力に失敗しました。iPhoneの音量と消音設定も確認してください。';};
+  u.onerror=()=>{
+    statusEl.textContent='● VOICE ERROR';
+    setOrb('', 'T君','タップして再開');
+    voiceNote.textContent='音声出力に失敗しました。音量と消音設定を確認してください。';
+  };
   return u;
 }
 function unlockVoice(announce=false){
@@ -101,62 +113,78 @@ function unlockVoice(announce=false){
     return false;
   }
   try{
-    speechSynthesis.cancel();
-    speechSynthesis.resume();
-    const test=utter(announce?'T君です。音声は正常です。':' ');
+    speechSynthesis.cancel(); speechSynthesis.resume();
+    const test=utter(announce?'T君です。準備できました。話しかけてください。':' ');
     speechSynthesis.speak(test);
     voiceUnlocked=true;
     if(announce){
       voiceToggle.textContent='🔊 音声ON';
-      voiceNote.textContent='T君の音声を有効にしました。返事を自動で読み上げます。';
-      statusEl.textContent='● VOICE READY';
-      setTimeout(()=>{if(statusEl.textContent==='● VOICE READY')statusEl.textContent='● READY'},1600);
+      voiceNote.textContent='T君の音声を有効にしました。';
     }
     return true;
   }catch(e){
-    voiceNote.textContent='音声を開始できませんでした。もう一度「声をテスト」を押してください。';
+    voiceNote.textContent='音声を開始できませんでした。球体をもう一度タップしてください。';
     return false;
   }
 }
 function speak(text){
-  if(!speakingEnabled||!('speechSynthesis' in window))return;
-  if(!voiceUnlocked)return;
-  const clean=cleanForSpeech(text).slice(0,1600);
-  if(!clean)return;
-  speechSynthesis.cancel();
-  speechSynthesis.resume();
-  const chunks=(clean.match(/[^。！？!?\n]+[。！？!?]?/g)||[clean]).map(s=>s.trim()).filter(Boolean);
-  let i=0;
-  const next=()=>{
-    if(i>=chunks.length)return;
-    const part=chunks[i++].slice(0,220);
-    const u=utter(part,next);
-    speechSynthesis.speak(u);
-  };
-  next();
+  return new Promise(resolve=>{
+    if(!speakingEnabled||!voiceUnlocked||!('speechSynthesis' in window)){resolve();return}
+    const clean=cleanForSpeech(text).slice(0,1600);
+    if(!clean){resolve();return}
+    speechSynthesis.cancel(); speechSynthesis.resume();
+    setOrb('speaking','T君','話しています');
+    statusEl.textContent='● SPEAKING';
+    const chunks=(clean.match(/[^。！？!?\n]+[。！？!?]?/g)||[clean]).map(s=>s.trim()).filter(Boolean);
+    let i=0;
+    const next=()=>{
+      if(i>=chunks.length){
+        statusEl.textContent='● READY';
+        setOrb('', 'T君','会話中');
+        resolve(); return;
+      }
+      const u=utter(chunks[i++].slice(0,220),next);
+      speechSynthesis.speak(u);
+    };
+    next();
+  });
 }
-voiceToggle.addEventListener('click',()=>{
-  if(!voiceUnlocked){speakingEnabled=true;unlockVoice(true);return;}
-  speakingEnabled=!speakingEnabled;
-  if(!speakingEnabled){
-    speechSynthesis.cancel();
-    voiceToggle.textContent='🔇 音声OFF';
-    voiceNote.textContent='読み上げをOFFにしました。';
-  }else{
-    voiceToggle.textContent='🔊 音声ON';
-    voiceNote.textContent='読み上げをONにしました。';
-    speechSynthesis.resume();
+function startListening(){
+  if(!recognition){
+    voiceNote.textContent='このブラウザでは音声入力が使えません。文字入力をご利用ください。';
+    return;
   }
-});
+  if(waitingForAI||listening)return;
+  try{
+    suppressRestart=false;
+    recognition.start();
+  }catch(e){}
+}
+function stopConversation(){
+  conversationMode=false; suppressRestart=true;
+  try{recognition&&recognition.stop()}catch(e){}
+  try{speechSynthesis&&speechSynthesis.cancel()}catch(e){}
+  setOrb('', 'T君','タップして話す');
+  orbHint.innerHTML='<strong>中央の球体をタップ</strong><br>音声会話を再開';
+  statusEl.textContent='● READY';
+}
+async function startConversation(){
+  if(conversationMode){ stopConversation(); return; }
+  conversationMode=true; speakingEnabled=true;
+  unlockVoice(false);
+  setOrb('listening','T君','聞いています');
+  orbHint.innerHTML='<strong>会話モードON</strong><br>もう一度タップすると停止';
+  startListening();
+}
 
 async function chat(textOverride){
   const text=String(textOverride??input.value).trim(); if(!text)return;
-  // iPhoneではユーザー操作中に一度音声エンジンを起こしておくと、非同期応答後の読み上げが安定する。
   if(!voiceUnlocked)unlockVoice(false);
-  add(text,'user'); input.value=''; send.disabled=true; statusEl.textContent='● THINKING';
+  add(text,'user'); input.value=''; send.disabled=true; waitingForAI=true;
+  statusEl.textContent='● THINKING'; setOrb('thinking','T君','考えています');
   try{
     const previousResponseId=localStorage.getItem(RESPONSE_KEY)||null;
-    const persona='あなたはT_Express専用AI「T君」です。自然な日本語で、普通の人と話すように会話してください。毎回自己紹介や定型文を入れず、直前の会話を引き継いでください。音声会話では短めに返し、必要なら詳しく説明してください。T_ExpressのSNS、note、求人、営業、売上、AI事業、資産形成を中心に支援してください。';
+    const persona='あなたはT_Express専用AI「T君」です。ChatGPTのように自然な日本語で会話してください。直前の会話を引き継ぎ、毎回同じ挨拶や自己紹介は不要です。音声会話ではまず短く自然に答え、必要なら続けて説明してください。T_ExpressのSNS、note、求人、営業、売上、AI事業、資産形成を中心に支援してください。';
     const r=await fetch(API,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
       message:persona+'\n\nユーザー：'+text,
       department:'monetization',
@@ -167,21 +195,51 @@ async function chat(textOverride){
     const data=await r.json();
     const answer=data.reply||data.output_text||data.message||data.answer||'返答を受け取りました。';
     if(data.responseId)localStorage.setItem(RESPONSE_KEY,data.responseId);
-    add(answer,'ai'); statusEl.textContent='● READY'; speak(answer);
+    add(answer,'ai');
+    await speak(answer);
   }catch(e){
     add('今はAI接続がうまくいっていません。少ししてからもう一度話しかけてください。','ai');
     statusEl.textContent='● CONNECTION ERROR';
-  }finally{send.disabled=false;lastWasVoice=false}
+    setOrb('', 'T君','タップして再開');
+  }finally{
+    send.disabled=false; waitingForAI=false; lastWasVoice=false;
+    if(conversationMode){
+      setTimeout(()=>startListening(),350);
+    }else{
+      setOrb('', 'T君','タップして話す');
+    }
+  }
 }
+
 send.addEventListener('click',()=>chat());
 input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();chat()}});
 
+voiceToggle.addEventListener('click',()=>{
+  if(!voiceUnlocked){speakingEnabled=true;unlockVoice(true);return}
+  speakingEnabled=!speakingEnabled;
+  if(!speakingEnabled){
+    speechSynthesis.cancel(); voiceToggle.textContent='🔇 音声OFF';
+    voiceNote.textContent='読み上げをOFFにしました。';
+  }else{
+    voiceToggle.textContent='🔊 音声ON';
+    voiceNote.textContent='読み上げをONにしました。';
+  }
+});
+
 const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-let recognition=null;
 if(SpeechRecognition){
   recognition=new SpeechRecognition();
-  recognition.lang='ja-JP'; recognition.interimResults=true; recognition.continuous=false;
-  recognition.onstart=()=>{listening=true;mic.classList.add('listening');mic.textContent='⏹';statusEl.textContent='● LISTENING';voiceNote.textContent='聞いています… 話し終わるとT君へ送信します。'};
+  recognition.lang='ja-JP';
+  recognition.interimResults=true;
+  recognition.continuous=false;
+
+  recognition.onstart=()=>{
+    listening=true;
+    mic.classList.add('listening'); mic.textContent='⏹';
+    statusEl.textContent='● LISTENING';
+    setOrb('listening','T君','聞いています');
+    voiceNote.textContent='そのまま話してください。話し終わると自動で返事します。';
+  };
   recognition.onresult=e=>{
     let finalText='',interim='';
     for(let i=e.resultIndex;i<e.results.length;i++){
@@ -189,17 +247,41 @@ if(SpeechRecognition){
       if(e.results[i].isFinal)finalText+=t; else interim+=t;
     }
     input.value=finalText||interim;
-    if(finalText.trim()){lastWasVoice=true;setTimeout(()=>chat(finalText),120)}
+    if(finalText.trim()){
+      lastWasVoice=true;
+      suppressRestart=true;
+      try{recognition.stop()}catch(e){}
+      setTimeout(()=>chat(finalText),100);
+    }
   };
-  recognition.onerror=e=>{statusEl.textContent='● READY';voiceNote.textContent='音声を聞き取れませんでした。マイク許可を確認して、もう一度🎙️を押してください。';};
-  recognition.onend=()=>{listening=false;mic.classList.remove('listening');mic.textContent='🎙️';if(statusEl.textContent==='● LISTENING')statusEl.textContent='● READY';};
+  recognition.onerror=e=>{
+    listening=false; mic.classList.remove('listening'); mic.textContent='🎙️';
+    if(e.error==='not-allowed'||e.error==='service-not-allowed'){
+      conversationMode=false;
+      setOrb('', 'T君','マイク許可が必要');
+      voiceNote.textContent='マイクが許可されていません。Safariのサイト設定でマイクを許可してください。';
+    }else if(conversationMode && !waitingForAI){
+      setTimeout(()=>startListening(),700);
+    }
+  };
+  recognition.onend=()=>{
+    listening=false; mic.classList.remove('listening'); mic.textContent='🎙️';
+    if(conversationMode && !waitingForAI && !suppressRestart){
+      setTimeout(()=>startListening(),450);
+    }
+  };
+
   mic.addEventListener('click',()=>{
     if(!voiceUnlocked)unlockVoice(false);
-    if(listening){recognition.stop();return}
-    try{recognition.start()}catch(e){}
+    if(listening){suppressRestart=true;recognition.stop();return}
+    lastWasVoice=true; startListening();
   });
+
+  talkOrb.addEventListener('click',startConversation);
+  talkOrb.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();startConversation()}});
 }else{
-  mic.disabled=true;mic.style.opacity='.45';
+  mic.disabled=true; mic.style.opacity='.45';
+  talkOrb.addEventListener('click',()=>{voiceNote.textContent='このブラウザでは音声入力が使えません。文字入力をご利用ください。';});
   voiceNote.textContent='このブラウザでは音声入力が使えません。文字入力は利用できます。';
 }
 
