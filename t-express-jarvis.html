@@ -78,6 +78,7 @@ const talkOrb=document.getElementById('talkOrb'),orbLabel=document.getElementByI
 
 let speakingEnabled=true, voiceUnlocked=false, listening=false, lastWasVoice=false;
 let conversationMode=false, recognition=null, waitingForAI=false, suppressRestart=false;
+let heardText='', sentThisTurn=false;
 
 function add(text,who){
   const d=document.createElement('div'); d.className='msg '+who; d.textContent=text;
@@ -232,9 +233,10 @@ if(SpeechRecognition){
   recognition.lang='ja-JP';
   recognition.interimResults=true;
   recognition.continuous=false;
+  recognition.maxAlternatives=1;
 
   recognition.onstart=()=>{
-    listening=true;
+    listening=true; heardText=''; sentThisTurn=false;
     mic.classList.add('listening'); mic.textContent='⏹';
     statusEl.textContent='● LISTENING';
     setOrb('listening','T君','聞いています');
@@ -246,12 +248,20 @@ if(SpeechRecognition){
       const t=e.results[i][0].transcript;
       if(e.results[i].isFinal)finalText+=t; else interim+=t;
     }
-    input.value=finalText||interim;
-    if(finalText.trim()){
+    const latest=(finalText||interim).trim();
+    if(latest){
+      heardText=latest;
+      input.value=latest;
+      setOrb('listening','T君','「'+latest.slice(0,18)+(latest.length>18?'…':'')+'」');
+      voiceNote.textContent='聞き取り中：'+latest;
+    }
+    if(finalText.trim()&&!sentThisTurn){
+      sentThisTurn=true;
       lastWasVoice=true;
       suppressRestart=true;
+      heardText=finalText.trim();
       try{recognition.stop()}catch(e){}
-      setTimeout(()=>chat(finalText),100);
+      setTimeout(()=>chat(heardText),120);
     }
   };
   recognition.onerror=e=>{
@@ -260,14 +270,29 @@ if(SpeechRecognition){
       conversationMode=false;
       setOrb('', 'T君','マイク許可が必要');
       voiceNote.textContent='マイクが許可されていません。Safariのサイト設定でマイクを許可してください。';
+    }else if(e.error==='no-speech'){
+      voiceNote.textContent='声が聞き取れませんでした。もう一度話してください。';
+      if(conversationMode&&!waitingForAI)setTimeout(()=>startListening(),700);
     }else if(conversationMode && !waitingForAI){
       setTimeout(()=>startListening(),700);
     }
   };
   recognition.onend=()=>{
     listening=false; mic.classList.remove('listening'); mic.textContent='🎙️';
+    // iPhone Safari can finish recognition with only an interim transcript.
+    // If we heard anything but did not receive a "final" result, send it now.
+    if(heardText.trim()&&!sentThisTurn&&!waitingForAI){
+      sentThisTurn=true;
+      lastWasVoice=true;
+      suppressRestart=true;
+      const text=heardText.trim();
+      setOrb('thinking','T君','送信しています');
+      voiceNote.textContent='T君に送信中：'+text;
+      setTimeout(()=>chat(text),120);
+      return;
+    }
     if(conversationMode && !waitingForAI && !suppressRestart){
-      setTimeout(()=>startListening(),450);
+      setTimeout(()=>startListening(),500);
     }
   };
 
